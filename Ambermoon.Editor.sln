@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ambermoon.Editor", "Ambermoon.Editor\Ambermoon.Editor.csproj", "{EA9906E0-2F85-499C-BE63-B60642C4D42C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ambermoon.Data.GameDataRepository", "..\Ambermoon.net\Ambermoon.Data.GameDataRepository\Ambermoon.Data.GameDataRepository.csproj", "{45778BE7-3DFA-4DF9-94BB-FB7E80BEFDAE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA9906E0-2F85-499C-BE63-B60642C4D42C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA9906E0-2F85-499C-BE63-B60642C4D42C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA9906E0-2F85-499C-BE63-B60642C4D42C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA9906E0-2F85-499C-BE63-B60642C4D42C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45778BE7-3DFA-4DF9-94BB-FB7E80BEFDAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45778BE7-3DFA-4DF9-94BB-FB7E80BEFDAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45778BE7-3DFA-4DF9-94BB-FB7E80BEFDAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45778BE7-3DFA-4DF9-94BB-FB7E80BEFDAE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A1883313-F91A-4262-858D-D821314DC60F}
+	EndGlobalSection
+EndGlobal
