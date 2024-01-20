@@ -2,7 +2,7 @@
 using Ambermoon.Data.GameDataRepository.Util;
 
 namespace Ambermoon.Editor.Models {
-  internal class ListWrapper<T> : IDisposable where T : class, IIndexedData {
+  internal class ListWrapper<T> : IDisposable where T : class, IIndexed {
     #region --- properties ------------------------------------------------------------------------
     internal SortableBindingList<T> ForDisplay   { get; private set; } = [];
     internal DictionaryList<T>      InRepository { get; private set; } = [];
@@ -10,33 +10,19 @@ namespace Ambermoon.Editor.Models {
     #endregion
 
     #region --- constructor -----------------------------------------------------------------------
-    internal ListWrapper(DictionaryList<T> entities) {
-      InRepository = entities;
+    internal ListWrapper(DictionaryList<T> entries) {
+      InRepository = entries;
 
-      foreach (T entity in entities) {
-        ForDisplay.Add(entity);
+      foreach (T entry in entries) {
+        ForDisplay.Add(entry);
       }
     }
     #endregion
     #region --- add -------------------------------------------------------------------------------
-    internal void Add(T entity) {
-      if (!InRepository.TryGetValue(entity.Index, out _)) {
-        ForDisplay.Add(entity);
-        InRepository.Add(entity);
-        IsDirty = true;
-      }
-    }
-    #endregion
-    #region --- change ----------------------------------------------------------------------------
-    internal void Change(T entity) {
-      if (
-        InRepository.TryGetValue(entity.Index, out T? entityInRepositoryList)
-        && entityInRepositoryList != entity) {
-        entityInRepositoryList = entity;
-
-        T entityInDisplayList = ForDisplay.First(x => x.Index == entity.Index);
-        entityInDisplayList = entity;
-
+    internal void Add(T entry) {
+      if (!InRepository.ContainsKey(entry.Index)) {
+        ForDisplay.Add(entry);
+        InRepository.Add(entry);
         IsDirty = true;
       }
     }
@@ -82,11 +68,16 @@ namespace Ambermoon.Editor.Models {
       return InRepository.Keys.Max();
     }
     #endregion
+    #region --- has been changed ------------------------------------------------------------------
+    internal void HasBeenChanged() {
+      IsDirty = true;
+    }
+    #endregion
     #region --- remove ----------------------------------------------------------------------------
-    internal void Remove(T entity) {
-      if (InRepository.TryGetValue(entity.Index, out _)) {
-        ForDisplay.Remove(entity);
-        InRepository.Remove(entity);
+    internal void Remove(T entry) {
+      if (InRepository.TryGetValue(entry.Index, out _)) {
+        ForDisplay.Remove(entry);
+        InRepository.Remove(entry);
         IsDirty = true;
       }
     }

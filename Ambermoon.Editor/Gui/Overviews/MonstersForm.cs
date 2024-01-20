@@ -22,14 +22,14 @@ namespace Ambermoon.Editor.Gui.Overviews {
 
       dgv.Columns.AddRange(new DataGridViewColumn[] {
         new DataGridViewButtonColumn () { DataPropertyName = "Remove", Text = "X", UseColumnTextForButtonValue = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Index" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Name" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Level" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Type" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Race" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Class" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Gender" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Element" },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Index) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Name) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Level) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Type) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Race) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Class) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Gender) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Element) },
       });
 
       foreach (DataGridViewColumn column in dgv.Columns) {
@@ -97,7 +97,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
       MonsterForm form = new(monster);
 
       if (form.ShowDialog() == DialogResult.OK) {
-        _monsters.Change(form.Monster);
+        _monsters.HasBeenChanged();
         dgv.InvalidateRow(rowIndex);
         dgv.AutoResizeColumns();
       }

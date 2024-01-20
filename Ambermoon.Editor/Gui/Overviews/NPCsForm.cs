@@ -22,14 +22,13 @@ namespace Ambermoon.Editor.Gui.Overviews {
 
       dgv.Columns.AddRange(new DataGridViewColumn[] {
         new DataGridViewButtonColumn () { DataPropertyName = "Remove", Text = "X", UseColumnTextForButtonValue = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Index" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Name" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Level" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Type" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Race" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Class" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Gender" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = "Element" },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(NpcData.Index) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(NpcData.Name) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(NpcData.Level) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(NpcData.Type) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(NpcData.Race) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(NpcData.Class) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(NpcData.Gender) },
       });
 
       foreach (DataGridViewColumn column in dgv.Columns) {
@@ -97,7 +96,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
       NPCForm form = new(npc);
 
       if (form.ShowDialog() == DialogResult.OK) {
-        _npcs.Change(form.NPC);
+        _npcs.HasBeenChanged();
         dgv.InvalidateRow(rowIndex);
         dgv.AutoResizeColumns();
       }

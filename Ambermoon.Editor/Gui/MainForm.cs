@@ -12,7 +12,7 @@ namespace Ambermoon.Editor.Gui {
 
     //private InfoForm?          _infoForm;
     private MonstersForm?      _monstersForm;
-    //private MonsterGroupsForm? _monsterGroupsForm;
+    private MonsterGroupsForm? _monsterGroupsForm;
     private NPCsForm?          _npcsForm;
     #endregion
 
@@ -45,7 +45,7 @@ namespace Ambermoon.Editor.Gui {
       menuItemLoad.Click   += (s, e) => LoadRepository();
       menuItemSave.Click   += (s, e) => SaveRepository();
       menuItemUnload.Click += (s, e) => UnloadRepository();
-      trv.AfterSelect      += (s, e) => SelectObject(e.Node?.Name);
+      trv.AfterSelect      += (s, e) => NodeSelected(e.Node?.Name);
     }
     #endregion
 
@@ -76,6 +76,69 @@ namespace Ambermoon.Editor.Gui {
       }
 
       UpdateControls();
+    }
+    #endregion
+    #region --- node selected ---------------------------------------------------------------------
+    private void NodeSelected(string? nodeName) {
+      if (nodeName.IsNullOrEmpty()) {
+        return;
+      }
+      
+      switch (nodeName) { 
+        // case "trvNodeInfo":
+        //   if (_infoForm is null || _infoForm.IsDisposed) { 
+        //     _infoForm = new();
+        //     AddForm(_infoForm);
+        //   }
+
+        //   ShowForm(_infoForm);
+        //   break;
+
+        case "trvNodeCharactersMonsters":
+          if (_monstersForm is null || _monstersForm.IsDisposed) { 
+            _monstersForm = new(_repository!.Monsters);
+            AddForm(_monstersForm);
+          }
+
+          ShowForm(_monstersForm);
+          break;
+
+        case "trvNodeCharactersMonsterGroups":
+          if (_monsterGroupsForm is null || _monsterGroupsForm.IsDisposed) {
+            _monsterGroupsForm = new(_repository!.Monsters, _repository!.MonsterGroups);
+            AddForm(_monsterGroupsForm);
+          }
+
+          ShowForm(_monsterGroupsForm);
+          break;
+
+        case "trvNodeCharactersNPCs":
+          if (_npcsForm is null || _npcsForm.IsDisposed) { 
+            _npcsForm = new(_repository!.Npcs);
+            AddForm(_npcsForm);
+          }
+
+          ShowForm(_npcsForm);
+          break;
+      }
+
+      void AddForm(Form form) {
+        form.Dock = DockStyle.Fill;
+        form.TopLevel = false;
+        splitContainer.Panel2.Controls.Add(form);
+      }
+
+      void ShowForm(Form form) {
+        foreach (Control control in splitContainer.Panel2.Controls) {
+          if (control is Form && control != form) {
+            control.Hide();
+            control.SendToBack();
+          }
+        }
+
+        form.Show();
+        form.BringToFront();
+      }
     }
     #endregion
     #region --- save repository -------------------------------------------------------------------
@@ -109,70 +172,6 @@ namespace Ambermoon.Editor.Gui {
       }
 
       UpdateControls();
-    }
-    #endregion
-
-    #region --- select object ---------------------------------------------------------------------
-    private void SelectObject(string? nodeName) {
-      if (nodeName.IsNullOrEmpty()) {
-        return;
-      }
-      
-      switch (nodeName) { 
-        // case "trvNodeInfo":
-        //   if (_infoForm is null || _infoForm.IsDisposed) { 
-        //     _infoForm = new();
-        //     AddForm(_infoForm);
-        //   }
-
-        //   ShowForm(_infoForm);
-        //   break;
-
-        case "trvNodeCharactersMonsters":
-          if (_monstersForm is null || _monstersForm.IsDisposed) { 
-            _monstersForm = new(_repository!.Monsters);
-            AddForm(_monstersForm);
-          }
-
-          ShowForm(_monstersForm);
-          break;
-
-        //case "trvNodeCharactersMonsterGroups":
-        //   if (_monsterGroupsForm is null || _monsterGroupsForm.IsDisposed) { 
-        //     _monsterGroupsForm = new();
-        //     AddForm(_monsterGroupsForm);
-        //   }
-
-        //   ShowForm(_monsterGroupsForm);
-        //   break;
-
-        case "trvNodeCharactersNPCs":
-          if (_npcsForm is null || _npcsForm.IsDisposed) { 
-            _npcsForm = new(_repository!.Npcs);
-            AddForm(_npcsForm);
-          }
-
-          ShowForm(_npcsForm);
-          break;
-      }
-
-      void AddForm(Form form) {
-        form.Dock = DockStyle.Fill;
-        form.TopLevel = false;
-        splitContainer.Panel2.Controls.Add(form);
-      }
-
-      void ShowForm(Form form) {
-        foreach (Control control in splitContainer.Panel2.Controls) {
-          if (control is Form && control != form) {
-            control.Hide();
-            control.SendToBack();
-          }
-        }
-
-        form.Show();
-        form.BringToFront();
-      }
     }
     #endregion
   }
