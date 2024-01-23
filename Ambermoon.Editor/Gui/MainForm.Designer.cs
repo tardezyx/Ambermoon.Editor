@@ -24,10 +24,11 @@
     /// </summary>
     private void InitializeComponent() {
       TreeNode treeNode1 = new TreeNode("Info");
-      TreeNode treeNode2 = new TreeNode("Monsters");
-      TreeNode treeNode3 = new TreeNode("Monster Groups");
-      TreeNode treeNode4 = new TreeNode("NPCs");
-      TreeNode treeNode5 = new TreeNode("Characters", new TreeNode[] { treeNode2, treeNode3, treeNode4 });
+      TreeNode treeNode2 = new TreeNode("Maps");
+      TreeNode treeNode3 = new TreeNode("Monsters");
+      TreeNode treeNode4 = new TreeNode("Monster Groups");
+      TreeNode treeNode5 = new TreeNode("NPCs");
+      TreeNode treeNode6 = new TreeNode("Characters", new TreeNode[] { treeNode3, treeNode4, treeNode5 });
       menu = new MenuStrip();
       repositoryToolStripMenuItem = new ToolStripMenuItem();
       menuItemLoad = new ToolStripMenuItem();
@@ -116,15 +117,17 @@
       trv.Name = "trv";
       treeNode1.Name = "trvNodeInfo";
       treeNode1.Text = "Info";
-      treeNode2.Name = "trvNodeCharactersMonsters";
-      treeNode2.Text = "Monsters";
-      treeNode3.Name = "trvNodeCharactersMonsterGroups";
-      treeNode3.Text = "Monster Groups";
-      treeNode4.Name = "trvNodeCharactersNPCs";
-      treeNode4.Text = "NPCs";
-      treeNode5.Name = "trvNodeCharacters";
-      treeNode5.Text = "Characters";
-      trv.Nodes.AddRange(new TreeNode[] { treeNode1, treeNode5 });
+      treeNode2.Name = "trvNodeMaps";
+      treeNode2.Text = "Maps";
+      treeNode3.Name = "trvNodeCharactersMonsters";
+      treeNode3.Text = "Monsters";
+      treeNode4.Name = "trvNodeCharactersMonsterGroups";
+      treeNode4.Text = "Monster Groups";
+      treeNode5.Name = "trvNodeCharactersNPCs";
+      treeNode5.Text = "NPCs";
+      treeNode6.Name = "trvNodeCharacters";
+      treeNode6.Text = "Characters";
+      trv.Nodes.AddRange(new TreeNode[] { treeNode1, treeNode2, treeNode6 });
       trv.Size = new System.Drawing.Size(160, 562);
       trv.TabIndex = 0;
       // 

@@ -1,8 +1,8 @@
-﻿using Ambermoon.Data.GameDataRepository.Data;
-using Ambermoon.Data.GameDataRepository.Util;
+﻿using Ambermoon.Data.GameDataRepository.Collections;
+using Ambermoon.Data.GameDataRepository.Data;
 
 namespace Ambermoon.Editor.Models {
-  internal class ListWrapper<T> : IDisposable where T : class, IIndexed {
+  internal class ListWrapper<T> : IDisposable where T : class, IIndexed, new() {
     #region --- properties ------------------------------------------------------------------------
     internal SortableBindingList<T> ForDisplay   { get; private set; } = [];
     internal DictionaryList<T>      InRepository { get; private set; } = [];

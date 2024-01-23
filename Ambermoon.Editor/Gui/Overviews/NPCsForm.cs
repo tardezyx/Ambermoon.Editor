@@ -1,6 +1,6 @@
-﻿using Ambermoon.Data.GameDataRepository.Data;
-using Ambermoon.Data.GameDataRepository.Util;
-using Ambermoon.Editor.Gui.Controls;
+﻿using Ambermoon.Data.GameDataRepository.Collections;
+using Ambermoon.Data.GameDataRepository.Data;
+using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Editors;
 using Ambermoon.Editor.Models;
 
@@ -68,7 +68,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
     private void AddNPC() {
       uint index = _npcs.GetFirstFreeIndex();
 
-      NPCForm form = new(
+      EditNPCForm form = new(
         new NpcData() {
           Index = index,
           Name  = "(NEW...)"
@@ -93,7 +93,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #endregion
     #region --- change npc ------------------------------------------------------------------------
     private void ChangeNPC(NpcData npc, int rowIndex) {
-      NPCForm form = new(npc);
+      EditNPCForm form = new(npc);
 
       if (form.ShowDialog() == DialogResult.OK) {
         _npcs.HasBeenChanged();

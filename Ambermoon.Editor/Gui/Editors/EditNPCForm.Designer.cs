@@ -1,5 +1,5 @@
 ﻿namespace Ambermoon.Editor.Gui.Editors {
-  partial class NPCForm {
+  partial class EditNPCForm {
     /// <summary>
     /// Required designer variable.
     /// </summary>

@@ -1,6 +1,6 @@
-﻿using Ambermoon.Data.GameDataRepository.Data;
-using Ambermoon.Data.GameDataRepository.Util;
-using Ambermoon.Editor.Gui.Controls;
+﻿using Ambermoon.Data.GameDataRepository.Collections;
+using Ambermoon.Data.GameDataRepository.Data;
+using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Editors;
 using Ambermoon.Editor.Models;
 
@@ -69,7 +69,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
     private void AddMonster() {
       uint index = _monsters.GetFirstFreeIndex();
 
-      MonsterForm form = new(
+      EditMonsterForm form = new(
         new MonsterData() {
           Index = index,
           Name  = "(NEW...)"
@@ -94,7 +94,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #endregion
     #region --- change monster --------------------------------------------------------------------
     private void ChangeMonster(MonsterData monster, int rowIndex) {
-      MonsterForm form = new(monster);
+      EditMonsterForm form = new(monster);
 
       if (form.ShowDialog() == DialogResult.OK) {
         _monsters.HasBeenChanged();

@@ -1,7 +1,7 @@
-﻿using Ambermoon.Data.GameDataRepository.Data;
-using Ambermoon.Data.GameDataRepository.Util;
+﻿using Ambermoon.Data.GameDataRepository.Collections;
+using Ambermoon.Data.GameDataRepository.Data;
 using Ambermoon.Editor.Extensions;
-using Ambermoon.Editor.Gui.Controls;
+using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Editors;
 using Ambermoon.Editor.Models;
 
@@ -115,7 +115,12 @@ namespace Ambermoon.Editor.Gui.Overviews {
     private void AddMonsterGroup() {
       uint index = _monsterGroups.GetFirstFreeIndex();
 
-      MonsterGroupForm form = new(_monsters.InRepository, new() { Index = index });
+      EditMonsterGroupForm form = new(
+        _monsters.InRepository,
+        new() {
+          Index = index
+        }
+      );
 
       if (form.ShowDialog() == DialogResult.OK) {
         _monsterGroups.Add(form.MonsterGroup);
@@ -137,7 +142,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #region --- change monster group  -------------------------------------------------------------
     private void ChangeMonsterGroup(MonsterGroupAsText monsterGroupAsText, int rowIndex) {
       if (_monsterGroups.Get(monsterGroupAsText.Index) is MonsterGroupData monsterGroup) {
-        MonsterGroupForm form = new(_monsters.InRepository, monsterGroup);
+        EditMonsterGroupForm form = new(_monsters.InRepository, monsterGroup);
 
         if (form.ShowDialog() == DialogResult.OK) {
           monsterGroupAsText.Monsters = MapMonsterDetailsToText(MapMonsterGroupToDetails(monsterGroup));

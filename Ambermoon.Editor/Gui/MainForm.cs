@@ -1,7 +1,8 @@
 ﻿using Ambermoon.Data.GameDataRepository;
 using Ambermoon.Editor.Extensions;
-using Ambermoon.Editor.Gui.Controls;
+using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Overviews;
+using static Ambermoon.Data.Tileset;
 
 namespace Ambermoon.Editor.Gui {
   public partial class MainForm : Form {
@@ -10,10 +11,19 @@ namespace Ambermoon.Editor.Gui {
     private string              _repositoryFolder  = string.Empty;
     private bool                _repositoryIsDirty = false;
 
-    //private InfoForm?          _infoForm;
-    private MonstersForm?      _monstersForm;
-    private MonsterGroupsForm? _monsterGroupsForm;
-    private NPCsForm?          _npcsForm;
+    //private readonly InfoForm?          _infoForm;
+    private readonly MapsForm?          _mapsForm;
+    private readonly MonstersForm?      _monstersForm;
+    private readonly MonsterGroupsForm? _monsterGroupsForm;
+    private readonly NPCsForm?          _npcsForm;
+    #endregion
+    #region --- local enum: entity type -----------------------------------------------------------
+    private enum EntityType {
+      Maps,
+      Monsters,
+      MonsterGroups,
+      NPCs,
+    }
     #endregion
 
     #region --- constructor -----------------------------------------------------------------------
@@ -78,69 +88,6 @@ namespace Ambermoon.Editor.Gui {
       UpdateControls();
     }
     #endregion
-    #region --- node selected ---------------------------------------------------------------------
-    private void NodeSelected(string? nodeName) {
-      if (nodeName.IsNullOrEmpty()) {
-        return;
-      }
-      
-      switch (nodeName) { 
-        // case "trvNodeInfo":
-        //   if (_infoForm is null || _infoForm.IsDisposed) { 
-        //     _infoForm = new();
-        //     AddForm(_infoForm);
-        //   }
-
-        //   ShowForm(_infoForm);
-        //   break;
-
-        case "trvNodeCharactersMonsters":
-          if (_monstersForm is null || _monstersForm.IsDisposed) { 
-            _monstersForm = new(_repository!.Monsters);
-            AddForm(_monstersForm);
-          }
-
-          ShowForm(_monstersForm);
-          break;
-
-        case "trvNodeCharactersMonsterGroups":
-          if (_monsterGroupsForm is null || _monsterGroupsForm.IsDisposed) {
-            _monsterGroupsForm = new(_repository!.Monsters, _repository!.MonsterGroups);
-            AddForm(_monsterGroupsForm);
-          }
-
-          ShowForm(_monsterGroupsForm);
-          break;
-
-        case "trvNodeCharactersNPCs":
-          if (_npcsForm is null || _npcsForm.IsDisposed) { 
-            _npcsForm = new(_repository!.Npcs);
-            AddForm(_npcsForm);
-          }
-
-          ShowForm(_npcsForm);
-          break;
-      }
-
-      void AddForm(Form form) {
-        form.Dock = DockStyle.Fill;
-        form.TopLevel = false;
-        splitContainer.Panel2.Controls.Add(form);
-      }
-
-      void ShowForm(Form form) {
-        foreach (Control control in splitContainer.Panel2.Controls) {
-          if (control is Form && control != form) {
-            control.Hide();
-            control.SendToBack();
-          }
-        }
-
-        form.Show();
-        form.BringToFront();
-      }
-    }
-    #endregion
     #region --- save repository -------------------------------------------------------------------
     private void SaveRepository() {
       if (_repositoryIsDirty) {
@@ -172,6 +119,61 @@ namespace Ambermoon.Editor.Gui {
       }
 
       UpdateControls();
+    }
+    #endregion
+
+    #region --- node selected ---------------------------------------------------------------------
+    private void NodeSelected(string? nodeName) {
+      if (nodeName.IsNullOrEmpty()) {
+        return;
+      }
+
+      Tile tile = new();
+      tile.Flags |= (true ? TileFlags.AllowMovementWitchBroom : TileFlags.None)
+                 |  (true ? TileFlags.None : TileFlags.None);
+      
+      switch (nodeName) { 
+        //case "trvNodeInfo":                    ShowForm(EntityType.Maps);          break;
+        case "trvNodeMaps":                    ShowForm(EntityType.Maps);          break;
+        case "trvNodeCharactersMonsters":      ShowForm(EntityType.Monsters);      break;
+        case "trvNodeCharactersMonsterGroups": ShowForm(EntityType.MonsterGroups); break;
+        case "trvNodeCharactersNPCs":          ShowForm(EntityType.NPCs);          break;
+      }
+    }
+    #endregion
+    #region --- show form -------------------------------------------------------------------------
+    private void ShowForm(EntityType type) {
+      Form? form = type switch {
+          EntityType.Maps          => _mapsForm,
+          EntityType.Monsters      => _monstersForm,
+          EntityType.MonsterGroups => _monsterGroupsForm,
+          EntityType.NPCs          => _npcsForm,
+        _                         => throw new NotImplementedException(),
+      };
+
+      if (form is null || form.IsDisposed ) { 
+        form = type switch {
+            EntityType.Maps          => new MapsForm(_repository!.Maps, _repository!.MapTexts),
+            EntityType.Monsters      => new MonstersForm(_repository!.Monsters),
+            EntityType.MonsterGroups => new MonsterGroupsForm(_repository!.Monsters, _repository!.MonsterGroups),
+            EntityType.NPCs          => new NPCsForm(_repository!.Npcs),
+          _                         => throw new NotImplementedException(),
+        };
+
+        form.Dock = DockStyle.Fill;
+        form.TopLevel = false;
+        splitContainer.Panel2.Controls.Add(form);
+      }
+
+      foreach (Control control in splitContainer.Panel2.Controls) {
+        if (control is Form && control != form) {
+          control.Hide();
+          control.SendToBack();
+        }
+      }
+
+      form.Show();
+      form.BringToFront();
     }
     #endregion
   }

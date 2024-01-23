@@ -1,5 +1,5 @@
 ﻿namespace Ambermoon.Editor.Gui.Editors {
-  partial class MonsterGroupForm {
+  partial class EditMonsterForm {
     /// <summary>
     /// Required designer variable.
     /// </summary>
@@ -23,19 +23,27 @@
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent() {
+      tbxName = new TextBox();
       btnOK = new Button();
       btnCancel = new Button();
       tbxIndex = new TextBox();
       lblIndex = new Label();
+      lblName = new Label();
       statusStrip = new StatusStrip();
-      dgv = new DataGridView();
-      ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
       SuspendLayout();
+      // 
+      // tbxName
+      // 
+      tbxName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+      tbxName.Location = new Point(57, 41);
+      tbxName.Name = "tbxName";
+      tbxName.Size = new System.Drawing.Size(215, 23);
+      tbxName.TabIndex = 0;
       // 
       // btnOK
       // 
       btnOK.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-      btnOK.Location = new Point(981, 151);
+      btnOK.Location = new Point(116, 76);
       btnOK.Name = "btnOK";
       btnOK.Size = new System.Drawing.Size(75, 23);
       btnOK.TabIndex = 1;
@@ -45,7 +53,7 @@
       // btnCancel
       // 
       btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-      btnCancel.Location = new Point(1062, 151);
+      btnCancel.Location = new Point(197, 76);
       btnCancel.Name = "btnCancel";
       btnCancel.Size = new System.Drawing.Size(75, 23);
       btnCancel.TabIndex = 2;
@@ -69,57 +77,53 @@
       lblIndex.TabIndex = 4;
       lblIndex.Text = "Index";
       // 
+      // lblName
+      // 
+      lblName.AutoSize = true;
+      lblName.Location = new Point(12, 44);
+      lblName.Name = "lblName";
+      lblName.Size = new System.Drawing.Size(39, 15);
+      lblName.TabIndex = 5;
+      lblName.Text = "Name";
+      // 
       // statusStrip
       // 
-      statusStrip.Location = new Point(0, 164);
+      statusStrip.Location = new Point(0, 89);
       statusStrip.Name = "statusStrip";
-      statusStrip.Size = new System.Drawing.Size(1149, 22);
+      statusStrip.Size = new System.Drawing.Size(284, 22);
       statusStrip.TabIndex = 6;
       statusStrip.Text = "statusStrip1";
       // 
-      // dgv
-      // 
-      dgv.AllowUserToAddRows = false;
-      dgv.AllowUserToDeleteRows = false;
-      dgv.AllowUserToResizeRows = false;
-      dgv.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-      dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      dgv.Location = new Point(12, 41);
-      dgv.MultiSelect = false;
-      dgv.Name = "dgv";
-      dgv.RowHeadersVisible = false;
-      dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
-      dgv.Size = new System.Drawing.Size(1125, 104);
-      dgv.TabIndex = 7;
-      // 
-      // MonsterGroupForm
+      // MonsterForm
       // 
       AcceptButton = btnOK;
       AutoScaleDimensions = new SizeF(7F, 15F);
       AutoScaleMode = AutoScaleMode.Font;
       CancelButton = btnCancel;
-      ClientSize = new System.Drawing.Size(1149, 186);
-      Controls.Add(dgv);
+      ClientSize = new System.Drawing.Size(284, 111);
       Controls.Add(btnCancel);
       Controls.Add(btnOK);
       Controls.Add(statusStrip);
+      Controls.Add(lblName);
       Controls.Add(lblIndex);
       Controls.Add(tbxIndex);
+      Controls.Add(tbxName);
       MinimumSize = new System.Drawing.Size(300, 150);
-      Name = "MonsterGroupForm";
+      Name = "MonsterForm";
       ShowIcon = false;
-      Text = "MonsterGroup";
-      ((System.ComponentModel.ISupportInitialize)dgv).EndInit();
+      Text = "Monster";
       ResumeLayout(false);
       PerformLayout();
     }
 
     #endregion
+
+    private TextBox tbxName;
     private Button btnOK;
     private Button btnCancel;
     private TextBox tbxIndex;
     private Label lblIndex;
+    private Label lblName;
     private StatusStrip statusStrip;
-    private DataGridView dgv;
   }
 }

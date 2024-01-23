@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace Ambermoon.Editor.Models {
-  public class SortableBindingList<T> : BindingList<T> where T : class {
+  public class SortableBindingList<T> : BindingList<T> where T : new() {
     #region --- fields ----------------------------------------------------------------------------
     private bool                _isSorted;
     private ListSortDirection   _sortDirection = ListSortDirection.Ascending;

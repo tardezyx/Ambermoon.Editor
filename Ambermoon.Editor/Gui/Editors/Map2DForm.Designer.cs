@@ -1,5 +1,5 @@
 ﻿namespace Ambermoon.Editor.Gui.Editors {
-  partial class MonsterForm {
+  partial class Map2DForm {
     /// <summary>
     /// Required designer variable.
     /// </summary>
@@ -109,9 +109,9 @@
       Controls.Add(tbxIndex);
       Controls.Add(tbxName);
       MinimumSize = new System.Drawing.Size(300, 150);
-      Name = "MonsterForm";
+      Name = "NPCForm";
       ShowIcon = false;
-      Text = "Monster";
+      Text = "NPC";
       ResumeLayout(false);
       PerformLayout();
     }

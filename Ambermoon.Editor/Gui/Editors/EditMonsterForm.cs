@@ -1,16 +1,16 @@
 ﻿using Ambermoon.Data.GameDataRepository.Data;
 
 namespace Ambermoon.Editor.Gui.Editors {
-  public partial class NPCForm : Form {
+  public partial class EditMonsterForm : Form {
     #region --- properties ------------------------------------------------------------------------
-    public NpcData NPC { get; private set; }
+    public MonsterData Monster { get; private set; }
     #endregion
 
     #region --- constructor -----------------------------------------------------------------------
-    public NPCForm(NpcData npc) {
+    public EditMonsterForm(MonsterData monster) {
       InitializeComponent();
 
-      NPC = npc;
+      Monster = monster;
     }
     #endregion
     #region --- on load ---------------------------------------------------------------------------
@@ -19,8 +19,8 @@ namespace Ambermoon.Editor.Gui.Editors {
 
       CenterToParent();
 
-      tbxIndex.Text = NPC.Index.ToString();
-      tbxName.Text  = NPC.Name;
+      tbxIndex.Text = Monster.Index.ToString();
+      tbxName.Text  = Monster.Name;
 
       WireEvents();
     }
@@ -28,13 +28,13 @@ namespace Ambermoon.Editor.Gui.Editors {
     #region --- wire events -----------------------------------------------------------------------
     private void WireEvents() {
       btnCancel.Click += (s, e) => Close();
-      btnOK.Click     += (s, e) => { MapNPC(); DialogResult = DialogResult.OK; Close(); };
+      btnOK.Click     += (s, e) => { MapMonster(); DialogResult = DialogResult.OK; Close(); };
     }
     #endregion
 
-    #region --- map npc ---------------------------------------------------------------------------
-    private void MapNPC() {
-      NPC.Name = tbxName.Text;
+    #region --- map monster -----------------------------------------------------------------------
+    private void MapMonster() {
+      Monster.Name = tbxName.Text;
       // ...
     }
     #endregion

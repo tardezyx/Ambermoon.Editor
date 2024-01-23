@@ -1,9 +1,9 @@
-﻿using Ambermoon.Data.GameDataRepository.Data;
-using Ambermoon.Data.GameDataRepository.Util;
+﻿using Ambermoon.Data.GameDataRepository.Collections;
+using Ambermoon.Data.GameDataRepository.Data;
 using Ambermoon.Editor.Extensions;
 
 namespace Ambermoon.Editor.Gui.Editors {
-  public partial class MonsterGroupForm : Form {
+  public partial class EditMonsterGroupForm : Form {
     #region --- local class: monster as text ------------------------------------------------------
     public class MonsterAsText {
       public uint   Index { get; set; } = 0;
@@ -31,7 +31,7 @@ namespace Ambermoon.Editor.Gui.Editors {
     #endregion
 
     #region --- constructor -----------------------------------------------------------------------
-    public MonsterGroupForm(
+    public EditMonsterGroupForm(
       DictionaryList<MonsterData> monsters,
       MonsterGroupData monsterGroup
     ) {

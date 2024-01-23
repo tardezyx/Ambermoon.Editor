@@ -1,6 +1,6 @@
 ﻿using Ambermoon.Editor.Extensions;
 
-namespace Ambermoon.Editor.Gui.Controls {
+namespace Ambermoon.Editor.Gui.Custom {
   internal class MsgBox {
     #region --- center to parent ------------------------------------------------------------------
     public static void CenterToParent(Form msgBox) {
