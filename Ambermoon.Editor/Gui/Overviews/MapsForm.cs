@@ -1,6 +1,7 @@
 ﻿using Ambermoon.Data.GameDataRepository;
 using Ambermoon.Data.GameDataRepository.Collections;
 using Ambermoon.Data.GameDataRepository.Data;
+using Ambermoon.Editor.Gui.Editors;
 using Ambermoon.Editor.Models;
 
 namespace Ambermoon.Editor.Gui.Overviews {
@@ -61,7 +62,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
 
       dgv.CellDoubleClick += (s, e) => {
         if(e.RowIndex > -1 && dgv.Columns[e.ColumnIndex] is not DataGridViewButtonColumn) {
-          //ChangeMonster((MonsterData)dgv.Rows[e.RowIndex].DataBoundItem, e.RowIndex);
+          ChangeMap((MapData)dgv.Rows[e.RowIndex].DataBoundItem, e.RowIndex);
         }
       };
     }
@@ -94,17 +95,17 @@ namespace Ambermoon.Editor.Gui.Overviews {
     //  }
     //}
     //#endregion
-    //#region --- change monster --------------------------------------------------------------------
-    //private void ChangeMonster(MonsterData monster, int rowIndex) {
-    //  MonsterForm form = new(monster);
+    #region --- change map --------------------------------------------------------------------
+    private void ChangeMap(MapData map, int rowIndex) {
+      EditMap2DForm form = new(map);
 
-    //  if (form.ShowDialog() == DialogResult.OK) {
-    //    _maps.HasBeenChanged();
-    //    dgv.InvalidateRow(rowIndex);
-    //    dgv.AutoResizeColumns();
-    //  }
-    //}
-    //#endregion
+      if (form.ShowDialog() == DialogResult.OK) {
+        _maps.HasBeenChanged();
+        dgv.InvalidateRow(rowIndex);
+        dgv.AutoResizeColumns();
+      }
+    }
+    #endregion
     //#region --- remove monster --------------------------------------------------------------------
     //private void RemoveMonster(MonsterData monster) {
     //  string n = Environment.NewLine;

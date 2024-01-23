@@ -1,11 +1,11 @@
-﻿using Ambermoon.Data;
+﻿using Ambermoon.Data.GameDataRepository.Data;
 
 namespace Ambermoon.Editor.Helper {
-  internal class AreaFiller(Map map) {
+  internal class AreaFiller(MapData map) {
     readonly List<KeyValuePair<int, int>> checkedPositions = [];
 
     public void Fill(int x, int y, uint newTileIndex, int layer, Dictionary<int, uint> changedTiles) {
-      var oldTile = map.InitialTiles[x, y];
+      var oldTile = map.Tiles2D[x, y];
       uint oldTileIndex = layer == 0 ? oldTile.BackTileIndex : oldTile.FrontTileIndex;
 
       if (oldTileIndex == newTileIndex)
@@ -18,7 +18,7 @@ namespace Ambermoon.Editor.Helper {
       ChangeTile(x, y, oldTile);
       CheckAdjacentTiles(x, y);
 
-      void ChangeTile(int x, int y, Map.Tile tile) {
+      void ChangeTile(int x, int y, MapTile2DData tile) {
         changedTiles.Add(x + y * map.Width, layer == 0 ? tile.BackTileIndex : tile.FrontTileIndex);
         if (layer == 0)
           tile.BackTileIndex = newTileIndex;
@@ -31,7 +31,7 @@ namespace Ambermoon.Editor.Helper {
           if (!PositionChecked(x, y)) {
             MarkPositionChecked(x, y);
 
-            var tile = map.InitialTiles[x, y];
+            var tile = map.Tiles2D[x, y];
 
             if (layer == 0) {
               if (tile.BackTileIndex == oldTileIndex) {

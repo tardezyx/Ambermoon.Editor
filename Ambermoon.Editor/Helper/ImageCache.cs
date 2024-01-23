@@ -8,7 +8,7 @@ namespace Ambermoon.Editor.Helper {
   internal class ImageCache {
     #region --- fields ----------------------------------------------------------------------------
     // key1: tileset index | key2: graphic index | key3: palette index
-    private                 Dictionary<uint, Dictionary<uint, Dictionary<uint, Bitmap>>> _images = [];
+    private        readonly Dictionary<uint, Dictionary<uint, Dictionary<uint, Bitmap>>> _images = [];
     private static readonly GraphicReader                                                _graphicReader = new();
     private        readonly Dictionary<uint, Graphic>                                    _palettes;
     private const           int                                                          _sizePerImage = 16 * 16 * 5 / 8;
@@ -50,9 +50,8 @@ namespace Ambermoon.Editor.Helper {
       AddTilesets(icons3);
 
       void AddTilesets(IFileContainer container) {
-        foreach (KeyValuePair<int, IDataReader> file in container.Files) {
-          if (file.Value.Size != 0)
-            _tilesets.Add((uint)file.Key, file.Value);
+        foreach (KeyValuePair<int, IDataReader> file in container.Files.Where(x => x.Value.Size > 0)) {
+          _tilesets.Add((uint)file.Key, file.Value);
         }
       }
     }
@@ -149,7 +148,7 @@ namespace Ambermoon.Editor.Helper {
     }
     #endregion
     #region --- get pixel data --------------------------------------------------------------------
-    byte[] GetPixelData(Graphic graphic, Graphic palette, bool alpha) {
+    private static byte[] GetPixelData(Graphic graphic, Graphic palette, bool alpha) {
       byte[] pixelData = new byte[graphic.Width * graphic.Height * 4];
 
       for (int y = 0; y < graphic.Height; ++y) {
@@ -209,7 +208,7 @@ namespace Ambermoon.Editor.Helper {
     }
     #endregion
     #region --- load image via graphic index ------------------------------------------------------
-    private Bitmap LoadImageViaGraphicIndex(IDataReader dataReader, uint graphicIndex, Graphic palette, bool alpha) {
+    private static Bitmap LoadImageViaGraphicIndex(IDataReader dataReader, uint graphicIndex, Graphic palette, bool alpha) {
       dataReader.Position = (int)graphicIndex * _sizePerImage;
 
       Graphic graphic = new();
@@ -268,7 +267,7 @@ namespace Ambermoon.Editor.Helper {
     }
     #endregion
     #region --- read palette ----------------------------------------------------------------------
-    static Graphic ReadPalette(IDataReader dataReader) {
+    private static Graphic ReadPalette(IDataReader dataReader) {
       Graphic result = new();
 
       _graphicReader.ReadGraphic(

@@ -67,26 +67,21 @@ namespace Ambermoon.Editor.Gui.Overviews {
 
     #region --- add monster -----------------------------------------------------------------------
     private void AddMonster() {
-      uint index = _monsters.GetFirstFreeIndex();
+      if (_monsters.InRepository.Create() is MonsterData newMonster) {
+        EditMonsterForm form = new(newMonster);
 
-      EditMonsterForm form = new(
-        new MonsterData() {
-          Index = index,
-          Name  = "(NEW...)"
-        }
-      );
+        if (form.ShowDialog() == DialogResult.OK) {
+          _monsters.Add(newMonster);
+          dgv.AutoResizeColumns();
 
-      if (form.ShowDialog() == DialogResult.OK) {
-        _monsters.Add(form.Monster);
-        dgv.AutoResizeColumns();
+          foreach (DataGridViewRow row in dgv.Rows) {
+            if (((MonsterData)row.DataBoundItem).Index == newMonster.Index) {
+              dgv.ClearSelection();
+              dgv.FirstDisplayedScrollingRowIndex = row.Index;
+              row.Selected = true;
 
-        foreach (DataGridViewRow row in dgv.Rows) {
-          if (((MonsterData)row.DataBoundItem).Index == index) {
-            dgv.ClearSelection();
-            dgv.FirstDisplayedScrollingRowIndex = row.Index;
-            row.Selected = true;
-
-            break;
+              break;
+            }
           }
         }
       }

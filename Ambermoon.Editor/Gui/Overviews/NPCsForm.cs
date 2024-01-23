@@ -66,26 +66,21 @@ namespace Ambermoon.Editor.Gui.Overviews {
 
     #region --- add npc ---------------------------------------------------------------------------
     private void AddNPC() {
-      uint index = _npcs.GetFirstFreeIndex();
+      if (_npcs.InRepository.Create() is NpcData newNPC) {
+        EditNPCForm form = new(newNPC);
 
-      EditNPCForm form = new(
-        new NpcData() {
-          Index = index,
-          Name  = "(NEW...)"
-        }
-      );
+        if (form.ShowDialog() == DialogResult.OK) {
+          _npcs.Add(newNPC);
+          dgv.AutoResizeColumns();
 
-      if (form.ShowDialog() == DialogResult.OK) {
-        _npcs.Add(form.NPC);
-        dgv.AutoResizeColumns();
+          foreach (DataGridViewRow row in dgv.Rows) {
+            if (((NpcData)row.DataBoundItem).Index == newNPC.Index) {
+              dgv.ClearSelection();
+              dgv.FirstDisplayedScrollingRowIndex = row.Index;
+              row.Selected = true;
 
-        foreach (DataGridViewRow row in dgv.Rows) {
-          if (((NpcData)row.DataBoundItem).Index == index) {
-            dgv.ClearSelection();
-            dgv.FirstDisplayedScrollingRowIndex = row.Index;
-            row.Selected = true;
-
-            break;
+              break;
+            }
           }
         }
       }

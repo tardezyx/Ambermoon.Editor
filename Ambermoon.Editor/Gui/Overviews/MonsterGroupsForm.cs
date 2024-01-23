@@ -113,27 +113,25 @@ namespace Ambermoon.Editor.Gui.Overviews {
 
     #region --- add monster group -----------------------------------------------------------------
     private void AddMonsterGroup() {
-      uint index = _monsterGroups.GetFirstFreeIndex();
+      if (_monsterGroups.InRepository.Create() is MonsterGroupData newMonsterGroup) { 
+        EditMonsterGroupForm form = new(
+          _monsters.InRepository,
+          newMonsterGroup
+        );
 
-      EditMonsterGroupForm form = new(
-        _monsters.InRepository,
-        new() {
-          Index = index
-        }
-      );
+        if (form.ShowDialog() == DialogResult.OK) {
+          _monsterGroups.Add(form.MonsterGroup);
+          _monsterGroupsAsText.Add(MapMonsterGroupToText(newMonsterGroup));
+          ResizeDGV();
 
-      if (form.ShowDialog() == DialogResult.OK) {
-        _monsterGroups.Add(form.MonsterGroup);
-        _monsterGroupsAsText.Add(MapMonsterGroupToText(form.MonsterGroup));
-        ResizeDGV();
+          foreach (DataGridViewRow row in dgv.Rows) {
+            if (((MonsterGroupAsText)row.DataBoundItem).Index == newMonsterGroup.Index) {
+              dgv.ClearSelection();
+              dgv.FirstDisplayedScrollingRowIndex = row.Index;
+              row.Selected = true;
 
-        foreach (DataGridViewRow row in dgv.Rows) {
-          if (((MonsterGroupAsText)row.DataBoundItem).Index == index) {
-            dgv.ClearSelection();
-            dgv.FirstDisplayedScrollingRowIndex = row.Index;
-            row.Selected = true;
-
-            break;
+              break;
+            }
           }
         }
       }

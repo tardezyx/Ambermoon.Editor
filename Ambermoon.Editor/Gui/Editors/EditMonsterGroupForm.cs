@@ -5,7 +5,7 @@ using Ambermoon.Editor.Extensions;
 namespace Ambermoon.Editor.Gui.Editors {
   public partial class EditMonsterGroupForm : Form {
     #region --- local class: monster as text ------------------------------------------------------
-    public class MonsterAsText {
+    private class MonsterAsText {
       public uint   Index { get; set; } = 0;
       public string Text  { get; set; } = string.Empty;
     }

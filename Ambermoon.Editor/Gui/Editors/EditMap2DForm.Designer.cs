@@ -2,7 +2,7 @@
 using Ambermoon.Editor.Gui.Custom;
 
 namespace Ambermoon.Editor.Gui.Editors {
-  partial class MapEditorForm {
+  partial class EditMap2DForm {
     /// <summary>
     ///  Required designer variable.
     /// </summary>
@@ -27,7 +27,7 @@ namespace Ambermoon.Editor.Gui.Editors {
     /// </summary>
     private void InitializeComponent() {
       components = new System.ComponentModel.Container();
-      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MapEditorForm));
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditMap2DForm));
       panelMap = new System.Windows.Forms.MapDrawPanel();
       menuStrip = new System.Windows.Forms.MenuStrip();
       toolStripMenuItemMap = new System.Windows.Forms.ToolStripMenuItem();

@@ -144,20 +144,20 @@ namespace Ambermoon.Editor.Gui {
     #region --- show form -------------------------------------------------------------------------
     private void ShowForm(EntityType type) {
       Form? form = type switch {
-          EntityType.Maps          => _mapsForm,
-          EntityType.Monsters      => _monstersForm,
-          EntityType.MonsterGroups => _monsterGroupsForm,
-          EntityType.NPCs          => _npcsForm,
-        _                         => throw new NotImplementedException(),
+        EntityType.Maps          => _mapsForm,
+        EntityType.Monsters      => _monstersForm,
+        EntityType.MonsterGroups => _monsterGroupsForm,
+        EntityType.NPCs          => _npcsForm,
+        _                        => throw new NotImplementedException(),
       };
 
       if (form is null || form.IsDisposed ) { 
         form = type switch {
-            EntityType.Maps          => new MapsForm(_repository!.Maps, _repository!.MapTexts),
-            EntityType.Monsters      => new MonstersForm(_repository!.Monsters),
-            EntityType.MonsterGroups => new MonsterGroupsForm(_repository!.Monsters, _repository!.MonsterGroups),
-            EntityType.NPCs          => new NPCsForm(_repository!.Npcs),
-          _                         => throw new NotImplementedException(),
+          EntityType.Maps          => new MapsForm(_repository!.Maps, _repository!.MapTexts),
+          EntityType.Monsters      => new MonstersForm(_repository!.Monsters),
+          EntityType.MonsterGroups => new MonsterGroupsForm(_repository!.Monsters, _repository!.MonsterGroups),
+          EntityType.NPCs          => new NPCsForm(_repository!.Npcs),
+          _                        => throw new NotImplementedException(),
         };
 
         form.Dock = DockStyle.Fill;

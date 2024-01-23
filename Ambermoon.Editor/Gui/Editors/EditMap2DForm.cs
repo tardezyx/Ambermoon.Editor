@@ -1,19 +1,19 @@
 ﻿using Ambermoon.Data;
 using Ambermoon.Data.Enumerations;
+using Ambermoon.Data.GameDataRepository.Data;
 using Ambermoon.Data.Legacy;
-using Ambermoon.Data.Legacy.ExecutableData;
-using Ambermoon.Data.Legacy.Serialization;
 using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Helper;
 using System.ComponentModel;
 using System.Drawing.Imaging;
+
 //using NAudio.Wave;
 using Color = System.Drawing.Color;
 using Cursor = System.Windows.Forms.Cursor;
 using Cursors = System.Windows.Forms.Cursors;
 
 namespace Ambermoon.Editor.Gui.Editors {
-  public partial class MapEditorForm : Form {
+  public partial class EditMap2DForm : Form {
     #region --- local enum: tool ------------------------------------------------------------------
     private enum Tool {
       Brush,
@@ -50,7 +50,8 @@ namespace Ambermoon.Editor.Gui.Editors {
     private                 ImageCache                        imageCache;
     private                 Song?                             lastSong = null;
     private static readonly string[]                          LayerName = [ "Back Layer", "Front Layer" ];
-    private                 Map                               map;
+    //private                 Map                               map;
+    private                 MapData                           map;
     private                 int                               MapHeight => map?.Height ?? (int)numericUpDownHeight.Value;
     private                 bool                              mapLoading = false;
     private                 MapManager                        mapManager;
@@ -80,7 +81,7 @@ namespace Ambermoon.Editor.Gui.Editors {
     #endregion
 
     #region --- constructor -----------------------------------------------------------------------
-    public MapEditorForm() {
+    public EditMap2DForm(MapData map) {
       InitializeComponent();
 
       title = Text;
@@ -146,7 +147,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       graphicProvider = new GraphicProvider2D(combatBackgrounds, gameData, imageCache, tilesets) {
         PaletteIndex = map.PaletteIndex
       };
-      mapCharEditorControl.Init(map, gameData, graphicProvider, SaveImage);
+      //mapCharEditorControl.Init(map, gameData, graphicProvider, SaveImage);
 
       //selectedMapCharacter = mapCharEditorControl.Count == 0 ? -1 : 0;
       UpdateMapCharacterButtons();
@@ -173,7 +174,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       checkBoxNoSleepUntilDawn.CheckedChanged      += (s, e) => UpdateMapFlags();
       checkBoxTravelGraphics.CheckedChanged        += (s, e) => UpdateMapFlags();
       checkBoxUnknown1.CheckedChanged              += (s, e) => UpdateMapFlags();
-      comboBoxWorld.SelectedIndexChanged           += (s, e) => { map.World = (World)comboBoxWorld.SelectedIndex; MarkAsDirty(); };
+      //comboBoxWorld.SelectedIndexChanged           += (s, e) => { map.World = (World)comboBoxWorld.SelectedIndex; MarkAsDirty(); };
       history.RedoGotEmpty                         += ()     => toolStripMenuItemEditRedo.Enabled = false;
       history.RedoGotFilled                        += ()     => toolStripMenuItemEditRedo.Enabled = true;
       history.UndoGotEmpty                         += ()     => toolStripMenuItemEditUndo.Enabled = false;
@@ -266,20 +267,20 @@ namespace Ambermoon.Editor.Gui.Editors {
     #region --- change event ----------------------------------------------------------------------
     private void ChangeEvent(int x, int y, bool remove) {
       if (remove) {
-        if (map.InitialTiles[x, y].MapEventId != 0) {
-          map.InitialTiles[x, y].MapEventId = 0;
+        if (map.Tiles2D[x, y].MapEventId != 0) {
+          map.Tiles2D[x, y].MapEventId = 0;
 
           if (showEvents)
             panelMap.Refresh();
         }
       } else {
-        //var eventIdSelector = new EventIdSelectionForm(map, map.InitialTiles[x, y].MapEventId);
+        //var eventIdSelector = new EventIdSelectionForm(map, map.Tiles2D[x, y].MapEventId);
 
         //if (eventIdSelector.ShowDialog() == DialogResult.OK) {
         //  uint newId = eventIdSelector.EventId;
 
-        //  if (map.InitialTiles[x, y].MapEventId != newId) {
-        //    map.InitialTiles[x, y].MapEventId = newId;
+        //  if (map.Tiles2D[x, y].MapEventId != newId) {
+        //    map.Tiles2D[x, y].MapEventId = newId;
 
         //    if (showEvents)
         //      panelMap.Refresh();
@@ -322,7 +323,7 @@ namespace Ambermoon.Editor.Gui.Editors {
     #endregion
     #region --- fill tiles ------------------------------------------------------------------------
     private void FillTiles(int x, int y, bool areaOnly) {
-      var oldTile = map.InitialTiles[x, y];
+      var oldTile = map.Tiles2D[x, y];
       uint oldTileIndex = currentLayer == 0 ? oldTile.BackTileIndex : oldTile.FrontTileIndex;
       uint newTileIndex = 1 + (uint)selectedTilesetTile;
 
@@ -341,7 +342,7 @@ namespace Ambermoon.Editor.Gui.Editors {
           areaFiller.Fill(x, y, newTileIndex, layer, changedTiles);
         } else {
           int tileIndex = 0;
-          foreach (var tile in map.InitialTiles) {
+          foreach (var tile in map.Tiles2D) {
             if (layer == 0) {
               if (tile.BackTileIndex == oldTileIndex) {
                 changedTiles.Add(tileIndex, tile.BackTileIndex);
@@ -363,9 +364,9 @@ namespace Ambermoon.Editor.Gui.Editors {
           int x = changedTile.Key % map.Width;
           int y = changedTile.Key / map.Width;
           if (layer == 0) {
-            map.InitialTiles[x, y].BackTileIndex = changedTile.Value;
+            map.Tiles2D[x, y].BackTileIndex = changedTile.Value;
           } else {
-            map.InitialTiles[x, y].FrontTileIndex = changedTile.Value;
+            map.Tiles2D[x, y].FrontTileIndex = changedTile.Value;
           }
         }
         panelMap.Refresh();
@@ -419,21 +420,21 @@ namespace Ambermoon.Editor.Gui.Editors {
       toolTipGrid.SetToolTip(buttonToggleGrid, "Toggles the tile grid overlay.");
       toolTipTileMarker.SetToolTip(buttonToggleTileMarker, "Toggles the tile selection marker.");
 
-      if (gameData.Files.TryGetValue("Text.amb", out var textAmbReader)) {
-        var textContainer = new TextContainer();
-        new TextContainerReader().ReadTextContainer(textContainer, textAmbReader.Files[1], false);
-        songNames = Ambermoon.Enum.GetValues<Song>().Skip(1).Take(32).ToDictionary(song => song, song => textContainer.MusicNames[(int)song - 1]);
-      } else if (gameData.Files.TryGetValue("AM2_CPU", out var asmReader)) {
-        var stream = asmReader.Files[1];
-        stream.Position = 0;
-        var executableData = new ExecutableData(AmigaExecutable.Read(stream));
-        songNames = executableData.SongNames.Entries;
-      } else {
-        songNames = Ambermoon.Enum.GetValues<Song>().Skip(1).Take(32).ToDictionary(song => song, song => song.ToString());
-      }
+      //if (gameData.Files.TryGetValue("Text.amb", out var textAmbReader)) {
+      //  var textContainer = new TextContainer();
+      //  new TextContainerReader().ReadTextContainer(textContainer, textAmbReader.Files[1], false);
+      //  songNames = Ambermoon.Enum.GetValues<Song>().Skip(1).Take(32).ToDictionary(song => song, song => textContainer.MusicNames[(int)song - 1]);
+      //} else if (gameData.Files.TryGetValue("AM2_CPU", out var asmReader)) {
+      //  var stream = asmReader.Files[1];
+      //  stream.Position = 0;
+      //  var executableData = new ExecutableData(AmigaExecutable.Read(stream));
+      //  songNames = executableData.SongNames.Entries;
+      //} else {
+      //  songNames = Ambermoon.Enum.GetValues<Song>().Skip(1).Take(32).ToDictionary(song => song, song => song.ToString());
+      //}
 
-      foreach (var song in songNames)
-        comboBoxMusic.Items.Add(song.Value);
+      //foreach (var song in songNames)
+      //  comboBoxMusic.Items.Add(song.Value);
 
       // TODO: what if we add one later?
       for (int i = 1; i <= 10; ++i)
@@ -469,11 +470,11 @@ namespace Ambermoon.Editor.Gui.Editors {
     }
     #endregion
     #region --- initialize map --------------------------------------------------------------------
-    private void InitializeMap(Map map) {
+    private void InitializeMap(MapData map) {
       timerAnimation.Stop();
       unsavedChangesBesideHistory = false;
       unsavedChanges = false;
-      title = $"Ambermoon Map Editor 2D: {map.Name}";
+      title = "Ambermoon Map Editor 2D:";// {map.Name}";
       Text = title;
       history.Clear();
       this.map = map;
@@ -496,13 +497,13 @@ namespace Ambermoon.Editor.Gui.Editors {
       checkBoxTravelGraphics.Checked = map.Flags.HasFlag(MapFlags.StationaryGraphics);
       checkBoxWorldSurface.Checked = map.Flags.HasFlag(MapFlags.WorldSurface);
       comboBoxWorld.SelectedIndex = (int)map.World % 3;
-      comboBoxMusic.SelectedIndex = map.MusicIndex == 0 ? (int)Song.PloddingAlong - 1 : (int)map.MusicIndex - 1;
-      comboBoxTilesets.SelectedIndex = map.TilesetOrLabdataIndex == 0 ? 0 : (int)map.TilesetOrLabdataIndex - 1;
+      //comboBoxMusic.SelectedIndex = map.MusicIndex == 0 ? (int)Song.PloddingAlong - 1 : (int)map.MusicIndex - 1;
+      comboBoxTilesets.SelectedIndex = map.TilesetIndex == 0 ? 0 : (int)map.TilesetIndex - 1;
       comboBoxPalettes.SelectedIndex = map.PaletteIndex == 0 ? 0 : (int)map.PaletteIndex - 1;
 
       listViewEvents.Items.Clear();
       int index = 1;
-      foreach (var @event in map.EventList) {
+      foreach (var @event in map.Events) {
         var item = listViewEvents.Items.Add(index++.ToString("x2"));
         item.SubItems.Add(@event.ToString());
       }
@@ -609,115 +610,134 @@ namespace Ambermoon.Editor.Gui.Editors {
     private void PaintMap(Graphics graphics, bool onPanel = false) {
       graphics.Clear(panelMap.BackColor);
 
-      if (map != null) {
-        var tileset = tilesets[map.TilesetOrLabdataIndex];
-        using var grid = new Pen(Color.Black, 1.0f);
-        using var textBrush = new SolidBrush(Color.White);
-        using var textBackground = new SolidBrush(Color.FromArgb(0x40, 0x80, 0x80, 0x80));
-        using var blockBrush = new SolidBrush(Color.FromArgb(0x80, 0x20, 0xff, 0x40));
-        using var font = new Font(FontFamily.GenericMonospace, 8.0f);
-        int tileSize = (trackBarZoom.Maximum - trackBarZoom.Value + 1) * 16;
-        int showAllowedTravelTypes = 0;
+      if (map is not null) {
+        uint? imageIndex = map.TilesetIndex is uint tilesetIndex
+          ? tilesetIndex
+          : map.LabdataIndex is uint labdataIndex
+          ? labdataIndex
+          : null;
 
-        if (toolStripMenuShowAllowWalk.Checked)
-          showAllowedTravelTypes |= (1 << (int)TravelType.Walk);
-        if (toolStripMenuShowAllowHorse.Checked)
-          showAllowedTravelTypes |= (1 << (int)TravelType.Horse);
-        if (toolStripMenuShowAllowDisc.Checked)
-          showAllowedTravelTypes |= (1 << (int)TravelType.MagicalDisc);
-        if (toolStripMenuShowAllowRaft.Checked)
-          showAllowedTravelTypes |= (1 << (int)TravelType.Raft);
-        if (toolStripMenuShowAllowShip.Checked)
-          showAllowedTravelTypes |= (1 << (int)TravelType.Ship);
+        if (imageIndex is uint) { 
+          var tileset = tilesets[(uint)imageIndex];
+          using var grid = new Pen(Color.Black, 1.0f);
+          using var textBrush = new SolidBrush(Color.White);
+          using var textBackground = new SolidBrush(Color.FromArgb(0x40, 0x80, 0x80, 0x80));
+          using var blockBrush = new SolidBrush(Color.FromArgb(0x80, 0x20, 0xff, 0x40));
+          using var font = new Font(FontFamily.GenericMonospace, 8.0f);
+          int tileSize = (trackBarZoom.Maximum - trackBarZoom.Value + 1) * 16;
+          int showAllowedTravelTypes = 0;
 
-        for (int y = 0; y < MapHeight; ++y) {
-          int drawY = onPanel
-            ? panelMap.AutoScrollPosition.Y + y * tileSize
-            : y * tileSize;
+          if (toolStripMenuShowAllowWalk.Checked)
+            showAllowedTravelTypes |= (1 << (int)TravelType.Walk);
+          if (toolStripMenuShowAllowHorse.Checked)
+            showAllowedTravelTypes |= (1 << (int)TravelType.Horse);
+          if (toolStripMenuShowAllowDisc.Checked)
+            showAllowedTravelTypes |= (1 << (int)TravelType.MagicalDisc);
+          if (toolStripMenuShowAllowRaft.Checked)
+            showAllowedTravelTypes |= (1 << (int)TravelType.Raft);
+          if (toolStripMenuShowAllowShip.Checked)
+            showAllowedTravelTypes |= (1 << (int)TravelType.Ship);
 
-          if (drawY + tileSize <= 0)
-            continue;
+          for (int y = 0; y < MapHeight; ++y) {
+            int drawY = onPanel
+              ? panelMap.AutoScrollPosition.Y + y * tileSize
+              : y * tileSize;
 
-          if (onPanel && drawY >= panelMap.Height)
-            break;
-
-          for (int x = 0; x < MapWidth; ++x) {
-            int drawX = onPanel
-              ? panelMap.AutoScrollPosition.X + x * tileSize
-              : x * tileSize;
-
-            if (drawX + tileSize <= 0)
+            if (drawY + tileSize <= 0)
               continue;
 
-            if (onPanel && drawX >= panelMap.Width)
+            if (onPanel && drawY >= panelMap.Height)
               break;
 
-            var tile = map.InitialTiles[x, y];
-            var backgroundTile = tile.BackTileIndex == 0 ? null : tile.BackTileIndex > tileset.Tiles.Length ? null : tileset.Tiles[tile.BackTileIndex - 1];
-            var foregroundTile = tile.FrontTileIndex == 0 ? null : tile.FrontTileIndex > tileset.Tiles.Length ? null : tileset.Tiles[tile.FrontTileIndex - 1];
-            var rect = new Rectangle(drawX, drawY, tileSize + (tileSize / 16 - 1), tileSize + (tileSize / 16 - 1));
+            for (int x = 0; x < MapWidth; ++x) {
+              int drawX = onPanel
+                ? panelMap.AutoScrollPosition.X + x * tileSize
+                : x * tileSize;
 
-            if (toolStripMenuItemShowBackLayer.Checked && backgroundTile != null) {
-              try {
-                uint frame = backgroundTile.NumAnimationFrames <= 1 ? 0 : (uint)(this.frame % (ulong)backgroundTile.NumAnimationFrames);
-                var backgroundImage = imageCache.GetImage(map.TilesetOrLabdataIndex, backgroundTile.GraphicIndex + frame - 1, map.PaletteIndex);
-                var interpolationMode = graphics.InterpolationMode;
-                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-                graphics.DrawImage(backgroundImage, rect);
-                graphics.InterpolationMode = interpolationMode;
-              } catch {
-                // ignore
+              if (drawX + tileSize <= 0)
+                continue;
+
+              if (onPanel && drawX >= panelMap.Width)
+                break;
+
+              var tile = map.Tiles2D[x, y];
+              var backgroundTile = tile.BackTileIndex == 0 ? null : tile.BackTileIndex > tileset.Tiles.Length ? null : tileset.Tiles[tile.BackTileIndex - 1];
+              var foregroundTile = tile.FrontTileIndex == 0 ? null : tile.FrontTileIndex > tileset.Tiles.Length ? null : tileset.Tiles[tile.FrontTileIndex - 1];
+              var rect = new Rectangle(drawX, drawY, tileSize + (tileSize / 16 - 1), tileSize + (tileSize / 16 - 1));
+
+              if (toolStripMenuItemShowBackLayer.Checked && backgroundTile != null) {
+                try {
+                  uint frame = backgroundTile.NumAnimationFrames <= 1 ? 0 : (uint)(this.frame % (ulong)backgroundTile.NumAnimationFrames);
+
+                  var backgroundImage = imageCache.GetImage(
+                    (uint)imageIndex,
+                    backgroundTile.GraphicIndex + frame - 1,
+                    map.PaletteIndex
+                  );
+
+                  var interpolationMode = graphics.InterpolationMode;
+                  graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                  graphics.DrawImage(backgroundImage, rect);
+                  graphics.InterpolationMode = interpolationMode;
+                } catch {
+                  // ignore
+                }
               }
-            }
 
-            if (toolStripMenuItemShowFrontLayer.Checked && foregroundTile != null) {
-              try {
-                uint frame = foregroundTile.NumAnimationFrames <= 1 ? 0 : (uint)(this.frame % (ulong)foregroundTile.NumAnimationFrames);
-                var foregroundImage = imageCache.GetImage(map.TilesetOrLabdataIndex, foregroundTile.GraphicIndex + frame - 1, map.PaletteIndex);
-                var interpolationMode = graphics.InterpolationMode;
-                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-                graphics.DrawImage(foregroundImage, rect);
-                graphics.InterpolationMode = interpolationMode;
-              } catch {
-                // ignore
+              if (toolStripMenuItemShowFrontLayer.Checked && foregroundTile != null) {
+                try {
+                  uint frame = foregroundTile.NumAnimationFrames <= 1 ? 0 : (uint)(this.frame % (ulong)foregroundTile.NumAnimationFrames);
+
+                  var foregroundImage = imageCache.GetImage(
+                    (uint)imageIndex,
+                    foregroundTile.GraphicIndex + frame - 1,
+                    map.PaletteIndex
+                  );
+                  var interpolationMode = graphics.InterpolationMode;
+                  graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                  graphics.DrawImage(foregroundImage, rect);
+                  graphics.InterpolationMode = interpolationMode;
+                } catch {
+                  // ignore
+                }
               }
-            }
 
-            if (showAllowedTravelTypes != 0) {
-              Tileset.Tile blockFlagsTile = foregroundTile == null || foregroundTile.UseBackgroundTileFlags ? backgroundTile : foregroundTile;
+              if (showAllowedTravelTypes != 0) {
+                Tileset.Tile blockFlagsTile = foregroundTile == null || foregroundTile.UseBackgroundTileFlags ? backgroundTile : foregroundTile;
 
-              if ((~blockFlagsTile.AllowedTravelTypes & showAllowedTravelTypes) != showAllowedTravelTypes)
-                graphics.FillRectangle(blockBrush, rect);
-            }
+                if ((~blockFlagsTile.AllowedTravelTypes & showAllowedTravelTypes) != showAllowedTravelTypes)
+                  graphics.FillRectangle(blockBrush, rect);
+              }
 
-            if (showGrid)
-              graphics.DrawRectangle(grid, new Rectangle(drawX, drawY, tileSize - 1, tileSize - 1));
+              if (showGrid)
+                graphics.DrawRectangle(grid, new Rectangle(drawX, drawY, tileSize - 1, tileSize - 1));
 
-            if (showEvents && tile.MapEventId != 0) {
-              int diff = (tileSize - 16) / 2;
-              graphics.FillRectangle(textBackground, new Rectangle(drawX + 1 + diff, drawY + 1 + diff, 13, 13));
-              graphics.DrawString(tile.MapEventId.ToString("x2"), font, textBrush, drawX, drawY);
+              if (showEvents && tile.MapEventId != 0) {
+                int diff = (tileSize - 16) / 2;
+                graphics.FillRectangle(textBackground, new Rectangle(drawX + 1 + diff, drawY + 1 + diff, 13, 13));
+                graphics.DrawString(tile.MapEventId.ToString("x2"), font, textBrush, drawX, drawY);
+              }
             }
           }
-        }
 
-        if (showTileMarker && hoveredMapTile != -1 && tileMarkerWidth > 0 && tileMarkerHeight > 0) {
-          int visibleColumns = panelMap.Width / tileSize;
-          int visibleRows = panelMap.Height / tileSize;
-          int hoveredX = hoveredMapTile % visibleColumns;
-          int hoveredY = hoveredMapTile / visibleColumns;
+          if (showTileMarker && hoveredMapTile != -1 && tileMarkerWidth > 0 && tileMarkerHeight > 0) {
+            int visibleColumns = panelMap.Width / tileSize;
+            int visibleRows = panelMap.Height / tileSize;
+            int hoveredX = hoveredMapTile % visibleColumns;
+            int hoveredY = hoveredMapTile / visibleColumns;
 
-          if (hoveredX + tileMarkerWidth <= visibleColumns + 1 &&
-              hoveredY + tileMarkerHeight <= visibleRows + 1) {
-            int startX = panelMap.AutoScrollPosition.X % tileSize + hoveredX * tileSize;
-            int startY = panelMap.AutoScrollPosition.Y % tileSize + hoveredY * tileSize;
-            using var marker = new SolidBrush(Color.FromArgb(0x40, 0x77, 0xff, 0x66));
-            using var border = new Pen(Color.FromArgb(0x80, 0xff, 0xff, 0x00), 1);
+            if (hoveredX + tileMarkerWidth <= visibleColumns + 1 &&
+                hoveredY + tileMarkerHeight <= visibleRows + 1) {
+              int startX = panelMap.AutoScrollPosition.X % tileSize + hoveredX * tileSize;
+              int startY = panelMap.AutoScrollPosition.Y % tileSize + hoveredY * tileSize;
+              using var marker = new SolidBrush(Color.FromArgb(0x40, 0x77, 0xff, 0x66));
+              using var border = new Pen(Color.FromArgb(0x80, 0xff, 0xff, 0x00), 1);
 
-            for (int y = 0; y < tileMarkerHeight; ++y) {
-              for (int x = 0; x < tileMarkerWidth; ++x) {
-                graphics.FillRectangle(marker, new Rectangle(startX + x * tileSize + 1, startY + y * tileSize + 1, tileSize - 2, tileSize - 2));
-                graphics.DrawRectangle(border, new Rectangle(startX + x * tileSize, startY + y * tileSize, tileSize - 1, tileSize - 1));
+              for (int y = 0; y < tileMarkerHeight; ++y) {
+                for (int x = 0; x < tileMarkerWidth; ++x) {
+                  graphics.FillRectangle(marker, new Rectangle(startX + x * tileSize + 1, startY + y * tileSize + 1, tileSize - 2, tileSize - 2));
+                  graphics.DrawRectangle(border, new Rectangle(startX + x * tileSize, startY + y * tileSize, tileSize - 1, tileSize - 1));
+                }
               }
             }
           }
@@ -728,7 +748,7 @@ namespace Ambermoon.Editor.Gui.Editors {
     #endregion
     #region --- perform action --------------------------------------------------------------------
     private void PerformAction(string displayName, string undoDisplayName, Action<bool> doAction, Action undoAction) {
-      history.DoAction(new History.DefaultAction(displayName, undoDisplayName, doAction, undoAction));
+      history.DoAction(new DefaultAction(displayName, undoDisplayName, doAction, undoAction));
 
       if (mapLoading)
         history.Save();
@@ -745,17 +765,17 @@ namespace Ambermoon.Editor.Gui.Editors {
 
       // x and y are 0-based here!
       if (selectedMapCharacter != -1) {
-        var character = map.CharacterReferences[selectedMapCharacter];
+        var character = map.MapCharacters[selectedMapCharacter];
 
         if (character != null) {
-          if (character.Positions.Count < 1)
-            character.Positions.Add(new Ambermoon.Position(x + 1, y + 1));
-          else {
-            character.Positions[0].X = x + 1;
-            character.Positions[0].Y = y + 1;
-          }
+          //if (character.Positions.Count < 1)
+          //  character.Positions.Add(new Ambermoon.Position(x + 1, y + 1));
+          //else {
+          //  character.Positions[0].X = x + 1;
+          //  character.Positions[0].Y = y + 1;
+          //}
 
-          UpdateMapCharacterPosition(character.Positions[0]);
+          //UpdateMapCharacterPosition(character.Positions[0]);
         }
       }
 
@@ -764,7 +784,7 @@ namespace Ambermoon.Editor.Gui.Editors {
     #endregion
     #region --- pick tile -------------------------------------------------------------------------
     private void PickTile(int x, int y, int layer) {
-      var tile = map.InitialTiles[x, y];
+      var tile = map.Tiles2D[x, y];
       uint tileIndex = layer == 0 ? tile.BackTileIndex : tile.FrontTileIndex;
 
       if (tileIndex == 0)
@@ -778,13 +798,13 @@ namespace Ambermoon.Editor.Gui.Editors {
     #endregion
     #region --- remove front tile -----------------------------------------------------------------
     private void RemoveFrontTile(int x, int y) {
-      if (map.InitialTiles[x, y].FrontTileIndex == 0)
+      if (map.Tiles2D[x, y].FrontTileIndex == 0)
         return;
 
-      uint oldTileIndex = map.InitialTiles[x, y].FrontTileIndex;
+      uint oldTileIndex = map.Tiles2D[x, y].FrontTileIndex;
 
       void SetTile(uint tileIndex) {
-        map.InitialTiles[x, y].FrontTileIndex = tileIndex;
+        map.Tiles2D[x, y].FrontTileIndex = tileIndex;
         panelMap.Refresh();
       }
 
@@ -963,7 +983,7 @@ namespace Ambermoon.Editor.Gui.Editors {
           if (totalX >= map.Width)
             continue;
 
-          var mapTile = map.InitialTiles[totalX, totalY];
+          var mapTile = map.Tiles2D[totalX, totalY];
           uint tileIndex = layer == 0 ? mapTile.BackTileIndex : mapTile.FrontTileIndex;
           currentTiles.Add(tileIndex);
 
@@ -1004,7 +1024,7 @@ namespace Ambermoon.Editor.Gui.Editors {
                 if (totalX >= map.Width)
                   continue;
 
-                var mapTile = map.InitialTiles[totalX, totalY];
+                var mapTile = map.Tiles2D[totalX, totalY];
 
                 if (layer == 0)
                   mapTile.BackTileIndex = (uint)tile;
@@ -1032,7 +1052,7 @@ namespace Ambermoon.Editor.Gui.Editors {
                 if (totalX >= map.Width)
                   continue;
 
-                var mapTile = map.InitialTiles[totalX, totalY];
+                var mapTile = map.Tiles2D[totalX, totalY];
 
                 if (layer == 0)
                   mapTile.BackTileIndex = currentTiles[listIndex++];
@@ -1124,36 +1144,46 @@ namespace Ambermoon.Editor.Gui.Editors {
       if (mapLoading)
         return;
 
-      map.Flags &= MapFlags.Unknown2; // keep this unknown flag if present
+      //map.Flags &= MapFlags.Unknown2; // keep this unknown flag if present
 
-      if (radioButtonIndoor.Checked)
-        map.Flags |= MapFlags.Indoor;
-      else if (radioButtonOutdoor.Checked)
-        map.Flags |= MapFlags.Outdoor;
-      else if (radioButtonDungeon.Checked)
-        map.Flags |= MapFlags.Dungeon;
+      //if (radioButtonIndoor.Checked)
+      //  map.Flags |= MapFlags.Indoor;
+      //else if (radioButtonOutdoor.Checked)
+      //  map.Flags |= MapFlags.Outdoor;
+      //else if (radioButtonDungeon.Checked)
+      //  map.Flags |= MapFlags.Dungeon;
 
-      if (checkBoxMagic.Checked)
-        map.Flags |= MapFlags.CanUseMagic;
-      if (checkBoxResting.Checked)
-        map.Flags |= MapFlags.CanRest;
-      if (checkBoxUnknown1.Checked)
-        map.Flags |= MapFlags.Unknown1;
-      if (checkBoxTravelGraphics.Checked)
-        map.Flags |= MapFlags.StationaryGraphics;
-      if (checkBoxNoSleepUntilDawn.Checked)
-        map.Flags |= MapFlags.NoSleepUntilDawn;
-      if (checkBoxWorldSurface.Checked)
-        map.Flags |= MapFlags.WorldSurface;
+      //if (checkBoxMagic.Checked)
+      //  map.Flags |= MapFlags.CanUseMagic;
+      //if (checkBoxResting.Checked)
+      //  map.Flags |= MapFlags.CanRest;
+      //if (checkBoxUnknown1.Checked)
+      //  map.Flags |= MapFlags.Unknown1;
+      //if (checkBoxTravelGraphics.Checked)
+      //  map.Flags |= MapFlags.StationaryGraphics;
+      //if (checkBoxNoSleepUntilDawn.Checked)
+      //  map.Flags |= MapFlags.NoSleepUntilDawn;
+      //if (checkBoxWorldSurface.Checked)
+      //  map.Flags |= MapFlags.WorldSurface;
 
       MarkAsDirty();
     }
     #endregion
     #region --- update tileset --------------------------------------------------------------------
     private void UpdateTileset() {
-      currentTilesetTiles = currentLayer == 0 ? Math.Min(256, tilesets[map.TilesetOrLabdataIndex].Tiles.Length)
-          : tilesets[map.TilesetOrLabdataIndex].Tiles.Length;
-      TilesetChanged();
+      uint? imageIndex = map.TilesetIndex is uint tilesetIndex
+        ? tilesetIndex
+        : map.LabdataIndex is uint labdataIndex
+        ? labdataIndex
+        : null;
+
+      if (imageIndex is uint) {
+        currentTilesetTiles = currentLayer == 0
+          ? Math.Min(256, tilesets[(uint)imageIndex].Tiles.Length)
+          : tilesets[(uint)imageIndex].Tiles.Length;
+
+        TilesetChanged();
+      }
     }
     #endregion
     #region --- use tool --------------------------------------------------------------------------
@@ -1254,7 +1284,7 @@ namespace Ambermoon.Editor.Gui.Editors {
     #region --- menu: save as png -----------------------------------------------------------------
     private void toolStripMenuItemMapSaveAsPNG_Click(object sender, EventArgs e) {
       SaveFileDialog dialog = new() {
-        FileName = $"{map.Index:D3} - {map.Name}",
+        FileName = $"{map.Index:D3}",// - {map.Name}",
         Filter = "(*.png)|*.png",
         Title = "Select file location"
       };
@@ -1298,13 +1328,21 @@ namespace Ambermoon.Editor.Gui.Editors {
     #endregion
     #region --- button edit tile: click -----------------------------------------------------------
     private void buttonEditTile_Click(object sender, EventArgs e) {
-      var tileset = tilesets[map.TilesetOrLabdataIndex];
-      //var form = new EditTileForm(configuration, tileset.Tiles[selectedTilesetTile], tileset, imageCache, map.PaletteIndex, combatBackgrounds);
-      var form = new EditTileForm(tileset.Tiles[selectedTilesetTile], tileset, imageCache, map.PaletteIndex, combatBackgrounds);
+      uint? imageIndex = map.TilesetIndex is uint tilesetIndex
+          ? tilesetIndex
+          : map.LabdataIndex is uint labdataIndex
+          ? labdataIndex
+          : null;
 
-      if (form.ShowDialog() == DialogResult.OK) {
-        tileset.Tiles[selectedTilesetTile].Fill(form.Tile);
-        panelTileset.Refresh();
+      if (imageIndex is uint) { 
+        var tileset = tilesets[(uint)imageIndex];
+        //var form = new EditTileForm(configuration, tileset.Tiles[selectedTilesetTile], tileset, imageCache, map.PaletteIndex, combatBackgrounds);
+        var form = new EditTileForm(tileset.Tiles[selectedTilesetTile], tileset, imageCache, map.PaletteIndex, combatBackgrounds);
+
+        if (form.ShowDialog() == DialogResult.OK) {
+          tileset.Tiles[selectedTilesetTile].Fill(form.Tile);
+          panelTileset.Refresh();
+        }
       }
     }
     #endregion
@@ -1343,7 +1381,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       if (selectedMapCharacter == -1)
         return;
 
-      var character = map.CharacterReferences[selectedMapCharacter];
+      var character = map.MapCharacters[selectedMapCharacter];
 
       if (character == null)
         return;
@@ -1488,66 +1526,78 @@ namespace Ambermoon.Editor.Gui.Editors {
     #endregion
     #region --- combobox tilesets: selected index changed -----------------------------------------
     private void comboBoxTilesets_SelectedIndexChanged(object sender, EventArgs e) {
-      uint oldTilesetIndex = map.TilesetOrLabdataIndex;
-      uint newTilesetIndex = (uint)(1 + comboBoxTilesets.SelectedIndex);
+      uint? imageIndex = map.TilesetIndex is uint tilesetIndex
+        ? tilesetIndex
+        : map.LabdataIndex is uint labdataIndex
+        ? labdataIndex
+        : null;
 
-      void UpdateTileset(uint index, bool updateIndex) {
-        map.TilesetOrLabdataIndex = index;
-        currentTilesetTiles = tilesets[map.TilesetOrLabdataIndex].Tiles.Length;
-        panelMap.Refresh();
-        TilesetChanged();
+      if (imageIndex is uint) { 
+        uint oldTilesetIndex = (uint)imageIndex;
+        uint newTilesetIndex = (uint)(1 + comboBoxTilesets.SelectedIndex);
 
-        if (updateIndex) {
-          comboBoxTilesets.SelectedIndexChanged -= comboBoxTilesets_SelectedIndexChanged;
-          comboBoxTilesets.SelectedIndex = (int)index - 1;
-          comboBoxTilesets.SelectedIndexChanged += comboBoxTilesets_SelectedIndexChanged;
+        void UpdateTileset(uint index, bool updateIndex) {
+          imageIndex = index;
+          currentTilesetTiles = tilesets[index].Tiles.Length;
+          panelMap.Refresh();
+          TilesetChanged();
+
+          if (updateIndex) {
+            comboBoxTilesets.SelectedIndexChanged -= comboBoxTilesets_SelectedIndexChanged;
+            comboBoxTilesets.SelectedIndex = (int)index - 1;
+            comboBoxTilesets.SelectedIndexChanged += comboBoxTilesets_SelectedIndexChanged;
+          }
         }
-      }
 
-      PerformAction($"Change tileset to {newTilesetIndex}", $"Change tileset to {oldTilesetIndex}",
-          redo => UpdateTileset(newTilesetIndex, redo), () => UpdateTileset(oldTilesetIndex, true));
+        PerformAction(
+          $"Change tileset to {newTilesetIndex}",
+          $"Change tileset to {oldTilesetIndex}",
+          redo => UpdateTileset(newTilesetIndex, redo),
+          () => UpdateTileset(oldTilesetIndex, true)
+        );
+      }
     }
     #endregion
     #region --- nud heigth: value changed ---------------------------------------------------------
     private void numericUpDownHeight_ValueChanged(object sender, EventArgs e) {
       int oldHeight = map.Height;
-      map.Height = (int)numericUpDownHeight.Value;
+      //map.Height = (int)numericUpDownHeight.Value;
       var backup = new Map.Tile[map.Width, map.Height];
       var initialBackup = new Map.Tile[map.Width, map.Height];
-      for (int y = 0; y < map.Height; ++y) {
-        for (int x = 0; x < map.Width; ++x) {
-          initialBackup[x, y] = y >= oldHeight
-              ? new Map.Tile { BackTileIndex = 1 }
-              : map.InitialTiles[x, y];
-          backup[x, y] = y >= oldHeight
-              ? new Map.Tile { BackTileIndex = 1 }
-              : map.InitialTiles[x, y];
-        }
-      }
-      map.InitialTiles = initialBackup;
-      map.InitialTiles = backup;
+      //for (int y = 0; y < map.Height; ++y) {
+      //  for (int x = 0; x < map.Width; ++x) {
+      //    initialBackup[x, y] = y >= oldHeight
+      //        ? new Map.Tile { BackTileIndex = 1 }
+      //        : map.Tiles2D[x, y];
+      //    backup[x, y] = y >= oldHeight
+      //        ? new Map.Tile { BackTileIndex = 1 }
+      //        : map.Tiles2D[x, y];
+      //  }
+      //}
+      //map.Tiles2D = initialBackup;
+      //map.Tiles2D = backup;
       MapSizeChanged();
     }
     #endregion
     #region --- nud width: value changed ----------------------------------------------------------
     private void numericUpDownWidth_ValueChanged(object sender, EventArgs e) {
-      int oldWidth = map.Width;
-      map.Width = (int)numericUpDownWidth.Value;
-      var backup = new Map.Tile[map.Width, map.Height];
-      var initialBackup = new Map.Tile[map.Width, map.Height];
-      for (int y = 0; y < map.Height; ++y) {
-        for (int x = 0; x < map.Width; ++x) {
-          initialBackup[x, y] = x >= oldWidth
-              ? new Map.Tile { BackTileIndex = 1 }
-              : map.InitialTiles[x, y];
-          backup[x, y] = x >= oldWidth
-              ? new Map.Tile { BackTileIndex = 1 }
-              : map.InitialTiles[x, y];
-        }
-      }
-      map.InitialTiles = initialBackup;
-      map.InitialTiles = backup;
-      MapSizeChanged();
+      //int oldWidth = map.Width;
+      //map.Width = (int)numericUpDownWidth.Value;
+      //var backup = new MapData.Tile[map.Width, map.Height];
+      //var initialBackup = new MapData.Tile[map.Width, map.Height];
+      //for (int y = 0; y < map.Height; ++y) {
+      //  for (int x = 0; x < map.Width; ++x) {
+      //    initialBackup[x, y] = x >= oldWidth
+      //        ? new MapData.Tile { BackTileIndex = 1 }
+      //        : map.Tiles2D[x, y];
+      //    backup[x, y] = x >= oldWidth
+      //        ? new MapData.Tile { BackTileIndex = 1 }
+      //        : map.Tiles2D[x, y];
+      //  }
+      //}
+      //map.Tiles2D = initialBackup;
+      //map.Tiles2D = backup;
+      //MapSizeChanged();
     }
     #endregion
     #region --- panel map: mouse down -------------------------------------------------------------
@@ -1624,33 +1674,41 @@ namespace Ambermoon.Editor.Gui.Editors {
       int ty = (e.Y - panelTileset.AutoScrollPosition.Y) / 16;
       int selectedIndex = tx + ty * TilesetTilesPerRow;
 
-      if (choosingTileSlotForDuplicating) {
-        choosingTileSlotForDuplicating = false;
+      uint? imageIndex = map.TilesetIndex is uint tilesetIndex
+        ? tilesetIndex
+        : map.LabdataIndex is uint labdataIndex
+        ? labdataIndex
+        : null;
 
-        if (e.Button != MouseButtons.Left || selectedIndex >= tilesets[map.TilesetOrLabdataIndex].Tiles.Length)
-          return;
+      if (imageIndex is uint) { 
+        if (choosingTileSlotForDuplicating) {
+          choosingTileSlotForDuplicating = false;
 
-        var tile = tilesets[map.TilesetOrLabdataIndex].Tiles[selectedTilesetTile];
-        selectedTilesetTile = selectedIndex;
-        tilesets[map.TilesetOrLabdataIndex].Tiles[selectedTilesetTile].Fill(tile);
-        panelTileset.Refresh();
+          if (e.Button != MouseButtons.Left || selectedIndex >= tilesets[(uint)imageIndex].Tiles.Length)
+            return;
 
-        try {
-          toolStripStatusLabelCurrentTile.Image = imageCache.GetImage(map.TilesetOrLabdataIndex, tile.GraphicIndex - 1, map.PaletteIndex);
-        } catch {
-          toolStripStatusLabelCurrentTile.Image = null;
+          var tile = tilesets[(uint)imageIndex].Tiles[selectedTilesetTile];
+          selectedTilesetTile = selectedIndex;
+          tilesets[(uint)imageIndex].Tiles[selectedTilesetTile].Fill(tile);
+          panelTileset.Refresh();
+
+          try {
+            toolStripStatusLabelCurrentTile.Image = imageCache.GetImage((uint)imageIndex, tile.GraphicIndex - 1, map.PaletteIndex);
+          } catch {
+            toolStripStatusLabelCurrentTile.Image = null;
+          }
         }
-      }
 
-      if (selectedIndex < tilesets[map.TilesetOrLabdataIndex].Tiles.Length) {
-        selectedTilesetTile = selectedIndex;
-        panelTileset.Refresh();
+        if (selectedIndex < tilesets[(uint)imageIndex].Tiles.Length) {
+          selectedTilesetTile = selectedIndex;
+          panelTileset.Refresh();
 
-        try {
-          var tile = tilesets[map.TilesetOrLabdataIndex].Tiles[selectedIndex];
-          toolStripStatusLabelCurrentTile.Image = imageCache.GetImage(map.TilesetOrLabdataIndex, tile.GraphicIndex - 1, map.PaletteIndex);
-        } catch {
-          toolStripStatusLabelCurrentTile.Image = null;
+          try {
+            var tile = tilesets[(uint)imageIndex].Tiles[selectedIndex];
+            toolStripStatusLabelCurrentTile.Image = imageCache.GetImage((uint)imageIndex, tile.GraphicIndex - 1, map.PaletteIndex);
+          } catch {
+            toolStripStatusLabelCurrentTile.Image = null;
+          }
         }
       }
     }
@@ -1707,7 +1765,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       e.Graphics.Clear(panelTileset.BackColor);
 
       if (map != null) {
-        var tileset = tilesets[map.TilesetOrLabdataIndex];
+        var tileset = tilesets[(uint)map.TilesetIndex];
         int x = 0;
         int y = 0;
         using var border = new Pen(Color.Black, 1.0f);
@@ -1717,7 +1775,7 @@ namespace Ambermoon.Editor.Gui.Editors {
         using var errorFontBrush = new SolidBrush(Color.Red);
         using var unusedBrush = new SolidBrush(Color.FromArgb(0x80, 0xff, 0x40, 0x20));
         var tiles = currentLayer == 0 ? tileset.Tiles.Take(256) : tileset.Tiles;
-        var mapTiles = !checkBoxMarkUnusedTiles.Checked ? null : map.InitialTiles.Cast<Map.Tile>()
+        var mapTiles = !checkBoxMarkUnusedTiles.Checked ? null : map.Tiles2D.Cast<Map.Tile>()
             .SelectMany(tile => new[] { tile.BackTileIndex, tile.FrontTileIndex })
             .Distinct()
             .Where(tile => tile != 0)
@@ -1737,7 +1795,7 @@ namespace Ambermoon.Editor.Gui.Editors {
 
             try {
               uint frame = tile.NumAnimationFrames <= 1 ? 0 : (uint)(this.frame % (ulong)tile.NumAnimationFrames);
-              var image = imageCache.GetImage(map.TilesetOrLabdataIndex, tile.GraphicIndex + frame - 1, map.PaletteIndex);
+              var image = imageCache.GetImage((uint)map.TilesetIndex, tile.GraphicIndex + frame - 1, map.PaletteIndex);
               e.Graphics.DrawImageUnscaledAndClipped(image, rect);
               e.Graphics.DrawRectangle(border, rect);
             } catch {
@@ -1796,35 +1854,35 @@ namespace Ambermoon.Editor.Gui.Editors {
     #endregion
     #region --- update map character buttons ------------------------------------------------------
     private void UpdateMapCharacterButtons() {
-      if (selectedMapCharacter == -1 || map.CharacterReferences[selectedMapCharacter] == null) {
+      if (selectedMapCharacter == -1 || map.MapCharacters[selectedMapCharacter] == null) {
         buttonPositions.Enabled = false;
         buttonPlaceCharacterOnMap.Enabled = false;
         labelCharacterPosition.Visible = false;
       } else {
-        var character = map.CharacterReferences[selectedMapCharacter];
-        buttonPositions.Enabled = !character.CharacterFlags.HasFlag(Map.CharacterReference.Flags.RandomMovement) &&
-            (character.Type == CharacterType.Monster || !character.CharacterFlags.HasFlag(Map.CharacterReference.Flags.Stationary));
+        var character = map.MapCharacters[selectedMapCharacter];
+        //buttonPositions.Enabled = !character.CharacterFlags.HasFlag(Map.CharacterReference.Flags.RandomMovement) &&
+        //    (character.Type == CharacterType.Monster || !character.CharacterFlags.HasFlag(Map.CharacterReference.Flags.Stationary));
         buttonPlaceCharacterOnMap.Enabled = !buttonPositions.Enabled;
         labelCharacterPosition.Visible = buttonPlaceCharacterOnMap.Enabled;
 
-        if (buttonPositions.Enabled) {
-          if (character.Positions.Count < 288) {
-            int add = 288 - character.Positions.Count;
-            int x = character.Positions.Count == 0 ? 1 : character.Positions[0].X;
-            int y = character.Positions.Count == 0 ? 1 : character.Positions[0].Y;
+        //if (buttonPositions.Enabled) {
+        //  if (character.Positions.Count < 288) {
+        //    int add = 288 - character.Positions.Count;
+        //    int x = character.Positions.Count == 0 ? 1 : character.Positions[0].X;
+        //    int y = character.Positions.Count == 0 ? 1 : character.Positions[0].Y;
 
-            for (int i = 0; i < add; ++i)
-              character.Positions.Add(new Ambermoon.Position(x, y));
-          }
-        } else {
-          if (character.Positions.Count == 0)
-            character.Positions.Add(new Ambermoon.Position(0, 0));
-          else if (character.Positions.Count > 1)
-            character.Positions.RemoveRange(1, character.Positions.Count - 1);
+        //    for (int i = 0; i < add; ++i)
+        //      character.Positions.Add(new Ambermoon.Position(x, y));
+        //  }
+        //} else {
+        //  if (character.Positions.Count == 0)
+        //    character.Positions.Add(new Ambermoon.Position(0, 0));
+        //  else if (character.Positions.Count > 1)
+        //    character.Positions.RemoveRange(1, character.Positions.Count - 1);
 
-          var position = character.Positions[0];
-          UpdateMapCharacterPosition(position);
-        }
+        //  var position = character.Positions[0];
+        //  UpdateMapCharacterPosition(position);
+        //}
       }
     }
     #endregion

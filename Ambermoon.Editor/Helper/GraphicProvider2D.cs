@@ -4,7 +4,7 @@ using Ambermoon.Data.Legacy.Serialization;
 namespace Ambermoon.Editor.Helper {
   internal class GraphicProvider2D : IGraphicProvider {
     readonly Dictionary<uint, Bitmap> combatBackgrounds;
-    readonly Dictionary<uint, Dictionary<uint, Graphic>> npcGraphics = new Dictionary<uint, Dictionary<uint, Graphic>>();
+    readonly Dictionary<uint, Dictionary<uint, Graphic>> npcGraphics = [];
     readonly ImageCache imageCache;
     readonly Dictionary<uint, Tileset> tilesets;
 

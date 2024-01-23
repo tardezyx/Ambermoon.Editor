@@ -2,15 +2,15 @@
 
 namespace Ambermoon.Editor.Gui.Editors {
   public partial class EditMonsterForm : Form {
-    #region --- properties ------------------------------------------------------------------------
-    public MonsterData Monster { get; private set; }
+    #region --- fields ----------------------------------------------------------------------------
+    private MonsterData _monster;
     #endregion
 
     #region --- constructor -----------------------------------------------------------------------
     public EditMonsterForm(MonsterData monster) {
       InitializeComponent();
 
-      Monster = monster;
+      _monster = monster;
     }
     #endregion
     #region --- on load ---------------------------------------------------------------------------
@@ -19,8 +19,8 @@ namespace Ambermoon.Editor.Gui.Editors {
 
       CenterToParent();
 
-      tbxIndex.Text = Monster.Index.ToString();
-      tbxName.Text  = Monster.Name;
+      tbxIndex.Text = _monster.Index.ToString();
+      tbxName.Text  = _monster.Name;
 
       WireEvents();
     }
@@ -34,7 +34,7 @@ namespace Ambermoon.Editor.Gui.Editors {
 
     #region --- map monster -----------------------------------------------------------------------
     private void MapMonster() {
-      Monster.Name = tbxName.Text;
+      _monster.Name = tbxName.Text;
       // ...
     }
     #endregion
