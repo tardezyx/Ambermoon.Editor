@@ -1,9 +1,10 @@
 ﻿using Ambermoon.Data.GameDataRepository.Data;
 using Ambermoon.Editor.Extensions;
+using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Models;
 
 namespace Ambermoon.Editor.Gui.Editors {
-  public partial class EditMonsterGroupForm : Form {
+  public partial class EditMonsterGroupForm : CustomForm {
     #region --- local class: monster as text ------------------------------------------------------
     private class MonsterAsText {
       public uint   Index { get; set; } = 0;
@@ -40,6 +41,8 @@ namespace Ambermoon.Editor.Gui.Editors {
     #endregion
     #region --- init dgv --------------------------------------------------------------------------
     private void InitDGV() {
+      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
+
       dgv.AutoGenerateColumns = false;
 
       dgv.Columns.AddRange(new DataGridViewColumn[] {
@@ -66,6 +69,8 @@ namespace Ambermoon.Editor.Gui.Editors {
       }
 
       dgv.DataSource = _monsterGroupRows;
+      
+      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
     #region --- on load ---------------------------------------------------------------------------
@@ -83,13 +88,6 @@ namespace Ambermoon.Editor.Gui.Editors {
     private void WireEvents() {
       btnCancel.Click += (s, e) => Close();
       btnOK.Click     += (s, e) => { MapMonsterRowsToGroup(); DialogResult = DialogResult.OK; Close(); };
-
-      dgv.CellClick += (s, e) => { 
-        if(e.RowIndex > -1 && dgv.Columns[e.ColumnIndex] is DataGridViewComboBoxColumn) {
-          dgv.BeginEdit(true);
-          ((ComboBox)dgv.EditingControl).DroppedDown = true;
-        }
-      };
     }
     #endregion
 

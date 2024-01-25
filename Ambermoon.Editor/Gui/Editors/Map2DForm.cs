@@ -1,7 +1,8 @@
 ﻿using Ambermoon.Data.GameDataRepository.Data;
+using Ambermoon.Editor.Gui.Custom;
 
 namespace Ambermoon.Editor.Gui.Editors {
-  public partial class Map2DForm : Form {
+  public partial class Map2DForm : CustomForm {
     #region --- properties ------------------------------------------------------------------------
     public MapData Map { get; private set; }
     #endregion

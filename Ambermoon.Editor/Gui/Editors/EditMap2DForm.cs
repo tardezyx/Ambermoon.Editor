@@ -3,6 +3,7 @@ using Ambermoon.Data.Enumerations;
 using Ambermoon.Data.GameDataRepository.Data;
 using Ambermoon.Data.Legacy;
 using Ambermoon.Editor.Extensions;
+using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Helper;
 using System.ComponentModel;
 using System.Drawing.Imaging;
@@ -13,7 +14,7 @@ using Cursor = System.Windows.Forms.Cursor;
 using Cursors = System.Windows.Forms.Cursors;
 
 namespace Ambermoon.Editor.Gui.Editors {
-  public partial class EditMap2DForm : Form {
+  public partial class EditMap2DForm : CustomForm {
     #region --- local enum: tool ------------------------------------------------------------------
     private enum Tool {
       Brush,

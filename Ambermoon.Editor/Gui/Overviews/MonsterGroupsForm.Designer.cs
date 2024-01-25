@@ -1,4 +1,6 @@
-﻿namespace Ambermoon.Editor.Gui.Overviews {
+﻿using Ambermoon.Editor.Gui.Custom;
+
+namespace Ambermoon.Editor.Gui.Overviews {
   partial class MonsterGroupsForm {
     /// <summary>
     /// Required designer variable.
@@ -23,9 +25,10 @@
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent() {
-      dgv = new DataGridView();
+      dgv = new CustomDataGridView();
       btnAdd = new Button();
       grbxMonsters = new GroupBox();
+      chbxDescending = new CheckBox();
       lblOrderBy = new Label();
       cbxOrderBy = new ComboBox();
       ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
@@ -60,6 +63,7 @@
       // 
       // grbxMonsters
       // 
+      grbxMonsters.Controls.Add(chbxDescending);
       grbxMonsters.Controls.Add(lblOrderBy);
       grbxMonsters.Controls.Add(cbxOrderBy);
       grbxMonsters.Controls.Add(dgv);
@@ -70,13 +74,26 @@
       grbxMonsters.Size = new System.Drawing.Size(599, 318);
       grbxMonsters.TabIndex = 2;
       grbxMonsters.TabStop = false;
-      grbxMonsters.Text = "Monsters";
+      grbxMonsters.Text = "Monster Groups";
+      // 
+      // chbxDescending
+      // 
+      chbxDescending.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+      chbxDescending.AutoSize = true;
+      chbxDescending.Checked = true;
+      chbxDescending.CheckState = CheckState.Checked;
+      chbxDescending.Location = new Point(505, 22);
+      chbxDescending.Name = "chbxDescending";
+      chbxDescending.Size = new System.Drawing.Size(88, 19);
+      chbxDescending.TabIndex = 4;
+      chbxDescending.Text = "Descending";
+      chbxDescending.UseVisualStyleBackColor = true;
       // 
       // lblOrderBy
       // 
       lblOrderBy.Anchor = AnchorStyles.Top | AnchorStyles.Right;
       lblOrderBy.AutoSize = true;
-      lblOrderBy.Location = new Point(460, 25);
+      lblOrderBy.Location = new Point(366, 23);
       lblOrderBy.Name = "lblOrderBy";
       lblOrderBy.Size = new System.Drawing.Size(53, 15);
       lblOrderBy.TabIndex = 3;
@@ -87,7 +104,7 @@
       cbxOrderBy.Anchor = AnchorStyles.Top | AnchorStyles.Right;
       cbxOrderBy.DropDownStyle = ComboBoxStyle.DropDownList;
       cbxOrderBy.FormattingEnabled = true;
-      cbxOrderBy.Location = new Point(519, 22);
+      cbxOrderBy.Location = new Point(425, 20);
       cbxOrderBy.Name = "cbxOrderBy";
       cbxOrderBy.Size = new System.Drawing.Size(74, 23);
       cbxOrderBy.TabIndex = 2;
@@ -100,7 +117,7 @@
       Controls.Add(grbxMonsters);
       FormBorderStyle = FormBorderStyle.None;
       Name = "MonsterGroupsForm";
-      Text = "MonsterForm";
+      Text = "MonsterGroupsForm";
       ((System.ComponentModel.ISupportInitialize)dgv).EndInit();
       grbxMonsters.ResumeLayout(false);
       grbxMonsters.PerformLayout();
@@ -109,10 +126,11 @@
 
     #endregion
 
-    private DataGridView dgv;
+    private CustomDataGridView dgv;
     private Button btnAdd;
     private GroupBox grbxMonsters;
     private ComboBox cbxOrderBy;
     private Label lblOrderBy;
+    private CheckBox chbxDescending;
   }
 }

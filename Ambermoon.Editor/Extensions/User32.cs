@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Ambermoon.Editor.Extensions {
+#pragma warning disable CA1069 // Enumerationswerte dürfen nicht dupliziert werden
+#pragma warning disable CA1401 // P/Invokes dürfen nicht sichtbar sein
+#pragma warning disable SYSLIB1054 // Verwenden Sie \"LibraryImportAttribute\" anstelle von \"DllImportAttribute\", um P/Invoke-Marshallingcode zur Kompilierzeit zu generieren.
   public static class User32 {
     #region === ENUMS =============================================================================
     #region --- AC:     blend function ------------------------------------------------------------
@@ -409,11 +412,11 @@ namespace Ambermoon.Editor.Extensions {
       public LUID adapterId;
       public uint id;
       public uint modeInfoIdx;
-      private DisplayconfigOutputTechnology outputTechnology;
-      private DisplayconfigRotation rotation;
-      private DisplayconfigScaling scaling;
+      private readonly DisplayconfigOutputTechnology outputTechnology;
+      private readonly DisplayconfigRotation rotation;
+      private readonly DisplayconfigScaling scaling;
       private DisplayconfigRational refreshRate;
-      private DisplayconfigScanlineOrdering scanLineOrdering;
+      private readonly DisplayconfigScanlineOrdering scanLineOrdering;
       public bool targetAvailable;
       public uint statusFlags;
     }
@@ -484,9 +487,9 @@ namespace Ambermoon.Editor.Extensions {
     #endregion
     #region --- pointl ----------------------------------------------------------------------------
     [StructLayout(LayoutKind.Sequential)]
-    public struct PointL {
-      private int x;
-      private int y;
+    public readonly struct PointL {
+      private readonly int x;
+      private readonly int y;
     }
     #endregion
     #region --- rect ------------------------------------------------------------------------------
@@ -566,7 +569,7 @@ namespace Ambermoon.Editor.Extensions {
     public static extern bool EnumWindows(EnumWindowsCallback numFunc, IntPtr lParam);
     #endregion
     #region --- dll import: find window -----------------------------------------------------------
-    [DllImport("user32.dll")]
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
     public static extern IntPtr FindWindow(string className, string windowName);
     #endregion
     #region --- dll import: find window ex --------------------------------------------------------
@@ -593,7 +596,7 @@ namespace Ambermoon.Editor.Extensions {
     [DllImport("user32.dll")]
     public static extern int GetForegroundWindow();
     #endregion
-        #region --- dll import: get scroll info ---------------------------------------------------
+    #region --- dll import: get scroll info -------------------------------------------------------
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool GetScrollInfo(IntPtr hwnd, int fnBar, ref SCROLLINFO lpsi);
@@ -651,7 +654,7 @@ namespace Ambermoon.Editor.Extensions {
     public static extern bool IsWindowVisible(IntPtr hWnd);
     #endregion
     #region --- dll import: load cursor from file -------------------------------------------------
-    [DllImport("user32.dll")]
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
     public static extern IntPtr LoadCursorFromFile(string filename);
     #endregion
     #region --- dll import: move window -----------------------------------------------------------
@@ -671,7 +674,7 @@ namespace Ambermoon.Editor.Extensions {
     public static extern bool RegisterShellHookWindow(IntPtr hWnd);
     #endregion
     #region --- dll import: register window message -----------------------------------------------
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
+    [DllImport("User32.dll", CharSet = CharSet.Unicode)]
     public static extern uint RegisterWindowMessage(string Message);
     #endregion
     #region --- dll import: release dc ------------------------------------------------------------
@@ -712,7 +715,7 @@ namespace Ambermoon.Editor.Extensions {
     );
     #endregion
     #region --- dll import: set window text -------------------------------------------------------
-    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
     public static extern bool SetWindowText(IntPtr hWnd, string text);
     #endregion
     #region --- dll import: set windows hook ex ---------------------------------------------------
@@ -743,8 +746,7 @@ namespace Ambermoon.Editor.Extensions {
     #region --- enum window -----------------------------------------------------------------------
     private static bool EnumWindow(IntPtr handle, IntPtr pointer) {
       GCHandle gch = GCHandle.FromIntPtr(pointer);
-      List<IntPtr>? list = gch.Target as List<IntPtr>;
-      if (list == null) {
+      if (gch.Target is not List<IntPtr> list) {
         throw new InvalidCastException("GCHandle Target could not be cast as List<IntPtr>");
       }
       list.Add(handle);
@@ -754,9 +756,12 @@ namespace Ambermoon.Editor.Extensions {
     #endregion
     #region --- get all monitors friendly names ---------------------------------------------------
     public static IEnumerable<string> GetAllMonitorsFriendlyNames() {
-      uint pathCount, modeCount;
-      
-      int error = GetDisplayConfigBufferSizes(QueryDeviceConfigFlags.OnlyActivePaths, out pathCount, out modeCount);
+      int error = GetDisplayConfigBufferSizes(
+        QueryDeviceConfigFlags.OnlyActivePaths,
+        out uint pathCount,
+        out uint modeCount
+      );
+
       if (error != 0) {
         throw new Win32Exception(error);
       }
@@ -764,7 +769,15 @@ namespace Ambermoon.Editor.Extensions {
       DisplayconfigPathInfo[] displayPaths = new DisplayconfigPathInfo[pathCount];
       DisplayconfigModeInfo[] displayModes = new DisplayconfigModeInfo[modeCount];
 
-      error = QueryDisplayConfig(QueryDeviceConfigFlags.OnlyActivePaths, ref pathCount, displayPaths, ref modeCount, displayModes, IntPtr.Zero);
+      error = QueryDisplayConfig(
+        QueryDeviceConfigFlags.OnlyActivePaths,
+        ref pathCount,
+        displayPaths,
+        ref modeCount,
+        displayModes,
+        IntPtr.Zero
+      );
+
       if (error != 0) {
         throw new Win32Exception(error);
       }
@@ -778,10 +791,10 @@ namespace Ambermoon.Editor.Extensions {
     #endregion
     #region --- get child windows -----------------------------------------------------------------
     public static List<IntPtr> GetChildWindows(IntPtr parent) {
-      List<IntPtr> result = new List<IntPtr>();
+      List<IntPtr> result = [];
       GCHandle listHandle = GCHandle.Alloc(result);
       try {
-        EnumWindowsCallback childProc = new EnumWindowsCallback(EnumWindow);
+        EnumWindowsCallback childProc = new(EnumWindow);
         EnumChildWindows(parent, childProc, GCHandle.ToIntPtr(listHandle));
       } finally {
         if (listHandle.IsAllocated)
@@ -792,7 +805,7 @@ namespace Ambermoon.Editor.Extensions {
     #endregion
     #region --- get monitor friendly name ---------------------------------------------------------
     private static string GetMonitorFriendlyName(LUID adapterId, uint targetId) {
-      DisplayconfigTargetDeviceName deviceName = new DisplayconfigTargetDeviceName {
+      DisplayconfigTargetDeviceName deviceName = new() {
         header = {
           size      = (uint)Marshal.SizeOf(typeof(DisplayconfigTargetDeviceName)),
           adapterId = adapterId,
@@ -811,7 +824,7 @@ namespace Ambermoon.Editor.Extensions {
     #endregion
     #region --- get placement ---------------------------------------------------------------------
     public static WindowPlacement GetPlacement(IntPtr hwnd) {
-      WindowPlacement placement = new WindowPlacement();
+      WindowPlacement placement = new();
       placement.length = Marshal.SizeOf(placement);
       GetWindowPlacement(hwnd, ref placement);
       return placement;
@@ -820,10 +833,9 @@ namespace Ambermoon.Editor.Extensions {
     #region --- get root windows of process -------------------------------------------------------
     public static List<IntPtr> GetRootWindowsOfProcess(int pid) {
       List<IntPtr> rootWindows = GetChildWindows(IntPtr.Zero);
-      List<IntPtr> dsProcRootWindows = new List<IntPtr>();
+      List<IntPtr> dsProcRootWindows = [];
       foreach (IntPtr hWnd in rootWindows) {
-        uint lpdwProcessId;
-        GetWindowThreadProcessId(hWnd, out lpdwProcessId);
+        _ = GetWindowThreadProcessId(hWnd, out uint lpdwProcessId);
         if (lpdwProcessId == pid)
           dsProcRootWindows.Add(hWnd);
       }
@@ -836,8 +848,8 @@ namespace Ambermoon.Editor.Extensions {
 
       int length = GetWindowTextLength(handle);
       if (length > 0) {
-        StringBuilder outText = new StringBuilder(length + 1);
-        GetWindowText(handle, outText, outText.Capacity);
+        StringBuilder outText = new(length + 1);
+        _ = GetWindowText(handle, outText, outText.Capacity);
         result = outText.ToString();
       }
 
@@ -846,4 +858,7 @@ namespace Ambermoon.Editor.Extensions {
     #endregion
     #endregion
   }
+  #pragma warning restore CA1069 // Enumerationswerte dürfen nicht dupliziert werden
+  #pragma warning restore CA1401 // P/Invokes dürfen nicht sichtbar sein
+  #pragma warning restore SYSLIB1054 // Verwenden Sie \"LibraryImportAttribute\" anstelle von \"DllImportAttribute\", um P/Invoke-Marshallingcode zur Kompilierzeit zu generieren.
 }

@@ -1,4 +1,6 @@
-﻿namespace Ambermoon.Editor.Gui.Overviews {
+﻿using Ambermoon.Editor.Gui.Custom;
+
+namespace Ambermoon.Editor.Gui.Overviews {
   partial class MonstersForm {
     /// <summary>
     /// Required designer variable.
@@ -23,9 +25,9 @@
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent() {
-      dgv = new DataGridView();
-      btnAdd = new Button();
+      dgv = new CustomDataGridView();
       grbxMonsters = new GroupBox();
+      btnAdd = new Button();
       ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
       grbxMonsters.SuspendLayout();
       SuspendLayout();
@@ -47,19 +49,10 @@
       dgv.Size = new System.Drawing.Size(587, 261);
       dgv.TabIndex = 0;
       // 
-      // btnAdd
-      // 
-      btnAdd.Location = new Point(6, 22);
-      btnAdd.Name = "btnAdd";
-      btnAdd.Size = new System.Drawing.Size(75, 23);
-      btnAdd.TabIndex = 1;
-      btnAdd.Text = "Add";
-      btnAdd.UseVisualStyleBackColor = true;
-      // 
       // grbxMonsters
       // 
-      grbxMonsters.Controls.Add(dgv);
       grbxMonsters.Controls.Add(btnAdd);
+      grbxMonsters.Controls.Add(dgv);
       grbxMonsters.Dock = DockStyle.Fill;
       grbxMonsters.Location = new Point(0, 0);
       grbxMonsters.Name = "grbxMonsters";
@@ -67,6 +60,15 @@
       grbxMonsters.TabIndex = 2;
       grbxMonsters.TabStop = false;
       grbxMonsters.Text = "Monsters";
+      // 
+      // btnAdd
+      // 
+      btnAdd.Location = new Point(6, 22);
+      btnAdd.Name = "btnAdd";
+      btnAdd.Size = new System.Drawing.Size(75, 23);
+      btnAdd.TabIndex = 2;
+      btnAdd.Text = "Add";
+      btnAdd.UseVisualStyleBackColor = true;
       // 
       // MonstersForm
       // 
@@ -76,7 +78,7 @@
       Controls.Add(grbxMonsters);
       FormBorderStyle = FormBorderStyle.None;
       Name = "MonstersForm";
-      Text = "MonsterForm";
+      Text = "MonstersForm";
       ((System.ComponentModel.ISupportInitialize)dgv).EndInit();
       grbxMonsters.ResumeLayout(false);
       ResumeLayout(false);
@@ -84,8 +86,8 @@
 
     #endregion
 
-    private DataGridView dgv;
-    private Button btnAdd;
+    private CustomDataGridView dgv;
     private GroupBox grbxMonsters;
+    private Button btnAdd;
   }
 }

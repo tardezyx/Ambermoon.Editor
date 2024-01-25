@@ -1,4 +1,6 @@
-﻿namespace Ambermoon.Editor.Gui.Overviews {
+﻿using Ambermoon.Editor.Gui.Custom;
+
+namespace Ambermoon.Editor.Gui.Overviews {
   partial class MapsForm {
     /// <summary>
     /// Required designer variable.
@@ -23,7 +25,7 @@
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent() {
-      dgv = new DataGridView();
+      dgv = new CustomDataGridView();
       btnAdd = new Button();
       grbxMonsters = new GroupBox();
       ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
@@ -84,7 +86,7 @@
 
     #endregion
 
-    private DataGridView dgv;
+    private CustomDataGridView dgv;
     private Button btnAdd;
     private GroupBox grbxMonsters;
   }

@@ -9,15 +9,41 @@ namespace Ambermoon.Editor.Base {
     public static string DefaultPath        { get; set; } = string.Empty;
     #endregion
     
+    #region --- get app namespace -----------------------------------------------------------------
+    public static string GetAppNamespace() {
+      string? result = Assembly
+          .GetCallingAssembly()
+          .EntryPoint?
+          .DeclaringType?
+          .Namespace;
+
+      result ??= Assembly
+        .GetExecutingAssembly()
+        .GetName()
+        .Name;
+
+      result ??= string.Empty;
+
+      return result;
+    }
+    #endregion
+    #region --- get app path ----------------------------------------------------------------------
+    public static string GetAppPath() {
+      string? result = Assembly
+        .GetEntryAssembly()?
+        .Location
+        .GetSubstringBeforeLastOccurrence('\\');
+
+      result ??= string.Empty;
+
+      return result;
+    }
+    #endregion
     #region --- read ini --------------------------------------------------------------------------
     public static void ReadIni() {
       List<string> result = [];
 
-      string iniPath = Assembly
-        .GetEntryAssembly()?
-        .Location
-        .GetSubstringBeforeLastOccurrence('\\')
-        + @"\editor.ini";
+      string iniPath = @$"{GetAppPath()}\editor.ini";
 
       if (!File.Exists(iniPath)) {
         SetDefaults();
@@ -50,11 +76,7 @@ namespace Ambermoon.Editor.Base {
     #endregion
     #region --- write ini -------------------------------------------------------------------------
     public static void WriteIni() {
-      string iniPath = Assembly
-        .GetEntryAssembly()?
-        .Location
-        .GetSubstringBeforeLastOccurrence('\\')
-        + @"\editor.ini";
+      string iniPath = @$"{GetAppPath()}\editor.ini";
 
       string nl = Environment.NewLine;
 

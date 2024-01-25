@@ -74,6 +74,15 @@ namespace Ambermoon.Editor.Extensions {
       throw new ArgumentException("A value with the given description was not found.", nameof(source));
     }
     #endregion
+    #region --- get enum by name ------------------------------------------------------------------
+    internal static T GetEnumByName<T>(this string source) where T : System.Enum {
+      try { 
+        return (T)System.Enum.Parse(typeof(T), source);
+      } catch (Exception ex) {
+        throw new ArgumentException(ex.Message, nameof(source));
+      }
+    }
+    #endregion
     #region --- get filled lines ------------------------------------------------------------------
     internal static List<string> GetFilledLines(this string? source) {
       if (source.IsNullOrEmpty()) {

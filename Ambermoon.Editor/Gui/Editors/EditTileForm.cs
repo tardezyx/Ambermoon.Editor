@@ -1,10 +1,11 @@
 ﻿using Ambermoon.Data;
 using Ambermoon.Editor.Extensions;
+using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Helper;
 using static Ambermoon.Data.Tileset;
 
 namespace Ambermoon.Editor.Gui.Editors {
-  partial class EditTileForm : Form {
+  partial class EditTileForm : CustomForm {
     #region --- fields ----------------------------------------------------------------------------
     private          bool                     _animateForward = true;
     private readonly Dictionary<uint, Bitmap> _combatGraphics;

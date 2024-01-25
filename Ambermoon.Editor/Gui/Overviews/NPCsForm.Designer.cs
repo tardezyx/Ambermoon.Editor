@@ -1,4 +1,6 @@
-﻿namespace Ambermoon.Editor.Gui.Overviews {
+﻿using Ambermoon.Editor.Gui.Custom;
+
+namespace Ambermoon.Editor.Gui.Overviews {
   partial class NPCsForm {
     /// <summary>
     /// Required designer variable.
@@ -23,7 +25,7 @@
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent() {
-      dgv = new DataGridView();
+      dgv = new CustomDataGridView();
       btnAdd = new Button();
       grbxMonsters = new GroupBox();
       ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
@@ -66,17 +68,17 @@
       grbxMonsters.Size = new System.Drawing.Size(599, 318);
       grbxMonsters.TabIndex = 2;
       grbxMonsters.TabStop = false;
-      grbxMonsters.Text = "Monsters";
+      grbxMonsters.Text = "NPCs";
       // 
-      // MonstersForm
+      // NPCsForm
       // 
       AutoScaleDimensions = new SizeF(7F, 15F);
       AutoScaleMode = AutoScaleMode.Font;
       ClientSize = new System.Drawing.Size(599, 318);
       Controls.Add(grbxMonsters);
       FormBorderStyle = FormBorderStyle.None;
-      Name = "MonstersForm";
-      Text = "MonsterForm";
+      Name = "NPCsForm";
+      Text = "NPCsForm";
       ((System.ComponentModel.ISupportInitialize)dgv).EndInit();
       grbxMonsters.ResumeLayout(false);
       ResumeLayout(false);
@@ -84,7 +86,7 @@
 
     #endregion
 
-    private DataGridView dgv;
+    private CustomDataGridView dgv;
     private Button btnAdd;
     private GroupBox grbxMonsters;
   }

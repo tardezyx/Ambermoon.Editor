@@ -1,7 +1,8 @@
 ﻿using Ambermoon.Data.GameDataRepository.Data;
+using Ambermoon.Editor.Gui.Custom;
 
 namespace Ambermoon.Editor.Gui.Editors {
-  public partial class EditNPCForm : Form {
+  public partial class EditNPCForm : CustomForm {
     #region --- properties ------------------------------------------------------------------------
     public NpcData NPC { get; private set; }
     #endregion

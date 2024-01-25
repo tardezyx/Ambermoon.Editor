@@ -1,4 +1,6 @@
-﻿namespace Ambermoon.Editor.Gui.Editors {
+﻿using Ambermoon.Editor.Gui.Custom;
+
+namespace Ambermoon.Editor.Gui.Editors {
   partial class EditMonsterForm {
     /// <summary>
     /// Required designer variable.
@@ -26,7 +28,6 @@
       DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
       DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
       DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-      DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
       tbxName = new TextBox();
       btnOK = new Button();
       btnCancel = new Button();
@@ -35,9 +36,9 @@
       lblName = new Label();
       statusStrip = new StatusStrip();
       grbxAttributes = new GroupBox();
-      dgvAttributes = new DataGridView();
+      dgvAttributes = new CustomDataGridView();
       grbxSkills = new GroupBox();
-      dgvSkills = new DataGridView();
+      dgvSkills = new CustomDataGridView();
       grbxGeneral = new GroupBox();
       label11 = new Label();
       label10 = new Label();
@@ -70,13 +71,13 @@
       chbxBattleFlagsNone = new CheckBox();
       label15 = new Label();
       grbxHitPoints = new GroupBox();
-      tbxHitPointsBonus = new TextBox();
+      nudHitPointsBonus = new NumericUpDown();
+      nudHitPointsCurrent = new NumericUpDown();
       nudHitPointsMax = new NumericUpDown();
-      tbxHitPointsCurrent = new TextBox();
-      label18 = new Label();
       label16 = new Label();
+      label18 = new Label();
       grbxAttack = new GroupBox();
-      tbxAttackBonus = new TextBox();
+      nudAttackBonus = new NumericUpDown();
       nudAttacksPerRound = new NumericUpDown();
       nudAttackMagicLevel = new NumericUpDown();
       label24 = new Label();
@@ -85,14 +86,14 @@
       label25 = new Label();
       label26 = new Label();
       grbxSpellPoints = new GroupBox();
-      tbxSpellPointsBonus = new TextBox();
+      nudSpellPointsCurrent = new NumericUpDown();
+      nudSpellPointsBonus = new NumericUpDown();
       nudSpellPointsMax = new NumericUpDown();
-      tbxSpellPointsCurrent = new TextBox();
       label17 = new Label();
       label19 = new Label();
       label20 = new Label();
       grbxDefense = new GroupBox();
-      tbxDefenseBonus = new TextBox();
+      nudDefenseBonus = new NumericUpDown();
       nudDefenseMagicLevel = new NumericUpDown();
       label31 = new Label();
       nudDefenseBase = new NumericUpDown();
@@ -138,18 +139,18 @@
       chbxConditionsNone = new CheckBox();
       chbxConditionsIrritated = new CheckBox();
       grbxEquipment = new GroupBox();
-      dgvEquipment = new DataGridView();
+      dgvEquipment = new CustomDataGridView();
       grbxItems = new GroupBox();
-      dgvItems = new DataGridView();
+      dgvItems = new CustomDataGridView();
       grbxBonusSpellDamage = new GroupBox();
+      nudBonusSpellDamageReduction = new NumericUpDown();
+      nudBonusSpellDamagePercentage = new NumericUpDown();
+      nudBonusSpellDamageBase = new NumericUpDown();
       nudBonusSpellDamageMax = new NumericUpDown();
       label12 = new Label();
-      tbxBonusSpellDamageReduction = new TextBox();
       label13 = new Label();
-      tbxBonusSpellDamagePercentage = new TextBox();
-      label14 = new Label();
-      tbxBonusSpellDamageBase = new TextBox();
       label37 = new Label();
+      label14 = new Label();
       grbxAttributes.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)dgvAttributes).BeginInit();
       grbxSkills.SuspendLayout();
@@ -162,14 +163,20 @@
       ((System.ComponentModel.ISupportInitialize)nudMorale).BeginInit();
       grbxBattleFlags.SuspendLayout();
       grbxHitPoints.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)nudHitPointsBonus).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)nudHitPointsCurrent).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudHitPointsMax).BeginInit();
       grbxAttack.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)nudAttackBonus).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudAttacksPerRound).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudAttackMagicLevel).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudAttackBase).BeginInit();
       grbxSpellPoints.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)nudSpellPointsCurrent).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)nudSpellPointsBonus).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudSpellPointsMax).BeginInit();
       grbxDefense.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)nudDefenseBonus).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudDefenseMagicLevel).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudDefenseBase).BeginInit();
       grbxSpellMastery.SuspendLayout();
@@ -180,11 +187,15 @@
       grbxItems.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)dgvItems).BeginInit();
       grbxBonusSpellDamage.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamageReduction).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamagePercentage).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamageBase).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamageMax).BeginInit();
       SuspendLayout();
       // 
       // tbxName
       // 
+      tbxName.CharacterCasing = CharacterCasing.Upper;
       tbxName.Font = new Font("Segoe UI", 9F);
       tbxName.Location = new Point(60, 17);
       tbxName.Name = "tbxName";
@@ -242,6 +253,7 @@
       // 
       // statusStrip
       // 
+      statusStrip.BackColor = Color.Transparent;
       statusStrip.Location = new Point(0, 690);
       statusStrip.Name = "statusStrip";
       statusStrip.Size = new System.Drawing.Size(1414, 22);
@@ -371,6 +383,7 @@
       // 
       // cbxElement
       // 
+      cbxElement.DropDownStyle = ComboBoxStyle.DropDownList;
       cbxElement.Font = new Font("Segoe UI", 9F);
       cbxElement.FormattingEnabled = true;
       cbxElement.Location = new Point(393, 17);
@@ -420,6 +433,7 @@
       // 
       // cbxGender
       // 
+      cbxGender.DropDownStyle = ComboBoxStyle.DropDownList;
       cbxGender.Font = new Font("Segoe UI", 9F);
       cbxGender.FormattingEnabled = true;
       cbxGender.Location = new Point(236, 46);
@@ -495,6 +509,7 @@
       // 
       // cbxClass
       // 
+      cbxClass.DropDownStyle = ComboBoxStyle.DropDownList;
       cbxClass.Font = new Font("Segoe UI", 9F);
       cbxClass.FormattingEnabled = true;
       cbxClass.Location = new Point(60, 75);
@@ -504,6 +519,7 @@
       // 
       // cbxRace
       // 
+      cbxRace.DropDownStyle = ComboBoxStyle.DropDownList;
       cbxRace.Font = new Font("Segoe UI", 9F);
       cbxRace.FormattingEnabled = true;
       cbxRace.Location = new Point(60, 46);
@@ -513,6 +529,8 @@
       // 
       // cbxType
       // 
+      cbxType.DropDownStyle = ComboBoxStyle.DropDownList;
+      cbxType.Enabled = false;
       cbxType.Font = new Font("Segoe UI", 9F);
       cbxType.FormattingEnabled = true;
       cbxType.Location = new Point(236, 17);
@@ -534,7 +552,6 @@
       // 
       nudMorale.Font = new Font("Segoe UI", 9F);
       nudMorale.Location = new Point(393, 46);
-      nudMorale.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
       nudMorale.Name = "nudMorale";
       nudMorale.Size = new System.Drawing.Size(57, 23);
       nudMorale.TabIndex = 3;
@@ -649,7 +666,7 @@
       // 
       label15.AutoSize = true;
       label15.Font = new Font("Segoe UI", 9F);
-      label15.Location = new Point(6, 24);
+      label15.Location = new Point(6, 23);
       label15.Name = "label15";
       label15.Size = new System.Drawing.Size(47, 15);
       label15.TabIndex = 34;
@@ -657,12 +674,12 @@
       // 
       // grbxHitPoints
       // 
-      grbxHitPoints.Controls.Add(tbxHitPointsBonus);
+      grbxHitPoints.Controls.Add(nudHitPointsBonus);
+      grbxHitPoints.Controls.Add(nudHitPointsCurrent);
       grbxHitPoints.Controls.Add(nudHitPointsMax);
-      grbxHitPoints.Controls.Add(tbxHitPointsCurrent);
+      grbxHitPoints.Controls.Add(label16);
       grbxHitPoints.Controls.Add(label15);
       grbxHitPoints.Controls.Add(label18);
-      grbxHitPoints.Controls.Add(label16);
       grbxHitPoints.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
       grbxHitPoints.Location = new Point(12, 156);
       grbxHitPoints.Name = "grbxHitPoints";
@@ -671,56 +688,58 @@
       grbxHitPoints.TabStop = false;
       grbxHitPoints.Text = "Hit Points";
       // 
-      // tbxHitPointsBonus
+      // nudHitPointsBonus
       // 
-      tbxHitPointsBonus.Font = new Font("Segoe UI", 9F);
-      tbxHitPointsBonus.Location = new Point(59, 50);
-      tbxHitPointsBonus.Name = "tbxHitPointsBonus";
-      tbxHitPointsBonus.ReadOnly = true;
-      tbxHitPointsBonus.Size = new System.Drawing.Size(54, 23);
-      tbxHitPointsBonus.TabIndex = 39;
+      nudHitPointsBonus.Font = new Font("Segoe UI", 9F);
+      nudHitPointsBonus.Location = new Point(59, 79);
+      nudHitPointsBonus.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+      nudHitPointsBonus.Name = "nudHitPointsBonus";
+      nudHitPointsBonus.ReadOnly = true;
+      nudHitPointsBonus.Size = new System.Drawing.Size(54, 23);
+      nudHitPointsBonus.TabIndex = 42;
+      // 
+      // nudHitPointsCurrent
+      // 
+      nudHitPointsCurrent.Font = new Font("Segoe UI", 9F);
+      nudHitPointsCurrent.Location = new Point(59, 21);
+      nudHitPointsCurrent.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+      nudHitPointsCurrent.Name = "nudHitPointsCurrent";
+      nudHitPointsCurrent.ReadOnly = true;
+      nudHitPointsCurrent.Size = new System.Drawing.Size(54, 23);
+      nudHitPointsCurrent.TabIndex = 41;
       // 
       // nudHitPointsMax
       // 
       nudHitPointsMax.Font = new Font("Segoe UI", 9F);
-      nudHitPointsMax.Location = new Point(59, 79);
+      nudHitPointsMax.Location = new Point(59, 50);
       nudHitPointsMax.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
       nudHitPointsMax.Name = "nudHitPointsMax";
       nudHitPointsMax.Size = new System.Drawing.Size(54, 23);
       nudHitPointsMax.TabIndex = 39;
       // 
-      // tbxHitPointsCurrent
-      // 
-      tbxHitPointsCurrent.Font = new Font("Segoe UI", 9F);
-      tbxHitPointsCurrent.Location = new Point(59, 21);
-      tbxHitPointsCurrent.Name = "tbxHitPointsCurrent";
-      tbxHitPointsCurrent.ReadOnly = true;
-      tbxHitPointsCurrent.Size = new System.Drawing.Size(54, 23);
-      tbxHitPointsCurrent.TabIndex = 37;
-      // 
-      // label18
-      // 
-      label18.AutoSize = true;
-      label18.Font = new Font("Segoe UI", 9F);
-      label18.Location = new Point(6, 81);
-      label18.Name = "label18";
-      label18.Size = new System.Drawing.Size(30, 15);
-      label18.TabIndex = 40;
-      label18.Text = "Max";
-      // 
       // label16
       // 
       label16.AutoSize = true;
       label16.Font = new Font("Segoe UI", 9F);
-      label16.Location = new Point(6, 53);
+      label16.Location = new Point(6, 81);
       label16.Name = "label16";
       label16.Size = new System.Drawing.Size(40, 15);
       label16.TabIndex = 36;
       label16.Text = "Bonus";
       // 
+      // label18
+      // 
+      label18.AutoSize = true;
+      label18.Font = new Font("Segoe UI", 9F);
+      label18.Location = new Point(6, 51);
+      label18.Name = "label18";
+      label18.Size = new System.Drawing.Size(30, 15);
+      label18.TabIndex = 40;
+      label18.Text = "Max";
+      // 
       // grbxAttack
       // 
-      grbxAttack.Controls.Add(tbxAttackBonus);
+      grbxAttack.Controls.Add(nudAttackBonus);
       grbxAttack.Controls.Add(nudAttacksPerRound);
       grbxAttack.Controls.Add(nudAttackMagicLevel);
       grbxAttack.Controls.Add(label24);
@@ -736,19 +755,20 @@
       grbxAttack.TabStop = false;
       grbxAttack.Text = "Attack";
       // 
-      // tbxAttackBonus
+      // nudAttackBonus
       // 
-      tbxAttackBonus.Font = new Font("Segoe UI", 9F);
-      tbxAttackBonus.Location = new Point(104, 50);
-      tbxAttackBonus.Name = "tbxAttackBonus";
-      tbxAttackBonus.ReadOnly = true;
-      tbxAttackBonus.Size = new System.Drawing.Size(57, 23);
-      tbxAttackBonus.TabIndex = 40;
+      nudAttackBonus.Font = new Font("Segoe UI", 9F);
+      nudAttackBonus.Location = new Point(104, 51);
+      nudAttackBonus.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
+      nudAttackBonus.Name = "nudAttackBonus";
+      nudAttackBonus.ReadOnly = true;
+      nudAttackBonus.Size = new System.Drawing.Size(57, 23);
+      nudAttackBonus.TabIndex = 48;
       // 
       // nudAttacksPerRound
       // 
       nudAttacksPerRound.Font = new Font("Segoe UI", 9F);
-      nudAttacksPerRound.Location = new Point(104, 108);
+      nudAttacksPerRound.Location = new Point(104, 109);
       nudAttacksPerRound.Maximum = new decimal(new int[] { 9, 0, 0, 0 });
       nudAttacksPerRound.Name = "nudAttacksPerRound";
       nudAttacksPerRound.Size = new System.Drawing.Size(57, 23);
@@ -757,7 +777,7 @@
       // nudAttackMagicLevel
       // 
       nudAttackMagicLevel.Font = new Font("Segoe UI", 9F);
-      nudAttackMagicLevel.Location = new Point(104, 79);
+      nudAttackMagicLevel.Location = new Point(104, 80);
       nudAttackMagicLevel.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
       nudAttackMagicLevel.Name = "nudAttackMagicLevel";
       nudAttackMagicLevel.Size = new System.Drawing.Size(57, 23);
@@ -767,7 +787,7 @@
       // 
       label24.AutoSize = true;
       label24.Font = new Font("Segoe UI", 9F);
-      label24.Location = new Point(6, 110);
+      label24.Location = new Point(6, 111);
       label24.Name = "label24";
       label24.Size = new System.Drawing.Size(92, 15);
       label24.TabIndex = 42;
@@ -777,7 +797,7 @@
       // 
       label23.AutoSize = true;
       label23.Font = new Font("Segoe UI", 9F);
-      label23.Location = new Point(6, 81);
+      label23.Location = new Point(6, 82);
       label23.Name = "label23";
       label23.Size = new System.Drawing.Size(70, 15);
       label23.TabIndex = 40;
@@ -786,7 +806,7 @@
       // nudAttackBase
       // 
       nudAttackBase.Font = new Font("Segoe UI", 9F);
-      nudAttackBase.Location = new Point(104, 21);
+      nudAttackBase.Location = new Point(104, 22);
       nudAttackBase.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
       nudAttackBase.Name = "nudAttackBase";
       nudAttackBase.Size = new System.Drawing.Size(57, 23);
@@ -796,7 +816,7 @@
       // 
       label25.AutoSize = true;
       label25.Font = new Font("Segoe UI", 9F);
-      label25.Location = new Point(5, 53);
+      label25.Location = new Point(6, 52);
       label25.Name = "label25";
       label25.Size = new System.Drawing.Size(40, 15);
       label25.TabIndex = 36;
@@ -806,7 +826,7 @@
       // 
       label26.AutoSize = true;
       label26.Font = new Font("Segoe UI", 9F);
-      label26.Location = new Point(6, 26);
+      label26.Location = new Point(6, 24);
       label26.Name = "label26";
       label26.Size = new System.Drawing.Size(31, 15);
       label26.TabIndex = 34;
@@ -814,9 +834,9 @@
       // 
       // grbxSpellPoints
       // 
-      grbxSpellPoints.Controls.Add(tbxSpellPointsBonus);
+      grbxSpellPoints.Controls.Add(nudSpellPointsCurrent);
+      grbxSpellPoints.Controls.Add(nudSpellPointsBonus);
       grbxSpellPoints.Controls.Add(nudSpellPointsMax);
-      grbxSpellPoints.Controls.Add(tbxSpellPointsCurrent);
       grbxSpellPoints.Controls.Add(label17);
       grbxSpellPoints.Controls.Add(label19);
       grbxSpellPoints.Controls.Add(label20);
@@ -828,38 +848,40 @@
       grbxSpellPoints.TabStop = false;
       grbxSpellPoints.Text = "Spell Points";
       // 
-      // tbxSpellPointsBonus
+      // nudSpellPointsCurrent
       // 
-      tbxSpellPointsBonus.Font = new Font("Segoe UI", 9F);
-      tbxSpellPointsBonus.Location = new Point(59, 50);
-      tbxSpellPointsBonus.Name = "tbxSpellPointsBonus";
-      tbxSpellPointsBonus.ReadOnly = true;
-      tbxSpellPointsBonus.Size = new System.Drawing.Size(54, 23);
-      tbxSpellPointsBonus.TabIndex = 39;
+      nudSpellPointsCurrent.Font = new Font("Segoe UI", 9F);
+      nudSpellPointsCurrent.Location = new Point(59, 21);
+      nudSpellPointsCurrent.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+      nudSpellPointsCurrent.Name = "nudSpellPointsCurrent";
+      nudSpellPointsCurrent.ReadOnly = true;
+      nudSpellPointsCurrent.Size = new System.Drawing.Size(54, 23);
+      nudSpellPointsCurrent.TabIndex = 48;
+      // 
+      // nudSpellPointsBonus
+      // 
+      nudSpellPointsBonus.Font = new Font("Segoe UI", 9F);
+      nudSpellPointsBonus.Location = new Point(59, 79);
+      nudSpellPointsBonus.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+      nudSpellPointsBonus.Name = "nudSpellPointsBonus";
+      nudSpellPointsBonus.ReadOnly = true;
+      nudSpellPointsBonus.Size = new System.Drawing.Size(54, 23);
+      nudSpellPointsBonus.TabIndex = 43;
       // 
       // nudSpellPointsMax
       // 
       nudSpellPointsMax.Font = new Font("Segoe UI", 9F);
-      nudSpellPointsMax.Location = new Point(59, 79);
+      nudSpellPointsMax.Location = new Point(59, 50);
       nudSpellPointsMax.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
       nudSpellPointsMax.Name = "nudSpellPointsMax";
       nudSpellPointsMax.Size = new System.Drawing.Size(54, 23);
       nudSpellPointsMax.TabIndex = 39;
       // 
-      // tbxSpellPointsCurrent
-      // 
-      tbxSpellPointsCurrent.Font = new Font("Segoe UI", 9F);
-      tbxSpellPointsCurrent.Location = new Point(59, 21);
-      tbxSpellPointsCurrent.Name = "tbxSpellPointsCurrent";
-      tbxSpellPointsCurrent.ReadOnly = true;
-      tbxSpellPointsCurrent.Size = new System.Drawing.Size(54, 23);
-      tbxSpellPointsCurrent.TabIndex = 37;
-      // 
       // label17
       // 
       label17.AutoSize = true;
       label17.Font = new Font("Segoe UI", 9F);
-      label17.Location = new Point(6, 24);
+      label17.Location = new Point(6, 23);
       label17.Name = "label17";
       label17.Size = new System.Drawing.Size(47, 15);
       label17.TabIndex = 34;
@@ -869,7 +891,7 @@
       // 
       label19.AutoSize = true;
       label19.Font = new Font("Segoe UI", 9F);
-      label19.Location = new Point(6, 81);
+      label19.Location = new Point(6, 52);
       label19.Name = "label19";
       label19.Size = new System.Drawing.Size(30, 15);
       label19.TabIndex = 40;
@@ -879,7 +901,7 @@
       // 
       label20.AutoSize = true;
       label20.Font = new Font("Segoe UI", 9F);
-      label20.Location = new Point(6, 53);
+      label20.Location = new Point(5, 81);
       label20.Name = "label20";
       label20.Size = new System.Drawing.Size(40, 15);
       label20.TabIndex = 36;
@@ -887,7 +909,7 @@
       // 
       // grbxDefense
       // 
-      grbxDefense.Controls.Add(tbxDefenseBonus);
+      grbxDefense.Controls.Add(nudDefenseBonus);
       grbxDefense.Controls.Add(nudDefenseMagicLevel);
       grbxDefense.Controls.Add(label31);
       grbxDefense.Controls.Add(nudDefenseBase);
@@ -901,19 +923,20 @@
       grbxDefense.TabStop = false;
       grbxDefense.Text = "Defense";
       // 
-      // tbxDefenseBonus
+      // nudDefenseBonus
       // 
-      tbxDefenseBonus.Font = new Font("Segoe UI", 9F);
-      tbxDefenseBonus.Location = new Point(82, 50);
-      tbxDefenseBonus.Name = "tbxDefenseBonus";
-      tbxDefenseBonus.ReadOnly = true;
-      tbxDefenseBonus.Size = new System.Drawing.Size(57, 23);
-      tbxDefenseBonus.TabIndex = 40;
+      nudDefenseBonus.Font = new Font("Segoe UI", 9F);
+      nudDefenseBonus.Location = new Point(82, 51);
+      nudDefenseBonus.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
+      nudDefenseBonus.Name = "nudDefenseBonus";
+      nudDefenseBonus.ReadOnly = true;
+      nudDefenseBonus.Size = new System.Drawing.Size(57, 23);
+      nudDefenseBonus.TabIndex = 49;
       // 
       // nudDefenseMagicLevel
       // 
       nudDefenseMagicLevel.Font = new Font("Segoe UI", 9F);
-      nudDefenseMagicLevel.Location = new Point(82, 79);
+      nudDefenseMagicLevel.Location = new Point(82, 80);
       nudDefenseMagicLevel.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
       nudDefenseMagicLevel.Name = "nudDefenseMagicLevel";
       nudDefenseMagicLevel.Size = new System.Drawing.Size(57, 23);
@@ -932,7 +955,7 @@
       // nudDefenseBase
       // 
       nudDefenseBase.Font = new Font("Segoe UI", 9F);
-      nudDefenseBase.Location = new Point(82, 21);
+      nudDefenseBase.Location = new Point(82, 22);
       nudDefenseBase.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
       nudDefenseBase.Name = "nudDefenseBase";
       nudDefenseBase.Size = new System.Drawing.Size(57, 23);
@@ -942,7 +965,7 @@
       // 
       label32.AutoSize = true;
       label32.Font = new Font("Segoe UI", 9F);
-      label32.Location = new Point(6, 54);
+      label32.Location = new Point(6, 52);
       label32.Name = "label32";
       label32.Size = new System.Drawing.Size(40, 15);
       label32.TabIndex = 36;
@@ -1438,14 +1461,6 @@
       dgvEquipment.AllowUserToDeleteRows = false;
       dgvEquipment.AllowUserToResizeRows = false;
       dgvEquipment.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-      dataGridViewCellStyle3.BackColor = SystemColors.Window;
-      dataGridViewCellStyle3.Font = new Font("Segoe UI", 8F);
-      dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
-      dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-      dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-      dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-      dgvEquipment.DefaultCellStyle = dataGridViewCellStyle3;
       dgvEquipment.Dock = DockStyle.Fill;
       dgvEquipment.Location = new Point(3, 19);
       dgvEquipment.MultiSelect = false;
@@ -1473,14 +1488,14 @@
       dgvItems.AllowUserToDeleteRows = false;
       dgvItems.AllowUserToResizeRows = false;
       dgvItems.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-      dataGridViewCellStyle4.BackColor = SystemColors.Window;
-      dataGridViewCellStyle4.Font = new Font("Segoe UI", 8F);
-      dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
-      dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-      dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-      dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
-      dgvItems.DefaultCellStyle = dataGridViewCellStyle4;
+      dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+      dataGridViewCellStyle3.BackColor = SystemColors.Window;
+      dataGridViewCellStyle3.Font = new Font("Segoe UI", 8F);
+      dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
+      dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+      dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+      dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+      dgvItems.DefaultCellStyle = dataGridViewCellStyle3;
       dgvItems.Dock = DockStyle.Fill;
       dgvItems.Location = new Point(3, 19);
       dgvItems.MultiSelect = false;
@@ -1492,14 +1507,14 @@
       // 
       // grbxBonusSpellDamage
       // 
+      grbxBonusSpellDamage.Controls.Add(nudBonusSpellDamageReduction);
+      grbxBonusSpellDamage.Controls.Add(nudBonusSpellDamagePercentage);
+      grbxBonusSpellDamage.Controls.Add(nudBonusSpellDamageBase);
       grbxBonusSpellDamage.Controls.Add(nudBonusSpellDamageMax);
       grbxBonusSpellDamage.Controls.Add(label12);
-      grbxBonusSpellDamage.Controls.Add(tbxBonusSpellDamageReduction);
       grbxBonusSpellDamage.Controls.Add(label13);
-      grbxBonusSpellDamage.Controls.Add(tbxBonusSpellDamagePercentage);
-      grbxBonusSpellDamage.Controls.Add(label14);
-      grbxBonusSpellDamage.Controls.Add(tbxBonusSpellDamageBase);
       grbxBonusSpellDamage.Controls.Add(label37);
+      grbxBonusSpellDamage.Controls.Add(label14);
       grbxBonusSpellDamage.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
       grbxBonusSpellDamage.Location = new Point(341, 270);
       grbxBonusSpellDamage.Name = "grbxBonusSpellDamage";
@@ -1508,10 +1523,38 @@
       grbxBonusSpellDamage.TabStop = false;
       grbxBonusSpellDamage.Text = "Bonus Spell Damage";
       // 
+      // nudBonusSpellDamageReduction
+      // 
+      nudBonusSpellDamageReduction.Font = new Font("Segoe UI", 9F);
+      nudBonusSpellDamageReduction.Location = new Point(78, 109);
+      nudBonusSpellDamageReduction.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
+      nudBonusSpellDamageReduction.Name = "nudBonusSpellDamageReduction";
+      nudBonusSpellDamageReduction.Size = new System.Drawing.Size(44, 23);
+      nudBonusSpellDamageReduction.TabIndex = 50;
+      // 
+      // nudBonusSpellDamagePercentage
+      // 
+      nudBonusSpellDamagePercentage.Font = new Font("Segoe UI", 9F);
+      nudBonusSpellDamagePercentage.Location = new Point(78, 80);
+      nudBonusSpellDamagePercentage.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
+      nudBonusSpellDamagePercentage.Minimum = new decimal(new int[] { 100, 0, 0, int.MinValue });
+      nudBonusSpellDamagePercentage.Name = "nudBonusSpellDamagePercentage";
+      nudBonusSpellDamagePercentage.Size = new System.Drawing.Size(44, 23);
+      nudBonusSpellDamagePercentage.TabIndex = 49;
+      // 
+      // nudBonusSpellDamageBase
+      // 
+      nudBonusSpellDamageBase.Font = new Font("Segoe UI", 9F);
+      nudBonusSpellDamageBase.Location = new Point(78, 22);
+      nudBonusSpellDamageBase.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
+      nudBonusSpellDamageBase.Name = "nudBonusSpellDamageBase";
+      nudBonusSpellDamageBase.Size = new System.Drawing.Size(44, 23);
+      nudBonusSpellDamageBase.TabIndex = 48;
+      // 
       // nudBonusSpellDamageMax
       // 
       nudBonusSpellDamageMax.Font = new Font("Segoe UI", 9F);
-      nudBonusSpellDamageMax.Location = new Point(78, 108);
+      nudBonusSpellDamageMax.Location = new Point(78, 51);
       nudBonusSpellDamageMax.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
       nudBonusSpellDamageMax.Name = "nudBonusSpellDamageMax";
       nudBonusSpellDamageMax.Size = new System.Drawing.Size(44, 23);
@@ -1521,58 +1564,21 @@
       // 
       label12.AutoSize = true;
       label12.Font = new Font("Segoe UI", 9F);
-      label12.Location = new Point(6, 110);
+      label12.Location = new Point(6, 53);
       label12.Name = "label12";
       label12.Size = new System.Drawing.Size(30, 15);
       label12.TabIndex = 48;
       label12.Text = "Max";
       // 
-      // tbxBonusSpellDamageReduction
-      // 
-      tbxBonusSpellDamageReduction.Font = new Font("Segoe UI", 9F);
-      tbxBonusSpellDamageReduction.Location = new Point(78, 79);
-      tbxBonusSpellDamageReduction.Name = "tbxBonusSpellDamageReduction";
-      tbxBonusSpellDamageReduction.ReadOnly = true;
-      tbxBonusSpellDamageReduction.Size = new System.Drawing.Size(44, 23);
-      tbxBonusSpellDamageReduction.TabIndex = 46;
-      // 
       // label13
       // 
       label13.AutoSize = true;
       label13.Font = new Font("Segoe UI", 9F);
-      label13.Location = new Point(6, 82);
+      label13.Location = new Point(6, 111);
       label13.Name = "label13";
       label13.Size = new System.Drawing.Size(61, 15);
       label13.TabIndex = 45;
       label13.Text = "Reduction";
-      // 
-      // tbxBonusSpellDamagePercentage
-      // 
-      tbxBonusSpellDamagePercentage.Font = new Font("Segoe UI", 9F);
-      tbxBonusSpellDamagePercentage.Location = new Point(78, 50);
-      tbxBonusSpellDamagePercentage.Name = "tbxBonusSpellDamagePercentage";
-      tbxBonusSpellDamagePercentage.ReadOnly = true;
-      tbxBonusSpellDamagePercentage.Size = new System.Drawing.Size(44, 23);
-      tbxBonusSpellDamagePercentage.TabIndex = 44;
-      // 
-      // label14
-      // 
-      label14.AutoSize = true;
-      label14.Font = new Font("Segoe UI", 9F);
-      label14.Location = new Point(6, 53);
-      label14.Name = "label14";
-      label14.Size = new System.Drawing.Size(66, 15);
-      label14.TabIndex = 43;
-      label14.Text = "Percentage";
-      // 
-      // tbxBonusSpellDamageBase
-      // 
-      tbxBonusSpellDamageBase.Font = new Font("Segoe UI", 9F);
-      tbxBonusSpellDamageBase.Location = new Point(78, 21);
-      tbxBonusSpellDamageBase.Name = "tbxBonusSpellDamageBase";
-      tbxBonusSpellDamageBase.ReadOnly = true;
-      tbxBonusSpellDamageBase.Size = new System.Drawing.Size(44, 23);
-      tbxBonusSpellDamageBase.TabIndex = 42;
       // 
       // label37
       // 
@@ -1583,6 +1589,16 @@
       label37.Size = new System.Drawing.Size(31, 15);
       label37.TabIndex = 34;
       label37.Text = "Base";
+      // 
+      // label14
+      // 
+      label14.AutoSize = true;
+      label14.Font = new Font("Segoe UI", 9F);
+      label14.Location = new Point(6, 82);
+      label14.Name = "label14";
+      label14.Size = new System.Drawing.Size(66, 15);
+      label14.TabIndex = 43;
+      label14.Text = "Percentage";
       // 
       // EditMonsterForm
       // 
@@ -1610,6 +1626,7 @@
       Controls.Add(btnCancel);
       Controls.Add(btnOK);
       Controls.Add(statusStrip);
+      DoubleBuffered = true;
       MinimumSize = new System.Drawing.Size(300, 150);
       Name = "EditMonsterForm";
       ShowIcon = false;
@@ -1629,17 +1646,23 @@
       grbxBattleFlags.PerformLayout();
       grbxHitPoints.ResumeLayout(false);
       grbxHitPoints.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)nudHitPointsBonus).EndInit();
+      ((System.ComponentModel.ISupportInitialize)nudHitPointsCurrent).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudHitPointsMax).EndInit();
       grbxAttack.ResumeLayout(false);
       grbxAttack.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)nudAttackBonus).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudAttacksPerRound).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudAttackMagicLevel).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudAttackBase).EndInit();
       grbxSpellPoints.ResumeLayout(false);
       grbxSpellPoints.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)nudSpellPointsCurrent).EndInit();
+      ((System.ComponentModel.ISupportInitialize)nudSpellPointsBonus).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudSpellPointsMax).EndInit();
       grbxDefense.ResumeLayout(false);
       grbxDefense.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)nudDefenseBonus).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudDefenseMagicLevel).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudDefenseBase).EndInit();
       grbxSpellMastery.ResumeLayout(false);
@@ -1654,6 +1677,9 @@
       ((System.ComponentModel.ISupportInitialize)dgvItems).EndInit();
       grbxBonusSpellDamage.ResumeLayout(false);
       grbxBonusSpellDamage.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamageReduction).EndInit();
+      ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamagePercentage).EndInit();
+      ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamageBase).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamageMax).EndInit();
       ResumeLayout(false);
       PerformLayout();
@@ -1669,9 +1695,9 @@
     private Label lblName;
     private StatusStrip statusStrip;
     private GroupBox grbxAttributes;
-    private DataGridView dgvAttributes;
+    private CustomDataGridView dgvAttributes;
     private GroupBox grbxSkills;
-    private DataGridView dgvSkills;
+    private CustomDataGridView dgvSkills;
     private GroupBox grbxGeneral;
     private ComboBox cbxClass;
     private ComboBox cbxRace;
@@ -1710,21 +1736,15 @@
     private Label label26;
     private NumericUpDown nudAttacksPerRound;
     private Label label24;
-    private TextBox tbxHitPointsBonus;
-    private TextBox tbxHitPointsCurrent;
     private GroupBox grbxSpellPoints;
-    private TextBox tbxSpellPointsBonus;
     private NumericUpDown nudSpellPointsMax;
-    private TextBox tbxSpellPointsCurrent;
     private Label label17;
     private Label label19;
     private Label label20;
-    private TextBox tbxAttackBonus;
     private Label label25;
     private Label label29;
     private NumericUpDown nudDefeatExperience;
     private GroupBox grbxDefense;
-    private TextBox tbxDefenseBonus;
     private NumericUpDown nudDefenseMagicLevel;
     private Label label31;
     private NumericUpDown nudDefenseBase;
@@ -1772,17 +1792,23 @@
     private CheckBox chbxConditionsPoisoned;
     private CheckBox chbxConditionsDeadDust;
     private GroupBox grbxEquipment;
-    private DataGridView dgvEquipment;
+    private CustomDataGridView dgvEquipment;
     private GroupBox grbxItems;
-    private DataGridView dgvItems;
+    private CustomDataGridView dgvItems;
     private GroupBox grbxBonusSpellDamage;
     private NumericUpDown nudBonusSpellDamageMax;
     private Label label12;
-    private TextBox tbxBonusSpellDamageReduction;
     private Label label13;
-    private TextBox tbxBonusSpellDamagePercentage;
     private Label label14;
-    private TextBox tbxBonusSpellDamageBase;
     private Label label37;
+    private NumericUpDown nudHitPointsBonus;
+    private NumericUpDown nudHitPointsCurrent;
+    private NumericUpDown nudSpellPointsCurrent;
+    private NumericUpDown nudSpellPointsBonus;
+    private NumericUpDown nudAttackBonus;
+    private NumericUpDown nudDefenseBonus;
+    private NumericUpDown nudBonusSpellDamageReduction;
+    private NumericUpDown nudBonusSpellDamagePercentage;
+    private NumericUpDown nudBonusSpellDamageBase;
   }
 }

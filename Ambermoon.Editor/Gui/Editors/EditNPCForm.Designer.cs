@@ -35,7 +35,7 @@
       // tbxName
       // 
       tbxName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-      tbxName.Location = new Point(57, 41);
+      tbxName.Location = new Point(57, 12);
       tbxName.Name = "tbxName";
       tbxName.Size = new System.Drawing.Size(215, 23);
       tbxName.TabIndex = 0;
@@ -62,7 +62,8 @@
       // 
       // tbxIndex
       // 
-      tbxIndex.Location = new Point(57, 12);
+      tbxIndex.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+      tbxIndex.Location = new Point(57, 77);
       tbxIndex.Name = "tbxIndex";
       tbxIndex.ReadOnly = true;
       tbxIndex.Size = new System.Drawing.Size(45, 23);
@@ -70,8 +71,9 @@
       // 
       // lblIndex
       // 
+      lblIndex.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
       lblIndex.AutoSize = true;
-      lblIndex.Location = new Point(12, 15);
+      lblIndex.Location = new Point(12, 80);
       lblIndex.Name = "lblIndex";
       lblIndex.Size = new System.Drawing.Size(36, 15);
       lblIndex.TabIndex = 4;
@@ -80,7 +82,7 @@
       // lblName
       // 
       lblName.AutoSize = true;
-      lblName.Location = new Point(12, 44);
+      lblName.Location = new Point(12, 15);
       lblName.Name = "lblName";
       lblName.Size = new System.Drawing.Size(39, 15);
       lblName.TabIndex = 5;
@@ -88,28 +90,30 @@
       // 
       // statusStrip
       // 
+      statusStrip.BackColor = Color.Transparent;
       statusStrip.Location = new Point(0, 89);
       statusStrip.Name = "statusStrip";
       statusStrip.Size = new System.Drawing.Size(284, 22);
       statusStrip.TabIndex = 6;
       statusStrip.Text = "statusStrip1";
       // 
-      // MonsterForm
+      // EditNPCForm
       // 
       AcceptButton = btnOK;
       AutoScaleDimensions = new SizeF(7F, 15F);
       AutoScaleMode = AutoScaleMode.Font;
       CancelButton = btnCancel;
       ClientSize = new System.Drawing.Size(284, 111);
+      Controls.Add(lblIndex);
+      Controls.Add(tbxIndex);
       Controls.Add(btnCancel);
       Controls.Add(btnOK);
       Controls.Add(statusStrip);
       Controls.Add(lblName);
-      Controls.Add(lblIndex);
-      Controls.Add(tbxIndex);
       Controls.Add(tbxName);
+      DoubleBuffered = true;
       MinimumSize = new System.Drawing.Size(300, 150);
-      Name = "NPCForm";
+      Name = "EditNPCForm";
       ShowIcon = false;
       Text = "NPC";
       ResumeLayout(false);

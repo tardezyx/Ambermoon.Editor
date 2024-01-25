@@ -1,10 +1,11 @@
 ﻿using Ambermoon.Data.GameDataRepository.Data;
+using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Editors;
 using Ambermoon.Editor.Models;
 
 namespace Ambermoon.Editor.Gui.Overviews {
-  public partial class NPCsForm : Form {
+  public partial class NPCsForm : CustomForm {
     #region --- fields ----------------------------------------------------------------------------
     private readonly ListWrapper<NpcData> _npcs;
     #endregion
@@ -18,6 +19,8 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #endregion
     #region --- init dgv --------------------------------------------------------------------------
     private void InitDGV() {
+      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
+
       dgv.AutoGenerateColumns = false;
 
       dgv.Columns.AddRange(new DataGridViewColumn[] {
@@ -37,6 +40,8 @@ namespace Ambermoon.Editor.Gui.Overviews {
 
       dgv.DataSource = _npcs.ForDisplay;
       dgv.AutoResizeColumns();
+
+      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
     #region --- on load ---------------------------------------------------------------------------

@@ -1,4 +1,6 @@
-﻿namespace Ambermoon.Editor.Gui.Editors {
+﻿using Ambermoon.Editor.Gui.Custom;
+
+namespace Ambermoon.Editor.Gui.Editors {
   partial class EditMonsterGroupForm {
     /// <summary>
     /// Required designer variable.
@@ -27,15 +29,15 @@
       btnCancel = new Button();
       tbxIndex = new TextBox();
       lblIndex = new Label();
-      statusStrip = new StatusStrip();
-      dgv = new DataGridView();
+      dgv = new CustomDataGridView();
+      statusStrip1 = new StatusStrip();
       ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
       SuspendLayout();
       // 
       // btnOK
       // 
       btnOK.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-      btnOK.Location = new Point(981, 151);
+      btnOK.Location = new Point(981, 126);
       btnOK.Name = "btnOK";
       btnOK.Size = new System.Drawing.Size(75, 23);
       btnOK.TabIndex = 1;
@@ -45,7 +47,7 @@
       // btnCancel
       // 
       btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-      btnCancel.Location = new Point(1062, 151);
+      btnCancel.Location = new Point(1062, 126);
       btnCancel.Name = "btnCancel";
       btnCancel.Size = new System.Drawing.Size(75, 23);
       btnCancel.TabIndex = 2;
@@ -54,7 +56,8 @@
       // 
       // tbxIndex
       // 
-      tbxIndex.Location = new Point(57, 12);
+      tbxIndex.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+      tbxIndex.Location = new Point(57, 127);
       tbxIndex.Name = "tbxIndex";
       tbxIndex.ReadOnly = true;
       tbxIndex.Size = new System.Drawing.Size(45, 23);
@@ -62,29 +65,22 @@
       // 
       // lblIndex
       // 
+      lblIndex.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
       lblIndex.AutoSize = true;
-      lblIndex.Location = new Point(12, 15);
+      lblIndex.Location = new Point(12, 130);
       lblIndex.Name = "lblIndex";
       lblIndex.Size = new System.Drawing.Size(36, 15);
       lblIndex.TabIndex = 4;
       lblIndex.Text = "Index";
-      // 
-      // statusStrip
-      // 
-      statusStrip.Location = new Point(0, 164);
-      statusStrip.Name = "statusStrip";
-      statusStrip.Size = new System.Drawing.Size(1149, 22);
-      statusStrip.TabIndex = 6;
-      statusStrip.Text = "statusStrip1";
       // 
       // dgv
       // 
       dgv.AllowUserToAddRows = false;
       dgv.AllowUserToDeleteRows = false;
       dgv.AllowUserToResizeRows = false;
-      dgv.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+      dgv.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
       dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      dgv.Location = new Point(12, 41);
+      dgv.Location = new Point(12, 12);
       dgv.MultiSelect = false;
       dgv.Name = "dgv";
       dgv.RowHeadersVisible = false;
@@ -92,21 +88,31 @@
       dgv.Size = new System.Drawing.Size(1125, 104);
       dgv.TabIndex = 7;
       // 
-      // MonsterGroupForm
+      // statusStrip1
+      // 
+      statusStrip1.BackColor = Color.Transparent;
+      statusStrip1.Location = new Point(0, 139);
+      statusStrip1.Name = "statusStrip1";
+      statusStrip1.Size = new System.Drawing.Size(1149, 22);
+      statusStrip1.TabIndex = 8;
+      statusStrip1.Text = "statusStrip1";
+      // 
+      // EditMonsterGroupForm
       // 
       AcceptButton = btnOK;
       AutoScaleDimensions = new SizeF(7F, 15F);
       AutoScaleMode = AutoScaleMode.Font;
       CancelButton = btnCancel;
-      ClientSize = new System.Drawing.Size(1149, 186);
+      ClientSize = new System.Drawing.Size(1149, 161);
+      Controls.Add(lblIndex);
+      Controls.Add(tbxIndex);
       Controls.Add(dgv);
       Controls.Add(btnCancel);
       Controls.Add(btnOK);
-      Controls.Add(statusStrip);
-      Controls.Add(lblIndex);
-      Controls.Add(tbxIndex);
+      Controls.Add(statusStrip1);
+      DoubleBuffered = true;
       MinimumSize = new System.Drawing.Size(300, 150);
-      Name = "MonsterGroupForm";
+      Name = "EditMonsterGroupForm";
       ShowIcon = false;
       Text = "MonsterGroup";
       ((System.ComponentModel.ISupportInitialize)dgv).EndInit();
@@ -119,7 +125,7 @@
     private Button btnCancel;
     private TextBox tbxIndex;
     private Label lblIndex;
-    private StatusStrip statusStrip;
-    private DataGridView dgv;
+    private CustomDataGridView dgv;
+    private StatusStrip statusStrip1;
   }
 }

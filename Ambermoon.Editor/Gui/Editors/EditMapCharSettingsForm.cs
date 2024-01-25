@@ -1,9 +1,10 @@
 ﻿using Ambermoon.Data;
+using Ambermoon.Editor.Gui.Custom;
 using System.Drawing.Imaging;
 using static Ambermoon.Data.Tileset;
 
 namespace Ambermoon.Editor.Gui.Editors {
-  public partial class EditMapCharSettingsForm : Form {
+  public partial class EditMapCharSettingsForm : CustomForm {
     readonly Func<uint, Bitmap> combatBackgroundProvider;
     readonly Func<uint, Bitmap> graphicProvider;
     readonly Action<IWin32Window, Action<string>> imageSaveHandler;

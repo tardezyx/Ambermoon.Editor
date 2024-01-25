@@ -1,10 +1,11 @@
 ﻿using Ambermoon.Data.GameDataRepository.Data;
+using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Editors;
 using Ambermoon.Editor.Models;
 
 namespace Ambermoon.Editor.Gui.Overviews {
-  public partial class MonstersForm : Form {
+  public partial class MonstersForm : CustomForm {
     #region --- fields ----------------------------------------------------------------------------
     private readonly ListWrapper<MonsterData> _monsters;
     #endregion
@@ -17,6 +18,8 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #endregion
     #region --- init dgv --------------------------------------------------------------------------
     private void InitDGV() {
+      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
+
       dgv.AutoGenerateColumns = false;
 
       dgv.Columns.AddRange(new DataGridViewColumn[] {
@@ -29,6 +32,19 @@ namespace Ambermoon.Editor.Gui.Overviews {
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Class) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Gender) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Element) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.DefeatExperience) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Food) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Gold) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Morale) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.AttacksPerRound) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BaseAttackDamage) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.MagicAttackLevel) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BaseDefense) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.MagicDefenseLevel) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BonusSpellDamage) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BonusMaxSpellDamage) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BonusSpellDamagePercentage) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BonusSpellDamageReduction) },
       });
 
       foreach (DataGridViewColumn column in dgv.Columns) {
@@ -37,6 +53,8 @@ namespace Ambermoon.Editor.Gui.Overviews {
 
       dgv.DataSource = _monsters.ForDisplay;
       dgv.AutoResizeColumns();
+
+      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
     #region --- on load ---------------------------------------------------------------------------

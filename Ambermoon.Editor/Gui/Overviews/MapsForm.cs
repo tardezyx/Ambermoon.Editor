@@ -1,9 +1,11 @@
 ﻿using Ambermoon.Data.GameDataRepository.Data;
+using Ambermoon.Editor.Extensions;
+using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Editors;
 using Ambermoon.Editor.Models;
 
 namespace Ambermoon.Editor.Gui.Overviews {
-  public partial class MapsForm : Form {
+  public partial class MapsForm : CustomForm {
     #region --- fields ----------------------------------------------------------------------------
     private readonly ListWrapper<MapData> _maps;
     #endregion
@@ -16,6 +18,8 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #endregion
     #region --- init dgv --------------------------------------------------------------------------
     private void InitDGV() {
+      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
+
       dgv.AutoGenerateColumns = false;
 
       dgv.Columns.AddRange(new DataGridViewColumn[] {
@@ -34,6 +38,8 @@ namespace Ambermoon.Editor.Gui.Overviews {
 
       dgv.DataSource = _maps.ForDisplay;
       dgv.AutoResizeColumns();
+
+      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
     #region --- on load ---------------------------------------------------------------------------

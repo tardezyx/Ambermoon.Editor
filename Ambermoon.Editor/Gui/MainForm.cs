@@ -1,9 +1,10 @@
 ﻿using Ambermoon.Editor.Extensions;
+using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Overviews;
 using Ambermoon.Editor.Models;
 
 namespace Ambermoon.Editor.Gui {
-  public partial class MainForm : Form {
+  public partial class MainForm : CustomForm {
     #region --- fields ----------------------------------------------------------------------------
     #pragma warning disable CS0649 // wrong warning as forms are set within ShowForm()
     //private readonly InfoForm?          _infoForm;
@@ -47,11 +48,12 @@ namespace Ambermoon.Editor.Gui {
     #endregion
     #region --- wire events -----------------------------------------------------------------------
     private void WireEvents() {
-      menuItemExit.Click   += (s, e) => { Repository.Current.Save(); Application.Exit(); };
-      menuItemLoad.Click   += (s, e) => LoadRepository();
-      menuItemSave.Click   += (s, e) => Repository.Current.Save();
-      menuItemUnload.Click += (s, e) => UnloadRepository();
-      trv.AfterSelect      += (s, e) => NodeSelected(e.Node?.Name);
+      menuItemExit.Click     += (s, e) => { Repository.Current.Save(); Application.Exit(); };
+      menuItemLoad.Click     += (s, e) => LoadRepository();
+      menuItemSave.Click     += (s, e) => Repository.Current.Save();
+      menuItemSettings.Click += (s, e) => { SettingsForm form = new(); form.Show(); };
+      menuItemUnload.Click   += (s, e) => UnloadRepository();
+      trv.AfterSelect        += (s, e) => NodeSelected(e.Node?.Name);
     }
     #endregion
 

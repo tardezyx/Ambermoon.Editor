@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <StartupObject>Ambermoon.Editor.Base.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,21 +23,11 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="Gui\Editors\Map2DForm.cs" />
-    <Compile Update="Gui\Editors\Map2DForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Gui\Editors\EditNPCForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Gui\Overviews\MonsterGroupsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Gui\Overviews\MapsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Gui\Overviews\NPCsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Gui\Editors\Map2DForm.cs" />
+    <Compile Update="Gui\Editors\EditNPCForm.cs" />
+    <Compile Update="Gui\Overviews\MonsterGroupsForm.cs" />
+    <Compile Update="Gui\Overviews\MapsForm.cs" />
+    <Compile Update="Gui\Overviews\NPCsForm.cs" />
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

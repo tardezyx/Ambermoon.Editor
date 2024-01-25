@@ -20,19 +20,28 @@ namespace Ambermoon.Editor.Models {
       _instance = new Repository();
     }
     #endregion
+    #region --- get indexes -----------------------------------------------------------------------
+    public int? GetAttributeIndex(string name) => GetIndexOfStringList(GameData?.AttributeNames,name);
+    public int? GetSkillIndex(string name)     => GetIndexOfStringList(GameData?.SkillNames,name);
+    #endregion
     #region --- get names -------------------------------------------------------------------------
-    public string GetAttributeName(int index)      => GetValueNameOfStringList(GameData?.AttributeNames, index);
+    public string GetAttributeName(int index)      => GetValueNameOfStringList(GameData?.AttributeNames,      index);
     public string GetAttributeShortName(int index) => GetValueNameOfStringList(GameData?.AttributeShortNames, index);
-    public string GetSkillName(int index)          => GetValueNameOfStringList(GameData?.SkillNames, index);
-    public string GetSkillShortName(int index)     => GetValueNameOfStringList(GameData?.SkillShortNames, index);
+    public string GetSkillName(int index)          => GetValueNameOfStringList(GameData?.SkillNames,          index);
+    public string GetSkillShortName(int index)     => GetValueNameOfStringList(GameData?.SkillShortNames,     index);
     #endregion
     #region --- get value name of string list -----------------------------------------------------
-    public static string GetValueNameOfStringList(List<string>? list, int index) {
+    private static string GetValueNameOfStringList(List<string>? list, int index) {
       if (list is null || list.Count < index - 1) {
         return string.Empty;
       }
 
       return list[index];
+    }
+    #endregion
+    #region --- get index of string list ----------------------------------------------------------
+    private static int? GetIndexOfStringList(List<string>? list, string entry) {
+      return list?.IndexOf(entry);
     }
     #endregion
     #region --- load ------------------------------------------------------------------------------

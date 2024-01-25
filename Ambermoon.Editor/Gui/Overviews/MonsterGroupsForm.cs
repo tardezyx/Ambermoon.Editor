@@ -5,7 +5,7 @@ using Ambermoon.Editor.Gui.Editors;
 using Ambermoon.Editor.Models;
 
 namespace Ambermoon.Editor.Gui.Overviews {
-  public partial class MonsterGroupsForm : Form {
+  public partial class MonsterGroupsForm : CustomForm {
     #region --- fields ----------------------------------------------------------------------------
     private readonly ListWrapper<MonsterGroupData>           _monsterGroups;
     private readonly SortableBindingList<MonsterGroupAsText> _monsterGroupsAsText;
@@ -27,6 +27,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #region --- local enum: order by --------------------------------------------------------------
     private enum OrderBy { 
       Count = 1,
+      Index,
       Level,
       Name
     }
@@ -52,6 +53,8 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #endregion
     #region --- init dgv --------------------------------------------------------------------------
     private void InitDGV() {
+      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
+
       dgv.AutoGenerateColumns = false;
       dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
@@ -70,6 +73,8 @@ namespace Ambermoon.Editor.Gui.Overviews {
 
       dgv.DataSource = _monsterGroupsAsText;
       ResizeDGV();
+
+      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
     #region --- on load ---------------------------------------------------------------------------
@@ -92,6 +97,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
       btnAdd.Click += (s, e) => AddMonsterGroup();
 
       cbxOrderBy.SelectedIndexChanged += (s, e) => MapMonsterGroupsToText();
+      chbxDescending.CheckedChanged   += (s, e) => MapMonsterGroupsToText();
 
       dgv.CellClick += (s, e) => { 
         if(e.RowIndex > -1 && dgv.Columns[e.ColumnIndex] is DataGridViewButtonColumn) {
@@ -153,9 +159,10 @@ namespace Ambermoon.Editor.Gui.Overviews {
       }
 
       monstersDetails = cbxOrderBy.SelectedValue switch {
-        OrderBy.Count => [.. monstersDetails.OrderByDescending(x => x.Count)],
-        OrderBy.Level => [.. monstersDetails.OrderByDescending(x => x.Level)],
-        OrderBy.Name  => [.. monstersDetails.OrderBy(x => x.Name)],
+        OrderBy.Count => chbxDescending.Checked ? [.. monstersDetails.OrderByDescending(x => x.Count)] : [.. monstersDetails.OrderBy(x => x.Count)],
+        OrderBy.Index => chbxDescending.Checked ? [.. monstersDetails.OrderByDescending(x => x.Index)] : [.. monstersDetails.OrderBy(x => x.Index)],
+        OrderBy.Level => chbxDescending.Checked ? [.. monstersDetails.OrderByDescending(x => x.Level)] : [.. monstersDetails.OrderBy(x => x.Level)],
+        OrderBy.Name  => chbxDescending.Checked ? [.. monstersDetails.OrderByDescending(x => x.Name)]  : [.. monstersDetails.OrderBy(x => x.Name)],
         _ => throw new NotImplementedException(),
       };
 
@@ -164,7 +171,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
           + (result.HasText()
             ? $"{Environment.NewLine}"
             : string.Empty)
-          + $"{monsterDetails.Count}x {monsterDetails.Name} ({monsterDetails.Level})";
+          + $"{monsterDetails.Count}x {monsterDetails.Index}: {monsterDetails.Name} ({monsterDetails.Level})";
       }
 
       return result;

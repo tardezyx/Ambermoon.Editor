@@ -34,6 +34,8 @@
       menuItemLoad = new ToolStripMenuItem();
       menuItemUnload = new ToolStripMenuItem();
       menuItemSave = new ToolStripMenuItem();
+      toolStripSeparator2 = new ToolStripSeparator();
+      menuItemSettings = new ToolStripMenuItem();
       toolStripSeparator1 = new ToolStripSeparator();
       menuItemExit = new ToolStripMenuItem();
       splitContainer = new SplitContainer();
@@ -56,7 +58,7 @@
       // 
       // repositoryToolStripMenuItem
       // 
-      repositoryToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { menuItemLoad, menuItemUnload, menuItemSave, toolStripSeparator1, menuItemExit });
+      repositoryToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { menuItemLoad, menuItemUnload, menuItemSave, toolStripSeparator2, menuItemSettings, toolStripSeparator1, menuItemExit });
       repositoryToolStripMenuItem.Name = "repositoryToolStripMenuItem";
       repositoryToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
       repositoryToolStripMenuItem.Text = "Repository";
@@ -83,6 +85,18 @@
       menuItemSave.ShortcutKeys = Keys.Control | Keys.S;
       menuItemSave.Size = new System.Drawing.Size(156, 22);
       menuItemSave.Text = "Save";
+      // 
+      // toolStripSeparator2
+      // 
+      toolStripSeparator2.Name = "toolStripSeparator2";
+      toolStripSeparator2.Size = new System.Drawing.Size(153, 6);
+      // 
+      // menuItemSettings
+      // 
+      menuItemSettings.Name = "menuItemSettings";
+      menuItemSettings.ShortcutKeys = Keys.F2;
+      menuItemSettings.Size = new System.Drawing.Size(156, 22);
+      menuItemSettings.Text = "Settings";
       // 
       // toolStripSeparator1
       // 
@@ -147,6 +161,7 @@
       Controls.Add(statusStrip);
       Controls.Add(splitContainer);
       Controls.Add(menu);
+      DoubleBuffered = true;
       MainMenuStrip = menu;
       MinimumSize = new System.Drawing.Size(600, 400);
       Name = "MainForm";
@@ -172,5 +187,7 @@
     private SplitContainer splitContainer;
     private TreeView trv;
     private StatusStrip statusStrip;
+    private ToolStripSeparator toolStripSeparator2;
+    private ToolStripMenuItem menuItemSettings;
   }
 }
