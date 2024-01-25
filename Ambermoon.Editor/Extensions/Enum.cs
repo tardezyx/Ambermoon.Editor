@@ -28,5 +28,18 @@ namespace Ambermoon.Editor.Extensions {
         .Distinct();
     }
     #endregion
+    #region --- get values as ordered string list -------------------------------------------------
+    internal static List<string> GetValuesAsOrderedStringList(this System.Enum source) {
+      return
+      [
+        .. System.Enum
+          .GetValues(source.GetType())
+          .Cast<System.Enum>()
+          .Distinct()
+          .Select(x => x.ToString())
+          .OrderBy(x => x),
+      ];
+    }
+    #endregion
   }
 }

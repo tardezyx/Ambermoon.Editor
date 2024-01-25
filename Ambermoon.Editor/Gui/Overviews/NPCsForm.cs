@@ -1,5 +1,4 @@
-﻿using Ambermoon.Data.GameDataRepository.Collections;
-using Ambermoon.Data.GameDataRepository.Data;
+﻿using Ambermoon.Data.GameDataRepository.Data;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Editors;
 using Ambermoon.Editor.Models;
@@ -11,9 +10,10 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #endregion
 
     #region --- constructor -----------------------------------------------------------------------
-    public NPCsForm(DictionaryList<NpcData> npcs) {
+    public NPCsForm() {
       InitializeComponent();
-      _npcs = new(npcs);
+
+      _npcs = new(Repository.Current.GameData?.Npcs);
     }
     #endregion
     #region --- init dgv --------------------------------------------------------------------------

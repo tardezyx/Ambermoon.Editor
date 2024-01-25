@@ -396,10 +396,10 @@ namespace Ambermoon.Editor.Gui.Editors {
     #endregion
     #region --- initialize ------------------------------------------------------------------------
     private void Initialize() {
-      //cursorPointer = CursorResourceLoader.LoadEmbeddedCursor(Properties.Resources.pointer);
-      //cursorColorPicker = CursorResourceLoader.LoadEmbeddedCursor(Properties.Resources.color_picker);
-      //cursorEraser = CursorResourceLoader.LoadEmbeddedCursor(Properties.Resources.eraser);
-      //cursorPrecision = CursorResourceLoader.LoadEmbeddedCursor(Properties.Resources.Precision);
+      cursorPointer     = CursorResourceLoader.LoadEmbeddedCursor(Properties.Resources.pointer);
+      cursorColorPicker = CursorResourceLoader.LoadEmbeddedCursor(Properties.Resources.color_picker);
+      cursorEraser      = CursorResourceLoader.LoadEmbeddedCursor(Properties.Resources.eraser);
+      cursorPrecision   = CursorResourceLoader.LoadEmbeddedCursor(Properties.Resources.Precision);
 
       toolTipIndoor.SetToolTip(radioButtonIndoor, "Indoor maps are always fully lighted.");
       toolTipOutdoor.SetToolTip(radioButtonOutdoor, "Outdoor maps are affected by the day-night-cycle.");

@@ -1,6 +1,4 @@
-﻿using Ambermoon.Data.GameDataRepository;
-using Ambermoon.Data.GameDataRepository.Collections;
-using Ambermoon.Data.GameDataRepository.Data;
+﻿using Ambermoon.Data.GameDataRepository.Data;
 using Ambermoon.Editor.Gui.Editors;
 using Ambermoon.Editor.Models;
 
@@ -8,17 +6,12 @@ namespace Ambermoon.Editor.Gui.Overviews {
   public partial class MapsForm : Form {
     #region --- fields ----------------------------------------------------------------------------
     private readonly ListWrapper<MapData> _maps;
-    private readonly ListWrapper<TextList<MapData>> _mapTexts;
     #endregion
 
     #region --- constructor -----------------------------------------------------------------------
-    public MapsForm(
-      DictionaryList<MapData>           maps,
-      DictionaryList<TextList<MapData>> mapTexts
-    ) {
+    public MapsForm() {
       InitializeComponent();
-      _maps     = new(maps);
-      _mapTexts = new(mapTexts);
+      _maps = new(Repository.Current.GameData?.Maps);
     }
     #endregion
     #region --- init dgv --------------------------------------------------------------------------

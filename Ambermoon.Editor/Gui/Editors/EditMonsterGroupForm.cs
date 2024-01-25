@@ -1,6 +1,6 @@
-﻿using Ambermoon.Data.GameDataRepository.Collections;
-using Ambermoon.Data.GameDataRepository.Data;
+﻿using Ambermoon.Data.GameDataRepository.Data;
 using Ambermoon.Editor.Extensions;
+using Ambermoon.Editor.Models;
 
 namespace Ambermoon.Editor.Gui.Editors {
   public partial class EditMonsterGroupForm : Form {
@@ -22,22 +22,17 @@ namespace Ambermoon.Editor.Gui.Editors {
     }
     #endregion
     #region --- fields ----------------------------------------------------------------------------
-    private readonly DictionaryList<MonsterData> _monsters;
-    private readonly List<MonsterAsText>         _monstersAsText   = [];
-    private readonly List<MonsterGroupRow>       _monsterGroupRows = [];
+    private readonly List<MonsterAsText>   _monstersAsText   = [];
+    private readonly List<MonsterGroupRow> _monsterGroupRows = [];
     #endregion
     #region --- properties ------------------------------------------------------------------------
     public MonsterGroupData MonsterGroup { get; private set; }
     #endregion
 
     #region --- constructor -----------------------------------------------------------------------
-    public EditMonsterGroupForm(
-      DictionaryList<MonsterData> monsters,
-      MonsterGroupData monsterGroup
-    ) {
+    public EditMonsterGroupForm(MonsterGroupData monsterGroup) {
       InitializeComponent();
 
-      _monsters    = monsters;
       MonsterGroup = monsterGroup;
 
       tbxIndex.Text = MonsterGroup.Index.ToString();
@@ -178,13 +173,15 @@ namespace Ambermoon.Editor.Gui.Editors {
     private void MapMonstersToText() {
       _monstersAsText.Add(new());
 
-      foreach (MonsterData monster in _monsters) {
-        _monstersAsText.Add(
-          new() { 
-            Index = monster.Index,
-            Text = $"{monster.Index}: {monster.Name} ({monster.Level})"
-          }
-        );
+      if (Repository.Current.GameData is not null) {
+        foreach (MonsterData monster in Repository.Current.GameData.Monsters) {
+          _monstersAsText.Add(
+            new() { 
+              Index = monster.Index,
+              Text = $"{monster.Index}: {monster.Name} ({monster.Level})"
+            }
+          );
+        }
       }
     }
     #endregion

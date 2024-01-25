@@ -1,21 +1,17 @@
-﻿using Ambermoon.Data.GameDataRepository;
-using Ambermoon.Editor.Extensions;
-using Ambermoon.Editor.Gui.Custom;
+﻿using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Overviews;
-using static Ambermoon.Data.Tileset;
+using Ambermoon.Editor.Models;
 
 namespace Ambermoon.Editor.Gui {
   public partial class MainForm : Form {
     #region --- fields ----------------------------------------------------------------------------
-    private GameDataRepository? _repository;
-    private string              _repositoryFolder  = string.Empty;
-    private bool                _repositoryIsDirty = false;
-
+    #pragma warning disable CS0649 // wrong warning as forms are set within ShowForm()
     //private readonly InfoForm?          _infoForm;
     private readonly MapsForm?          _mapsForm;
     private readonly MonstersForm?      _monstersForm;
     private readonly MonsterGroupsForm? _monsterGroupsForm;
     private readonly NPCsForm?          _npcsForm;
+    #pragma warning restore CS0649
     #endregion
     #region --- local enum: entity type -----------------------------------------------------------
     private enum EntityType {
@@ -34,7 +30,7 @@ namespace Ambermoon.Editor.Gui {
     #region --- on load ---------------------------------------------------------------------------
     protected override void OnLoad(EventArgs e) {
       base.OnLoad(e);
-
+      
       trv.ExpandAll();
       CenterToScreen();
       UpdateControls();
@@ -43,17 +39,17 @@ namespace Ambermoon.Editor.Gui {
     #endregion
     #region --- update controls -------------------------------------------------------------------
     private void UpdateControls() {
-      menuItemLoad.Enabled   = _repository is null;
+      menuItemLoad.Enabled   = Repository.Current.GameData is null;
       menuItemSave.Enabled   =
       menuItemUnload.Enabled =
-      splitContainer.Enabled = _repository is not null;
+      splitContainer.Enabled = Repository.Current.GameData is not null;
     }
     #endregion
     #region --- wire events -----------------------------------------------------------------------
     private void WireEvents() {
-      menuItemExit.Click   += (s, e) => { SaveRepository(); Application.Exit(); };
+      menuItemExit.Click   += (s, e) => { Repository.Current.Save(); Application.Exit(); };
       menuItemLoad.Click   += (s, e) => LoadRepository();
-      menuItemSave.Click   += (s, e) => SaveRepository();
+      menuItemSave.Click   += (s, e) => Repository.Current.Save();
       menuItemUnload.Click += (s, e) => UnloadRepository();
       trv.AfterSelect      += (s, e) => NodeSelected(e.Node?.Name);
     }
@@ -68,48 +64,20 @@ namespace Ambermoon.Editor.Gui {
         UseDescriptionForTitle = true
       };
 
-      if (_repositoryFolder.IsNullOrEmpty()) { 
-        folderBrowserDialog.InitialDirectory = _repositoryFolder;
+      if (Repository.Current.Folder.HasText()) { 
+        folderBrowserDialog.InitialDirectory = Repository.Current.Folder;
       }
 
       if (folderBrowserDialog.ShowDialog() == DialogResult.OK) {
-        _repositoryFolder = folderBrowserDialog.SelectedPath;
-      }
-
-      try {
-        _repository = new(_repositoryFolder);
-      } catch (Exception ex) {
-        MsgBox.Show(
-          "Error",
-          $"Repository could not be loaded:{Environment.NewLine}{Environment.NewLine}{ex.Message}"
-        );
+        Repository.Current.Load(folderBrowserDialog.SelectedPath);
       }
 
       UpdateControls();
     }
     #endregion
-    #region --- save repository -------------------------------------------------------------------
-    private void SaveRepository() {
-      if (_repositoryIsDirty) {
-        _repository?.Save(_repositoryFolder);
-        _repositoryIsDirty = false;
-      }
-    }
-    #endregion
     #region --- unload repository -----------------------------------------------------------------
     private void UnloadRepository() {
-      if (
-        _repositoryIsDirty
-        && MsgBox.Show(
-          "Save before unload?",
-          "Do you want to save the changes you've made before unloading?",
-          MessageBoxButtons.YesNo
-        ) == DialogResult.Yes
-      ) {
-        SaveRepository();
-      }
-
-      _repository = null;
+      Repository.Current.Unload();
 
       for (int i = splitContainer.Panel2.Controls.Count - 1; i > -1; i--) {
         if (splitContainer.Panel2.Controls[i] is Form form) { 
@@ -128,10 +96,6 @@ namespace Ambermoon.Editor.Gui {
         return;
       }
 
-      Tile tile = new();
-      tile.Flags |= (true ? TileFlags.AllowMovementWitchBroom : TileFlags.None)
-                 |  (true ? TileFlags.None : TileFlags.None);
-      
       switch (nodeName) { 
         //case "trvNodeInfo":                    ShowForm(EntityType.Maps);          break;
         case "trvNodeMaps":                    ShowForm(EntityType.Maps);          break;
@@ -143,37 +107,39 @@ namespace Ambermoon.Editor.Gui {
     #endregion
     #region --- show form -------------------------------------------------------------------------
     private void ShowForm(EntityType type) {
-      Form? form = type switch {
-        EntityType.Maps          => _mapsForm,
-        EntityType.Monsters      => _monstersForm,
-        EntityType.MonsterGroups => _monsterGroupsForm,
-        EntityType.NPCs          => _npcsForm,
-        _                        => throw new NotImplementedException(),
-      };
-
-      if (form is null || form.IsDisposed ) { 
-        form = type switch {
-          EntityType.Maps          => new MapsForm(_repository!.Maps, _repository!.MapTexts),
-          EntityType.Monsters      => new MonstersForm(_repository!.Monsters),
-          EntityType.MonsterGroups => new MonsterGroupsForm(_repository!.Monsters, _repository!.MonsterGroups),
-          EntityType.NPCs          => new NPCsForm(_repository!.Npcs),
+      if (Repository.Current.GameData is not null) {
+        Form? form = type switch {
+          EntityType.Maps          => _mapsForm,
+          EntityType.Monsters      => _monstersForm,
+          EntityType.MonsterGroups => _monsterGroupsForm,
+          EntityType.NPCs          => _npcsForm,
           _                        => throw new NotImplementedException(),
         };
 
-        form.Dock = DockStyle.Fill;
-        form.TopLevel = false;
-        splitContainer.Panel2.Controls.Add(form);
-      }
+        if (form is null || form.IsDisposed) { 
+          form = type switch {
+            EntityType.Maps          => new MapsForm(),
+            EntityType.Monsters      => new MonstersForm(),
+            EntityType.MonsterGroups => new MonsterGroupsForm(),
+            EntityType.NPCs          => new NPCsForm(),
+            _                        => throw new NotImplementedException(),
+          };
 
-      foreach (Control control in splitContainer.Panel2.Controls) {
-        if (control is Form && control != form) {
-          control.Hide();
-          control.SendToBack();
+          form.Dock = DockStyle.Fill;
+          form.TopLevel = false;
+          splitContainer.Panel2.Controls.Add(form);
         }
-      }
 
-      form.Show();
-      form.BringToFront();
+        foreach (Control control in splitContainer.Panel2.Controls) {
+          if (control is Form && control != form) {
+            control.Hide();
+            control.SendToBack();
+          }
+        }
+
+        form.Show();
+        form.BringToFront();
+      }
     }
     #endregion
   }

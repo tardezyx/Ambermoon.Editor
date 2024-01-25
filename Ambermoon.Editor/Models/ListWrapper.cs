@@ -10,7 +10,11 @@ namespace Ambermoon.Editor.Models {
     #endregion
 
     #region --- constructor -----------------------------------------------------------------------
-    internal ListWrapper(DictionaryList<T> entries) {
+    internal ListWrapper(DictionaryList<T>? entries) {
+      if (entries is null) { 
+        return;
+      }
+
       InRepository = entries;
 
       foreach (T entry in entries) {

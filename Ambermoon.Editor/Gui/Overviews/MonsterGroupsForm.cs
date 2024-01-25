@@ -1,5 +1,4 @@
-﻿using Ambermoon.Data.GameDataRepository.Collections;
-using Ambermoon.Data.GameDataRepository.Data;
+﻿using Ambermoon.Data.GameDataRepository.Data;
 using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Editors;
@@ -8,7 +7,6 @@ using Ambermoon.Editor.Models;
 namespace Ambermoon.Editor.Gui.Overviews {
   public partial class MonsterGroupsForm : Form {
     #region --- fields ----------------------------------------------------------------------------
-    private readonly ListWrapper<MonsterData>                _monsters;
     private readonly ListWrapper<MonsterGroupData>           _monsterGroups;
     private readonly SortableBindingList<MonsterGroupAsText> _monsterGroupsAsText;
     #endregion
@@ -35,13 +33,10 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #endregion
 
     #region --- constructor -----------------------------------------------------------------------
-    public MonsterGroupsForm(
-      DictionaryList<MonsterData>      monsters,
-      DictionaryList<MonsterGroupData> monsterGroups
-    ) {
+    public MonsterGroupsForm() {
       InitializeComponent();
-      _monsters            = new(monsters);
-      _monsterGroups       = new(monsterGroups);
+
+      _monsterGroups       = new(Repository.Current.GameData?.MonsterGroups);
       _monsterGroupsAsText = [];
 
       Dictionary<OrderBy, string> orderOptions = [];
@@ -80,6 +75,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #region --- on load ---------------------------------------------------------------------------
     protected override void OnLoad(EventArgs e) {
       base.OnLoad(e);
+
       MapMonsterGroupsToText();
       InitDGV();
       WireEvents();
@@ -114,10 +110,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #region --- add monster group -----------------------------------------------------------------
     private void AddMonsterGroup() {
       if (_monsterGroups.InRepository.Create() is MonsterGroupData newMonsterGroup) { 
-        EditMonsterGroupForm form = new(
-          _monsters.InRepository,
-          newMonsterGroup
-        );
+        EditMonsterGroupForm form = new(newMonsterGroup);
 
         if (form.ShowDialog() == DialogResult.OK) {
           _monsterGroups.Add(form.MonsterGroup);
@@ -140,7 +133,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #region --- change monster group  -------------------------------------------------------------
     private void ChangeMonsterGroup(MonsterGroupAsText monsterGroupAsText, int rowIndex) {
       if (_monsterGroups.Get(monsterGroupAsText.Index) is MonsterGroupData monsterGroup) {
-        EditMonsterGroupForm form = new(_monsters.InRepository, monsterGroup);
+        EditMonsterGroupForm form = new(monsterGroup);
 
         if (form.ShowDialog() == DialogResult.OK) {
           monsterGroupAsText.Monsters = MapMonsterDetailsToText(MapMonsterGroupToDetails(monsterGroup));
@@ -190,7 +183,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
             Index = monsterIndex,
           };
 
-          if (_monsters.InRepository.FirstOrDefault(x => x.Index == monsterIndex) is MonsterData monsterData) {
+          if (Repository.Current.GameData?.Monsters.FirstOrDefault(x => x.Index == monsterIndex) is MonsterData monsterData) {
             monsterDetails.Level = monsterData.Level;
             monsterDetails.Name = monsterData.Name;
           }
