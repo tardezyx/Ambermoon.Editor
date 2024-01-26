@@ -112,7 +112,7 @@
       // 
       // splitContainer
       // 
-      splitContainer.Dock = DockStyle.Fill;
+      splitContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
       splitContainer.FixedPanel = FixedPanel.Panel1;
       splitContainer.Location = new Point(0, 24);
       splitContainer.Name = "splitContainer";
@@ -120,7 +120,7 @@
       // splitContainer.Panel1
       // 
       splitContainer.Panel1.Controls.Add(trv);
-      splitContainer.Size = new System.Drawing.Size(828, 562);
+      splitContainer.Size = new System.Drawing.Size(828, 537);
       splitContainer.SplitterDistance = 160;
       splitContainer.TabIndex = 2;
       // 
@@ -142,7 +142,7 @@
       treeNode6.Name = "trvNodeCharacters";
       treeNode6.Text = "Characters";
       trv.Nodes.AddRange(new TreeNode[] { treeNode1, treeNode2, treeNode6 });
-      trv.Size = new System.Drawing.Size(160, 562);
+      trv.Size = new System.Drawing.Size(160, 537);
       trv.TabIndex = 0;
       // 
       // statusStrip

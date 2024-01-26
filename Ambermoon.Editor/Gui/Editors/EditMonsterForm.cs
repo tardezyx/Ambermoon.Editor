@@ -1,16 +1,24 @@
 ﻿using Ambermoon.Data;
+using Ambermoon.Data.GameDataRepository;
 using Ambermoon.Data.GameDataRepository.Data;
+using Ambermoon.Data.GameDataRepository.Enumerations;
+using Ambermoon.Data.GameDataRepository.Windows;
 using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Models;
+using Spell = Ambermoon.Editor.Models.Spell;
+using Timer = System.Windows.Forms.Timer;
 
 namespace Ambermoon.Editor.Gui.Editors {
   public partial class EditMonsterForm : CustomForm {
     #region --- fields ----------------------------------------------------------------------------
-    private readonly SortableBindingList<CharValue>    _attributes = [];
-    private readonly MonsterData                       _monster;
-    private readonly SortableBindingList<CharValue>    _skills = [];
-    private readonly SortableBindingList<Models.Spell> _spells = [];
+    private readonly List<Bitmap>                   _animationFrames = [];
+    private          Timer                          _animationTimer = new();
+    private readonly SortableBindingList<CharValue> _attributes = [];
+    private          int                            _currentAnimationFrame = 0;
+    private readonly MonsterData                    _monster;
+    private readonly SortableBindingList<CharValue> _skills = [];
+    private readonly SortableBindingList<Spell>     _spells = [];
     #endregion
 
     #region --- constructor -----------------------------------------------------------------------
@@ -19,11 +27,17 @@ namespace Ambermoon.Editor.Gui.Editors {
 
       _monster = monster;
 
-      cbxClass.DataSource = _monster.Class.GetValuesAsOrderedStringList();
-      cbxElement.DataSource = _monster.Element.GetValuesAsOrderedStringList();
-      cbxGender.DataSource = _monster.Gender.GetValuesAsOrderedStringList();
-      cbxRace.DataSource = _monster.Race.GetValuesAsOrderedStringList();
-      cbxType.DataSource = _monster.Type.GetValuesAsOrderedStringList();
+      cbxClass.DataSource                    = _monster.Class.GetValuesAsOrderedStringList();
+      cbxCombatBackgroundDaytime.DataSource  = CombatBackgroundDaytime.Day.GetValuesAsOrderedStringList();
+      cbxElement.DataSource                  = _monster.Element.GetValuesAsOrderedStringList();
+      cbxGender.DataSource                   = _monster.Gender.GetValuesAsOrderedStringList();
+      cbxRace.DataSource                     = _monster.Race.GetValuesAsOrderedStringList();
+      cbxType.DataSource                     = _monster.Type.GetValuesAsOrderedStringList();
+      nudCombatGraphicIndex.Maximum          = Repository.Current.GameData!.MonsterImages.Count;
+      nudPaletteIndex.Maximum                = Repository.Current.GameData!.Palettes.Count;
+      pbxCombatGraphic.BackColor             = Color.Black;
+      pbxCombatGraphic.BackgroundImageLayout = ImageLayout.Zoom;
+      pbxCombatGraphic.SizeMode              = PictureBoxSizeMode.CenterImage;
     }
     #endregion
     #region --- init dgv: attributes --------------------------------------------------------------
@@ -31,6 +45,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
 
       dgvAttributes.AutoGenerateColumns = false;
+      dgvAttributes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
       dgvAttributes.Columns.AddRange(new DataGridViewColumn[] {
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(CharValue.Name),                   ReadOnly = true },
@@ -66,7 +81,7 @@ namespace Ambermoon.Editor.Gui.Editors {
         column.SortMode = DataGridViewColumnSortMode.NotSortable;
       }
 
-      //dgvEquipment.DataSource = _skills;
+      //dgvEquipment.DataSource = _equipment;
       dgvEquipment.AutoResizeColumns();
 
       _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
@@ -98,6 +113,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
 
       dgvSkills.AutoGenerateColumns = false;
+      dgvSkills.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
       dgvSkills.Columns.AddRange(new DataGridViewColumn[] {
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(CharValue.Name),                   ReadOnly = true },
@@ -123,12 +139,13 @@ namespace Ambermoon.Editor.Gui.Editors {
       _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
 
       dgvSpells.AutoGenerateColumns = false;
+      dgvSpells.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
       dgvSpells.Columns.AddRange(new DataGridViewColumn[] {
         new DataGridViewButtonColumn () { DataPropertyName = "Remove", Text = "X", UseColumnTextForButtonValue = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(Models.Spell.School), ReadOnly = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(Models.Spell.Index),  ReadOnly = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(Models.Spell.Name),   ReadOnly = true },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(Spell.School), ReadOnly = true },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(Spell.Index),  ReadOnly = true },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(Spell.Name),   ReadOnly = true },
       });
 
       foreach (DataGridViewColumn column in dgvSpells.Columns) {
@@ -147,7 +164,9 @@ namespace Ambermoon.Editor.Gui.Editors {
 
       CenterToParent();
       WireEvents();
+
       MapMonsterToControls();
+      GetCombatGraphics();
       InitDGVAttributes();
       InitDGVEquipment();
       InitDGVItems();
@@ -396,15 +415,20 @@ namespace Ambermoon.Editor.Gui.Editors {
 
       dgvSpells.CellClick += (s, e) => { 
         if(e.RowIndex > -1 && dgvSpells.Columns[e.ColumnIndex] is DataGridViewButtonColumn) {
-          RemoveSpell((Models.Spell)dgvSpells.Rows[e.RowIndex].DataBoundItem);
+          RemoveSpell((Spell)dgvSpells.Rows[e.RowIndex].DataBoundItem);
         }
       };
+
+      cbxCombatBackgroundDaytime.SelectedValueChanged += (s, e) => GetCombatGraphics();
+      chbxZoom.CheckStateChanged += (s, e) => { pbxCombatGraphic.SizeMode = chbxZoom.Checked ? PictureBoxSizeMode.Zoom : PictureBoxSizeMode.CenterImage; };
+      nudCombatBackgroundIndex.ValueChanged += (s, e) => GetCombatGraphics();
+      nudCombatGraphicIndex.ValueChanged += (s, e) => GetCombatGraphics();
     }
     #endregion
 
     #region --- add spell -------------------------------------------------------------------------
     private void AddSpell() {
-      Models.Spell newSpell = new() { 
+      Spell newSpell = new() { 
         Index  = 1,
         School = Repository.Current.GetSpellSchoolName(SpellSchool.Destruction),
         Name   = Repository.Current.GetSpellName(SpellSchool.Destruction, 1)
@@ -413,21 +437,22 @@ namespace Ambermoon.Editor.Gui.Editors {
       EditSpellForm form = new(newSpell);
 
       if (form.ShowDialog() == DialogResult.OK) {
-        // check if spell is already in list
+        bool spellAlreadyInList = false;
         foreach (DataGridViewRow row in dgvSpells.Rows) {
-          Models.Spell dgvSpell = (Models.Spell)row.DataBoundItem;
+          Spell dgvSpell = (Spell)row.DataBoundItem;
 
           if (dgvSpell.School == newSpell.School && dgvSpell.Index == newSpell.Index) {
-            return;
+            spellAlreadyInList = true;
           }
         }
 
-        _spells.Add(newSpell);
-        dgvSpells.AutoResizeColumns();
+        if (!spellAlreadyInList) {
+          _spells.Add(newSpell);
+          dgvSpells.AutoResizeColumns();
+        }
 
-        // scroll to and select new entry
         foreach (DataGridViewRow row in dgvSpells.Rows) {
-          Models.Spell dgvSpell = (Models.Spell)row.DataBoundItem;
+          Spell dgvSpell = (Spell)row.DataBoundItem;
 
           if (dgvSpell.School == newSpell.School && dgvSpell.Index == newSpell.Index) {
             dgvSpells.ClearSelection();
@@ -437,6 +462,57 @@ namespace Ambermoon.Editor.Gui.Editors {
             break;
           }
         }
+      }
+    }
+    #endregion
+    #region --- get combat graphics ---------------------------------------------------------------
+    private void GetCombatGraphics() {
+      _animationTimer.Stop();
+      _animationFrames.Clear();
+
+      if (Repository.Current.GameData is null) { 
+        return;
+      }
+      
+      CombatBackgroundImage backgroundImage = Repository.Current.GameData
+        .CombatBackgroundImages3D[(uint)nudCombatBackgroundIndex.Value];
+
+      Data.GameDataRepository.Image monsterImage = Repository.Current.GameData
+        .MonsterImages[(uint)nudCombatGraphicIndex.Value];
+
+      uint? paletteIndex = backgroundImage
+        .GetPaletteIndex(cbxCombatBackgroundDaytime.Text.GetEnumByName<CombatBackgroundDaytime>());
+
+      if (!paletteIndex.HasValue) {
+        return;
+      }
+
+      Palette palette = Repository.Current.GameData.Palettes[(uint)paletteIndex];
+      nudPaletteIndex.Value = palette.Index;
+
+      Bitmap combatBackgroundBitmap = WindowsExtensions.ToBitmap(backgroundImage.Frames[0], palette, true);
+      pbxCombatGraphic.BackgroundImage = combatBackgroundBitmap;
+
+      foreach (ImageData frame in monsterImage.Frames) {
+        Bitmap combatGraphicBitmap = WindowsExtensions.ToBitmap(frame, palette, true);
+        _animationFrames.Add(combatGraphicBitmap);
+      }
+
+      // animation timer
+      if (_animationFrames.Count > 0) {
+        _animationTimer.Interval = 125;
+
+        _animationTimer.Tick += (s, e) => {
+          if (_currentAnimationFrame > _animationFrames.Count - 1) {
+            _currentAnimationFrame = 0;
+          }
+
+          pbxCombatGraphic.Image = _animationFrames[_currentAnimationFrame];
+
+          _currentAnimationFrame++;
+        };
+     
+        _animationTimer.Start();
       }
     }
     #endregion
@@ -510,6 +586,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       _monster.DefeatExperience = (uint)nudDefeatExperience.Value;
       _monster.BaseDefense = (uint)nudDefenseBase.Value;
       //_monster.BonusDefense = nudDefenseBonus.Value;
+      //_monster.CombatGraphicIndex = (uint)nudCombatGraphicIndex.Value;
       _monster.MagicDefenseLevel = (int)nudDefenseMagicLevel.Value;
       _monster.Food = (uint)nudFood.Value;
       _monster.Gold = (uint)nudGold.Value;
@@ -555,7 +632,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       _monster.LearnedSpellsType5 = 0;
       _monster.LearnedSpellsType6 = 0;
 
-      foreach (Models.Spell spell in _spells) {
+      foreach (Spell spell in _spells) {
         uint spellValue = (uint)Math.Pow(2, spell.Index + 1);
 
         switch (Repository.Current.GameData!.SpellClassNames.IndexOf(spell.School)) {
@@ -634,6 +711,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       nudBonusSpellDamageMax.Value = _monster.BonusMaxSpellDamage;
       nudBonusSpellDamagePercentage.Value = _monster.BonusSpellDamagePercentage;
       nudBonusSpellDamageReduction.Value = _monster.BonusSpellDamageReduction;
+      nudCombatGraphicIndex.Value = _monster.CombatGraphicIndex;
       nudDefeatExperience.Value = _monster.DefeatExperience;
       nudDefenseBase.Value = _monster.BaseDefense;
       nudDefenseBonus.Value = _monster.BonusDefense;
@@ -684,17 +762,17 @@ namespace Ambermoon.Editor.Gui.Editors {
         index++;
       }
 
-      foreach (Models.Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Alchemistic, _monster.LearnedSpellsAlchemistic)) { _spells.Add(spell); }
-      foreach (Models.Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Destruction, _monster.LearnedSpellsDestruction)) { _spells.Add(spell); }
-      foreach (Models.Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Function, _monster.LearnedSpellsFunctional)) { _spells.Add(spell); }
-      foreach (Models.Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Healing, _monster.LearnedSpellsHealing)) { _spells.Add(spell); }
-      foreach (Models.Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Mystic, _monster.LearnedSpellsMystic)) { _spells.Add(spell); }
-      foreach (Models.Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Unknown1, _monster.LearnedSpellsType5)) { _spells.Add(spell); }
-      foreach (Models.Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Unknown2, _monster.LearnedSpellsType5)) { _spells.Add(spell); }
+      foreach (Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Alchemistic, _monster.LearnedSpellsAlchemistic)) { _spells.Add(spell); }
+      foreach (Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Destruction, _monster.LearnedSpellsDestruction)) { _spells.Add(spell); }
+      foreach (Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Function, _monster.LearnedSpellsFunctional)) { _spells.Add(spell); }
+      foreach (Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Healing, _monster.LearnedSpellsHealing)) { _spells.Add(spell); }
+      foreach (Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Mystic, _monster.LearnedSpellsMystic)) { _spells.Add(spell); }
+      foreach (Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Unknown1, _monster.LearnedSpellsType5)) { _spells.Add(spell); }
+      foreach (Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Unknown2, _monster.LearnedSpellsType5)) { _spells.Add(spell); }
     }
     #endregion
     #region --- remove spell ----------------------------------------------------------------------
-    private void RemoveSpell(Models.Spell spell) {
+    private void RemoveSpell(Spell spell) {
       string n = Environment.NewLine;
 
       if (

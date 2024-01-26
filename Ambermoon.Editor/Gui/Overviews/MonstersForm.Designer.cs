@@ -39,6 +39,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
       dgv.AllowUserToOrderColumns = true;
       dgv.AllowUserToResizeRows = false;
       dgv.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+      dgv.BackgroundColor = SystemColors.Control;
       dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
       dgv.Location = new Point(6, 51);
       dgv.MultiSelect = false;
@@ -46,7 +47,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
       dgv.ReadOnly = true;
       dgv.RowHeadersVisible = false;
       dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-      dgv.Size = new System.Drawing.Size(587, 261);
+      dgv.Size = new System.Drawing.Size(587, 255);
       dgv.TabIndex = 0;
       // 
       // grbxMonsters
@@ -76,6 +77,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
       AutoScaleMode = AutoScaleMode.Font;
       ClientSize = new System.Drawing.Size(599, 318);
       Controls.Add(grbxMonsters);
+      DoubleBuffered = true;
       FormBorderStyle = FormBorderStyle.None;
       Name = "MonstersForm";
       Text = "MonstersForm";
