@@ -7,9 +7,10 @@ using Ambermoon.Editor.Models;
 namespace Ambermoon.Editor.Gui.Editors {
   public partial class EditMonsterForm : CustomForm {
     #region --- fields ----------------------------------------------------------------------------
-    private readonly SortableBindingList<CharValue> _attributes = [];
-    private readonly MonsterData                    _monster;
-    private readonly SortableBindingList<CharValue> _skills = [];
+    private readonly SortableBindingList<CharValue>    _attributes = [];
+    private readonly MonsterData                       _monster;
+    private readonly SortableBindingList<CharValue>    _skills = [];
+    private readonly SortableBindingList<Models.Spell> _spells = [];
     #endregion
 
     #region --- constructor -----------------------------------------------------------------------
@@ -117,6 +118,29 @@ namespace Ambermoon.Editor.Gui.Editors {
       _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
+    #region --- init dgv: spells ------------------------------------------------------------------
+    private void InitDGVSpells() {
+      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
+
+      dgvSpells.AutoGenerateColumns = false;
+
+      dgvSpells.Columns.AddRange(new DataGridViewColumn[] {
+        new DataGridViewButtonColumn () { DataPropertyName = "Remove", Text = "X", UseColumnTextForButtonValue = true },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(Models.Spell.School), ReadOnly = true },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(Models.Spell.Index),  ReadOnly = true },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(Models.Spell.Name),   ReadOnly = true },
+      });
+
+      foreach (DataGridViewColumn column in dgvSpells.Columns) {
+        column.HeaderText = column.Name = column.DataPropertyName;
+      }
+
+      dgvSpells.DataSource = _spells;
+      dgvSpells.AutoResizeColumns();
+
+      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
+    }
+    #endregion
     #region --- on load ---------------------------------------------------------------------------
     protected override void OnLoad(EventArgs e) {
       base.OnLoad(e);
@@ -128,6 +152,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       InitDGVEquipment();
       InitDGVItems();
       InitDGVSkills();
+      InitDGVSpells();
     }
     #endregion
     #region --- update check boxes: battle flags --------------------------------------------------
@@ -317,6 +342,7 @@ namespace Ambermoon.Editor.Gui.Editors {
     #endregion
     #region --- wire events -----------------------------------------------------------------------
     private void WireEvents() {
+      btnAddSpell.Click += (s, e) => AddSpell();
       btnCancel.Click += (s, e) => Close();
       btnOK.Click += (s, e) => { MapControlsToMonster(); DialogResult = DialogResult.OK; Close(); };
 
@@ -367,9 +393,53 @@ namespace Ambermoon.Editor.Gui.Editors {
       chbxSpellMasteryMystic.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.Mystic);
       chbxSpellMasteryUnused1.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.Unused1);
       chbxSpellMasteryUnused2.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.Unused2);
+
+      dgvSpells.CellClick += (s, e) => { 
+        if(e.RowIndex > -1 && dgvSpells.Columns[e.ColumnIndex] is DataGridViewButtonColumn) {
+          RemoveSpell((Models.Spell)dgvSpells.Rows[e.RowIndex].DataBoundItem);
+        }
+      };
     }
     #endregion
 
+    #region --- add spell -------------------------------------------------------------------------
+    private void AddSpell() {
+      Models.Spell newSpell = new() { 
+        Index  = 1,
+        School = Repository.Current.GetSpellSchoolName(SpellSchool.Destruction),
+        Name   = Repository.Current.GetSpellName(SpellSchool.Destruction, 1)
+      };
+
+      EditSpellForm form = new(newSpell);
+
+      if (form.ShowDialog() == DialogResult.OK) {
+        // check if spell is already in list
+        foreach (DataGridViewRow row in dgvSpells.Rows) {
+          Models.Spell dgvSpell = (Models.Spell)row.DataBoundItem;
+
+          if (dgvSpell.School == newSpell.School && dgvSpell.Index == newSpell.Index) {
+            return;
+          }
+        }
+
+        _spells.Add(newSpell);
+        dgvSpells.AutoResizeColumns();
+
+        // scroll to and select new entry
+        foreach (DataGridViewRow row in dgvSpells.Rows) {
+          Models.Spell dgvSpell = (Models.Spell)row.DataBoundItem;
+
+          if (dgvSpell.School == newSpell.School && dgvSpell.Index == newSpell.Index) {
+            dgvSpells.ClearSelection();
+            dgvSpells.FirstDisplayedScrollingRowIndex = row.Index;
+            row.Selected = true;
+
+            break;
+          }
+        }
+      }
+    }
+    #endregion
     #region --- map controls to monster -----------------------------------------------------------
     private void MapControlsToMonster() {
       _monster.Name = tbxName.Text;
@@ -475,6 +545,28 @@ namespace Ambermoon.Editor.Gui.Editors {
           //_monster.Skills[index].TotalCurrentValue = attribute.TotalCurrent;
           //_monster.Skills[index].TotalMaxValue = attribute.TotalMax;
         }
+      }
+
+      _monster.LearnedSpellsAlchemistic = 0;
+      _monster.LearnedSpellsDestruction = 0;
+      _monster.LearnedSpellsFunctional = 0;
+      _monster.LearnedSpellsHealing = 0;
+      _monster.LearnedSpellsMystic = 0;
+      _monster.LearnedSpellsType5 = 0;
+      _monster.LearnedSpellsType6 = 0;
+
+      foreach (Models.Spell spell in _spells) {
+        uint spellValue = (uint)Math.Pow(2, spell.Index + 1);
+
+        switch (Repository.Current.GameData!.SpellClassNames.IndexOf(spell.School)) {
+          case 0: _monster.LearnedSpellsHealing += spellValue; break;
+          case 1: _monster.LearnedSpellsAlchemistic += spellValue; break;
+          case 2: _monster.LearnedSpellsMystic += spellValue; break;
+          case 3: _monster.LearnedSpellsDestruction += spellValue; break;
+          case 4: _monster.LearnedSpellsType5 += spellValue; break;
+          case 5: _monster.LearnedSpellsType6 += spellValue; break;
+          case 6: _monster.LearnedSpellsFunctional += spellValue; break;
+        };
       }
     }
     #endregion
@@ -590,6 +682,31 @@ namespace Ambermoon.Editor.Gui.Editors {
         );
 
         index++;
+      }
+
+      foreach (Models.Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Alchemistic, _monster.LearnedSpellsAlchemistic)) { _spells.Add(spell); }
+      foreach (Models.Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Destruction, _monster.LearnedSpellsDestruction)) { _spells.Add(spell); }
+      foreach (Models.Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Function, _monster.LearnedSpellsFunctional)) { _spells.Add(spell); }
+      foreach (Models.Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Healing, _monster.LearnedSpellsHealing)) { _spells.Add(spell); }
+      foreach (Models.Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Mystic, _monster.LearnedSpellsMystic)) { _spells.Add(spell); }
+      foreach (Models.Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Unknown1, _monster.LearnedSpellsType5)) { _spells.Add(spell); }
+      foreach (Models.Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Unknown2, _monster.LearnedSpellsType5)) { _spells.Add(spell); }
+    }
+    #endregion
+    #region --- remove spell ----------------------------------------------------------------------
+    private void RemoveSpell(Models.Spell spell) {
+      string n = Environment.NewLine;
+
+      if (
+        MsgBox.Show(
+          $"Remove {spell.School} {spell.Index}: {spell.Name}?",
+          $"Do you really want to remove the following spell?{n}{n}"
+          + $"School: {spell.School}{n}Index: {spell.Index}{n}Name: {spell.Name}",
+          MessageBoxButtons.YesNo
+        ) == DialogResult.Yes
+      ) {
+        _spells.Remove(spell);
+        dgvSpells.AutoResizeColumns();
       }
     }
     #endregion

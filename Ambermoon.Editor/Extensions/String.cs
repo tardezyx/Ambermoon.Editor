@@ -478,6 +478,13 @@ namespace Ambermoon.Editor.Extensions {
       return string.IsNullOrEmpty(source);
     }
     #endregion
+    #region --- reverse ---------------------------------------------------------------------------
+    internal static string Reverse(this string source) {
+      char[] charArray = source.ToCharArray();
+      Array.Reverse(charArray);
+      return new string(charArray);
+    }
+    #endregion
     #region --- trim end --------------------------------------------------------------------------
     internal static string? TrimEnd(this string? source, string endString) {
       if (source.IsNullOrEmpty() || !source.EndsWith(endString)) {

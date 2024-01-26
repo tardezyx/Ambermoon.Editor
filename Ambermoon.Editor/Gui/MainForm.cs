@@ -1,4 +1,5 @@
-﻿using Ambermoon.Editor.Extensions;
+﻿using Ambermoon.Editor.Base;
+using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Overviews;
 using Ambermoon.Editor.Models;
@@ -32,6 +33,12 @@ namespace Ambermoon.Editor.Gui {
     protected override void OnLoad(EventArgs e) {
       base.OnLoad(e);
       
+      Settings.ReadIni();
+
+      if (Settings.AutoLoadRepository && Settings.DefaultPath.HasText()) {
+        Repository.Current.Load(Settings.DefaultPath);
+      }
+
       trv.ExpandAll();
       CenterToScreen();
       UpdateControls();

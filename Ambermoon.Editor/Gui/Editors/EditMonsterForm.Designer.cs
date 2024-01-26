@@ -28,6 +28,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
       DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
       DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+      DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
       tbxName = new TextBox();
       btnOK = new Button();
       btnCancel = new Button();
@@ -151,6 +152,9 @@ namespace Ambermoon.Editor.Gui.Editors {
       label13 = new Label();
       label37 = new Label();
       label14 = new Label();
+      grbxSpells = new GroupBox();
+      dgvSpells = new CustomDataGridView();
+      btnAddSpell = new Button();
       grbxAttributes.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)dgvAttributes).BeginInit();
       grbxSkills.SuspendLayout();
@@ -191,6 +195,8 @@ namespace Ambermoon.Editor.Gui.Editors {
       ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamagePercentage).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamageBase).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamageMax).BeginInit();
+      grbxSpells.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)dgvSpells).BeginInit();
       SuspendLayout();
       // 
       // tbxName
@@ -205,7 +211,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // btnOK
       // 
       btnOK.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-      btnOK.Location = new Point(1246, 677);
+      btnOK.Location = new Point(1536, 677);
       btnOK.Name = "btnOK";
       btnOK.Size = new System.Drawing.Size(75, 23);
       btnOK.TabIndex = 1;
@@ -215,7 +221,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // btnCancel
       // 
       btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-      btnCancel.Location = new Point(1327, 677);
+      btnCancel.Location = new Point(1617, 677);
       btnCancel.Name = "btnCancel";
       btnCancel.Size = new System.Drawing.Size(75, 23);
       btnCancel.TabIndex = 2;
@@ -256,7 +262,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       statusStrip.BackColor = Color.Transparent;
       statusStrip.Location = new Point(0, 690);
       statusStrip.Name = "statusStrip";
-      statusStrip.Size = new System.Drawing.Size(1414, 22);
+      statusStrip.Size = new System.Drawing.Size(1704, 22);
       statusStrip.TabIndex = 6;
       statusStrip.Text = "statusStrip1";
       // 
@@ -266,7 +272,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxAttributes.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
       grbxAttributes.Location = new Point(509, 12);
       grbxAttributes.Name = "grbxAttributes";
-      grbxAttributes.Size = new System.Drawing.Size(446, 302);
+      grbxAttributes.Size = new System.Drawing.Size(382, 302);
       grbxAttributes.TabIndex = 7;
       grbxAttributes.TabStop = false;
       grbxAttributes.Text = "Attributes";
@@ -291,17 +297,16 @@ namespace Ambermoon.Editor.Gui.Editors {
       dgvAttributes.Name = "dgvAttributes";
       dgvAttributes.RowHeadersVisible = false;
       dgvAttributes.SelectionMode = DataGridViewSelectionMode.CellSelect;
-      dgvAttributes.Size = new System.Drawing.Size(440, 280);
+      dgvAttributes.Size = new System.Drawing.Size(376, 280);
       dgvAttributes.TabIndex = 0;
       // 
       // grbxSkills
       // 
-      grbxSkills.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
       grbxSkills.Controls.Add(dgvSkills);
       grbxSkills.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-      grbxSkills.Location = new Point(961, 12);
+      grbxSkills.Location = new Point(897, 12);
       grbxSkills.Name = "grbxSkills";
-      grbxSkills.Size = new System.Drawing.Size(446, 302);
+      grbxSkills.Size = new System.Drawing.Size(387, 302);
       grbxSkills.TabIndex = 8;
       grbxSkills.TabStop = false;
       grbxSkills.Text = "Skills";
@@ -326,7 +331,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       dgvSkills.Name = "dgvSkills";
       dgvSkills.RowHeadersVisible = false;
       dgvSkills.SelectionMode = DataGridViewSelectionMode.CellSelect;
-      dgvSkills.Size = new System.Drawing.Size(440, 280);
+      dgvSkills.Size = new System.Drawing.Size(381, 280);
       dgvSkills.TabIndex = 0;
       // 
       // grbxGeneral
@@ -1448,9 +1453,9 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxEquipment.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
       grbxEquipment.Controls.Add(dgvEquipment);
       grbxEquipment.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-      grbxEquipment.Location = new Point(509, 317);
+      grbxEquipment.Location = new Point(897, 320);
       grbxEquipment.Name = "grbxEquipment";
-      grbxEquipment.Size = new System.Drawing.Size(443, 354);
+      grbxEquipment.Size = new System.Drawing.Size(387, 351);
       grbxEquipment.TabIndex = 45;
       grbxEquipment.TabStop = false;
       grbxEquipment.Text = "Equipment";
@@ -1460,14 +1465,14 @@ namespace Ambermoon.Editor.Gui.Editors {
       dgvEquipment.AllowUserToAddRows = false;
       dgvEquipment.AllowUserToDeleteRows = false;
       dgvEquipment.AllowUserToResizeRows = false;
+      dgvEquipment.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
       dgvEquipment.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      dgvEquipment.Dock = DockStyle.Fill;
       dgvEquipment.Location = new Point(3, 19);
       dgvEquipment.MultiSelect = false;
       dgvEquipment.Name = "dgvEquipment";
       dgvEquipment.RowHeadersVisible = false;
       dgvEquipment.SelectionMode = DataGridViewSelectionMode.CellSelect;
-      dgvEquipment.Size = new System.Drawing.Size(437, 332);
+      dgvEquipment.Size = new System.Drawing.Size(437, 329);
       dgvEquipment.TabIndex = 0;
       // 
       // grbxItems
@@ -1475,9 +1480,9 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxItems.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
       grbxItems.Controls.Add(dgvItems);
       grbxItems.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-      grbxItems.Location = new Point(961, 317);
+      grbxItems.Location = new Point(1290, 12);
       grbxItems.Name = "grbxItems";
-      grbxItems.Size = new System.Drawing.Size(443, 354);
+      grbxItems.Size = new System.Drawing.Size(404, 659);
       grbxItems.TabIndex = 46;
       grbxItems.TabStop = false;
       grbxItems.Text = "Items";
@@ -1502,7 +1507,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       dgvItems.Name = "dgvItems";
       dgvItems.RowHeadersVisible = false;
       dgvItems.SelectionMode = DataGridViewSelectionMode.CellSelect;
-      dgvItems.Size = new System.Drawing.Size(437, 332);
+      dgvItems.Size = new System.Drawing.Size(398, 637);
       dgvItems.TabIndex = 0;
       // 
       // grbxBonusSpellDamage
@@ -1600,13 +1605,59 @@ namespace Ambermoon.Editor.Gui.Editors {
       label14.TabIndex = 43;
       label14.Text = "Percentage";
       // 
+      // grbxSpells
+      // 
+      grbxSpells.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+      grbxSpells.Controls.Add(btnAddSpell);
+      grbxSpells.Controls.Add(dgvSpells);
+      grbxSpells.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+      grbxSpells.Location = new Point(509, 320);
+      grbxSpells.Name = "grbxSpells";
+      grbxSpells.Size = new System.Drawing.Size(382, 348);
+      grbxSpells.TabIndex = 48;
+      grbxSpells.TabStop = false;
+      grbxSpells.Text = "Spells";
+      // 
+      // dgvSpells
+      // 
+      dgvSpells.AllowUserToAddRows = false;
+      dgvSpells.AllowUserToDeleteRows = false;
+      dgvSpells.AllowUserToResizeRows = false;
+      dgvSpells.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+      dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+      dataGridViewCellStyle4.BackColor = SystemColors.Window;
+      dataGridViewCellStyle4.Font = new Font("Segoe UI", 8F);
+      dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
+      dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+      dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+      dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+      dgvSpells.DefaultCellStyle = dataGridViewCellStyle4;
+      dgvSpells.Location = new Point(3, 51);
+      dgvSpells.MultiSelect = false;
+      dgvSpells.Name = "dgvSpells";
+      dgvSpells.RowHeadersVisible = false;
+      dgvSpells.SelectionMode = DataGridViewSelectionMode.CellSelect;
+      dgvSpells.Size = new System.Drawing.Size(376, 294);
+      dgvSpells.TabIndex = 0;
+      // 
+      // btnAddSpell
+      // 
+      btnAddSpell.Font = new Font("Segoe UI", 9F);
+      btnAddSpell.Location = new Point(6, 22);
+      btnAddSpell.Name = "btnAddSpell";
+      btnAddSpell.Size = new System.Drawing.Size(75, 23);
+      btnAddSpell.TabIndex = 49;
+      btnAddSpell.Text = "Add Spell";
+      btnAddSpell.UseVisualStyleBackColor = true;
+      // 
       // EditMonsterForm
       // 
       AcceptButton = btnOK;
       AutoScaleDimensions = new SizeF(7F, 15F);
       AutoScaleMode = AutoScaleMode.Font;
       CancelButton = btnCancel;
-      ClientSize = new System.Drawing.Size(1414, 712);
+      ClientSize = new System.Drawing.Size(1704, 712);
+      Controls.Add(grbxSpells);
       Controls.Add(grbxBonusSpellDamage);
       Controls.Add(lblIndex);
       Controls.Add(tbxIndex);
@@ -1681,6 +1732,8 @@ namespace Ambermoon.Editor.Gui.Editors {
       ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamagePercentage).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamageBase).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamageMax).EndInit();
+      grbxSpells.ResumeLayout(false);
+      ((System.ComponentModel.ISupportInitialize)dgvSpells).EndInit();
       ResumeLayout(false);
       PerformLayout();
     }
@@ -1810,5 +1863,8 @@ namespace Ambermoon.Editor.Gui.Editors {
     private NumericUpDown nudBonusSpellDamageReduction;
     private NumericUpDown nudBonusSpellDamagePercentage;
     private NumericUpDown nudBonusSpellDamageBase;
+    private GroupBox grbxSpells;
+    private CustomDataGridView dgvSpells;
+    private Button btnAddSpell;
   }
 }

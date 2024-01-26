@@ -1,4 +1,5 @@
-﻿using Ambermoon.Data.GameDataRepository;
+﻿using Ambermoon.Data;
+using Ambermoon.Data.GameDataRepository;
 using Ambermoon.Editor.Base;
 using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
@@ -25,10 +26,12 @@ namespace Ambermoon.Editor.Models {
     public int? GetSkillIndex(string name)     => GetIndexOfStringList(GameData?.SkillNames,name);
     #endregion
     #region --- get names -------------------------------------------------------------------------
-    public string GetAttributeName(int index)      => GetValueNameOfStringList(GameData?.AttributeNames,      index);
-    public string GetAttributeShortName(int index) => GetValueNameOfStringList(GameData?.AttributeShortNames, index);
-    public string GetSkillName(int index)          => GetValueNameOfStringList(GameData?.SkillNames,          index);
-    public string GetSkillShortName(int index)     => GetValueNameOfStringList(GameData?.SkillShortNames,     index);
+    public string GetAttributeName(int index)                      => GetValueNameOfStringList(GameData?.AttributeNames,      index);
+    public string GetAttributeShortName(int index)                 => GetValueNameOfStringList(GameData?.AttributeShortNames, index);
+    public string GetSkillName(int index)                          => GetValueNameOfStringList(GameData?.SkillNames,          index);
+    public string GetSkillShortName(int index)                     => GetValueNameOfStringList(GameData?.SkillShortNames,     index);
+    public string GetSpellName(SpellSchool spellSchool, int index) => GetValueNameOfStringList(GetSpellNames(spellSchool),    index);
+    public string GetSpellSchoolName(SpellSchool spellSchool)      => GetValueNameOfStringList(GameData?.SpellClassNames,     (int)spellSchool);
     #endregion
     #region --- get value name of string list -----------------------------------------------------
     private static string GetValueNameOfStringList(List<string>? list, int index) {
@@ -42,6 +45,53 @@ namespace Ambermoon.Editor.Models {
     #region --- get index of string list ----------------------------------------------------------
     private static int? GetIndexOfStringList(List<string>? list, string entry) {
       return list?.IndexOf(entry);
+    }
+    #endregion
+    #region --- get spell -------------------------------------------------------------------------
+    public Spell GetSpell(SpellSchool spellSchool, int index) {
+      return new() {
+        Index  = index,
+        School = GetSpellSchoolName(spellSchool),
+        Name   = GetSpellName(spellSchool, index)
+      };
+    }
+    #endregion
+    #region --- get spell names -------------------------------------------------------------------
+    public List<string> GetSpellNames(SpellSchool spellSchool) {
+      List<string> result = [];
+
+      if (GameData is not null) { 
+        int startIndex = (int)spellSchool * 30;
+
+        for (int i = startIndex; i <= startIndex + 29; i++) {
+          result.Add(GameData.SpellNames[i]);
+        }
+      }
+
+      return result;
+    }
+    #endregion
+    #region --- get spells by uint ----------------------------------------------------------------
+    public List<Spell> GetSpellsByUint(SpellSchool spellSchool, uint spells) {
+      List<Spell> result = [];
+
+      if (GameData is not null) {
+        string spellsInBitString = Convert
+          .ToString(spells, toBase: 2)
+          .Reverse();
+
+        List<int> foundIndexes = [];
+
+        for (int i = spellsInBitString.IndexOf('1'); i > -1; i = spellsInBitString.IndexOf('1', i + 1)) {
+          foundIndexes.Add(i-1);
+        }
+
+        foreach (int i in foundIndexes) {
+          result.Add(GetSpell(spellSchool, i));
+        }
+      }
+
+      return result;
     }
     #endregion
     #region --- load ------------------------------------------------------------------------------
