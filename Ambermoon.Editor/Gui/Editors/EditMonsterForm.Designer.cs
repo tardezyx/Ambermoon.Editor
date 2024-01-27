@@ -596,6 +596,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       nudCombatBackgroundIndex.Font = new Font("Segoe UI", 9F);
       nudCombatBackgroundIndex.Location = new Point(83, 161);
       nudCombatBackgroundIndex.Maximum = new decimal(new int[] { 15, 0, 0, 0 });
+      nudCombatBackgroundIndex.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
       nudCombatBackgroundIndex.Name = "nudCombatBackgroundIndex";
       nudCombatBackgroundIndex.Size = new System.Drawing.Size(37, 23);
       nudCombatBackgroundIndex.TabIndex = 50;
@@ -830,7 +831,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       nudAttacksPerRound.Font = new Font("Segoe UI", 9F);
       nudAttacksPerRound.Location = new Point(104, 109);
-      nudAttacksPerRound.Maximum = new decimal(new int[] { 9, 0, 0, 0 });
+      nudAttacksPerRound.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
       nudAttacksPerRound.Name = "nudAttacksPerRound";
       nudAttacksPerRound.Size = new System.Drawing.Size(57, 23);
       nudAttacksPerRound.TabIndex = 41;

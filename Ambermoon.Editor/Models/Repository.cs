@@ -5,6 +5,7 @@ using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 
 namespace Ambermoon.Editor.Models {
+
   internal class Repository {
     #region --- fields ----------------------------------------------------------------------------
     private static readonly Repository _instance;
@@ -15,6 +16,7 @@ namespace Ambermoon.Editor.Models {
     public        GameDataRepository? GameData { get; private set; }
     public        bool                IsDirty  { get; private set; } = false;
 
+    public        List<CombatBackground> CombatBackgrounds { get; private set; } = [];
     public        Dictionary<Race, string> Races { get; private set; } = [];
     #endregion
 
@@ -96,25 +98,64 @@ namespace Ambermoon.Editor.Models {
       return result;
     }
     #endregion
-    //#region --- map texts -------------------------------------------------------------------------
-    //public void MapTexts() {
-    //  if (GameData is null) {
-    //    return;
-    //  }
+    #region --- map repo stuff --------------------------------------------------------------------
+    public void MapRepoStuff() {
+      if (GameData is null) {
+        return;
+      }
 
-    //  foreach (Race entry in Enum.GetValues(typeof(Race))) {
-    //    int index = (int)entry;
+      List<CombatBackgroundImage> combatBackgroundImages = [];
+      combatBackgroundImages.AddRange(GameData.CombatBackgroundImages2D);
+      combatBackgroundImages.AddRange(GameData.CombatBackgroundImages3D);
 
-    //    if (index > GameData.RaceNames.Count -1) {
-    //      Races.Add(entry, entry.ToString());
-    //    } else {
-    //      string raceName = GameData.RaceNames[index];
-    //      Races.Add(entry, raceName.HasText() ? raceName : entry.ToString());
-    //    }
-    //  }
-    //  int inde2x = 0;
-    //}
-    //#endregion
+      int index = 1; 
+      foreach (CombatBackgroundImage combatBackgroundImage in combatBackgroundImages) {
+        CombatBackground combatBackground = new(combatBackgroundImage) {
+          Variant = index.ToString("D2")
+        };
+
+        bool exists = false;
+        foreach (CombatBackground image in CombatBackgrounds) {
+          if (Msvcrt.CompareMemCmp(image.ComparisonFrame, combatBackground.ComparisonFrame)) {
+            if (image.HasIdenticalPalettesAs(combatBackground)) {
+              exists = true;
+              break;
+            }
+
+            combatBackground.Variant = $"{image.Variant}b";
+            image.Variant            = $"{image.Variant}a";
+          }
+        }
+
+        if (exists) {
+          continue;
+        }
+
+        CombatBackgrounds.Add(combatBackground);
+        index++;
+      }
+
+      index = 1;
+      CombatBackgrounds = [.. CombatBackgrounds.OrderBy(x => x.Variant)];
+      foreach (CombatBackground image in CombatBackgrounds) {
+        image.Index = index++;
+      }
+
+      //foreach (Race entry in Enum.GetValues(typeof(Race))) {
+      //  int index = (int)entry;
+
+      //  if (index > GameData.RaceNames.Count - 1) {
+      //    Races.Add(entry, entry.ToString());
+      //  } else {
+      //    string raceName = GameData.RaceNames[index];
+      //    Races.Add(entry, raceName.HasText() ? raceName : entry.ToString());
+      //  }
+      //}
+
+
+      int asdadafd = 0;
+    }
+    #endregion
     #region --- load ------------------------------------------------------------------------------
     public void Load(string folder = "") {
       if (folder.IsNullOrEmpty()) {
@@ -141,7 +182,7 @@ namespace Ambermoon.Editor.Models {
         );
       }
 
-      //MapTexts();
+      MapRepoStuff();
     }
     #endregion
     #region --- save ------------------------------------------------------------------------------

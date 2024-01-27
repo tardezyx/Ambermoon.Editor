@@ -13,7 +13,7 @@ namespace Ambermoon.Editor.Gui.Editors {
   public partial class EditMonsterForm : CustomForm {
     #region --- fields ----------------------------------------------------------------------------
     private readonly List<Bitmap>                   _animationFrames = [];
-    private          Timer                          _animationTimer = new();
+    private readonly Timer                          _animationTimer = new();
     private readonly SortableBindingList<CharValue> _attributes = [];
     private          int                            _currentAnimationFrame = 0;
     private readonly MonsterData                    _monster;
@@ -39,6 +39,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       cbxGender.DataSource                  = _monster.Gender.GetValuesAsOrderedStringList();
       cbxRace.DataSource                    = _monster.Race.GetValuesAsOrderedStringList();
       cbxType.DataSource                    = _monster.Type.GetValuesAsOrderedStringList();
+      nudCombatBackgroundIndex.Maximum      = Repository.Current.CombatBackgrounds.Count;
       nudCombatGraphicIndex.Maximum         = Repository.Current.GameData!.MonsterImages.Count;
       nudPaletteIndex.Maximum               = Repository.Current.GameData!.Palettes.Count;
     }
@@ -458,30 +459,25 @@ namespace Ambermoon.Editor.Gui.Editors {
       if (Repository.Current.GameData is null) { 
         return;
       }
-      
-      CombatBackgroundImage backgroundImage = Repository.Current.GameData
-        .CombatBackgroundImages3D[(uint)nudCombatBackgroundIndex.Value];
+
+      CombatBackgroundDaytime daytime = cbxCombatBackgroundDaytime.Text
+        .GetEnumByName<CombatBackgroundDaytime>();
+
+      CombatBackground background = Repository.Current.CombatBackgrounds
+        .First(x => x.Index == nudCombatBackgroundIndex.Value);
 
       Data.GameDataRepository.Image monsterImage = Repository.Current.GameData
         .MonsterImages[(uint)nudCombatGraphicIndex.Value];
 
-      uint? paletteIndex = backgroundImage
-        .GetPaletteIndex(cbxCombatBackgroundDaytime.Text.GetEnumByName<CombatBackgroundDaytime>());
-
-      if (!paletteIndex.HasValue) {
-        return;
-      }
-
-      Palette palette = Repository.Current.GameData.Palettes[(uint)paletteIndex];
-      nudPaletteIndex.Value = palette.Index;
-
-      Bitmap combatBackgroundBitmap = WindowsExtensions.ToBitmap(backgroundImage.Frames[0], palette, true);
-      pbxCombatGraphic.BackgroundImage = combatBackgroundBitmap;
+      Palette palette = background.GetPalette(daytime);
 
       foreach (ImageData frame in monsterImage.Frames) {
         Bitmap combatGraphicBitmap = WindowsExtensions.ToBitmap(frame, palette, true);
         _animationFrames.Add(combatGraphicBitmap);
       }
+
+      nudPaletteIndex.Value = palette.Index;
+      pbxCombatGraphic.BackgroundImage = background.GetRenderedFrame(daytime);
     }
     #endregion
     #region --- map controls to monster -----------------------------------------------------------
