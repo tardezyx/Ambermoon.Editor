@@ -6,7 +6,8 @@ namespace Ambermoon.Editor.Base {
   internal static partial class Settings {
     #region --- properties ------------------------------------------------------------------------
     public static bool   AutoLoadRepository { get; set; }
-    public static string DefaultPath        { get; set; } = string.Empty;
+    public static string DefaultPath        { get; set; }         = string.Empty;
+    public static bool   IsNotInDesignMode  { get; private set; } = false;
     #endregion
     
     #region --- get app namespace -----------------------------------------------------------------
@@ -41,6 +42,8 @@ namespace Ambermoon.Editor.Base {
     #endregion
     #region --- read ini --------------------------------------------------------------------------
     public static void ReadIni() {
+      IsNotInDesignMode = true; // disable design mode when app runs (to prevent visual studio designer to adopt values)
+
       List<string> result = [];
 
       string iniPath = @$"{GetAppPath()}\editor.ini";
@@ -58,7 +61,7 @@ namespace Ambermoon.Editor.Base {
           case "Auto Load Repository": AutoLoadRepository = bool.Parse(value); break;
           case "Default Path":         DefaultPath        = value;             break;
         }
-      }                                                                    
+      }
     }
     #endregion
     #region --- set defaults ----------------------------------------------------------------------

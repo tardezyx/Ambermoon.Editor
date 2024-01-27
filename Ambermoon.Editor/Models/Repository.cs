@@ -14,6 +14,8 @@ namespace Ambermoon.Editor.Models {
     public        string              Folder   { get; private set; } = string.Empty;
     public        GameDataRepository? GameData { get; private set; }
     public        bool                IsDirty  { get; private set; } = false;
+
+    public        Dictionary<Race, string> Races { get; private set; } = [];
     #endregion
 
     #region --- constructor: singleton ------------------------------------------------------------
@@ -94,6 +96,25 @@ namespace Ambermoon.Editor.Models {
       return result;
     }
     #endregion
+    //#region --- map texts -------------------------------------------------------------------------
+    //public void MapTexts() {
+    //  if (GameData is null) {
+    //    return;
+    //  }
+
+    //  foreach (Race entry in Enum.GetValues(typeof(Race))) {
+    //    int index = (int)entry;
+
+    //    if (index > GameData.RaceNames.Count -1) {
+    //      Races.Add(entry, entry.ToString());
+    //    } else {
+    //      string raceName = GameData.RaceNames[index];
+    //      Races.Add(entry, raceName.HasText() ? raceName : entry.ToString());
+    //    }
+    //  }
+    //  int inde2x = 0;
+    //}
+    //#endregion
     #region --- load ------------------------------------------------------------------------------
     public void Load(string folder = "") {
       if (folder.IsNullOrEmpty()) {
@@ -119,6 +140,8 @@ namespace Ambermoon.Editor.Models {
           $"Repository could not be loaded:{Environment.NewLine}{Environment.NewLine}{ex.Message}"
         );
       }
+
+      //MapTexts();
     }
     #endregion
     #region --- save ------------------------------------------------------------------------------

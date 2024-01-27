@@ -73,6 +73,26 @@ namespace Ambermoon.Editor.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap background_equipment {
+            get {
+                object obj = ResourceManager.GetObject("background_equipment", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap background_items {
+            get {
+                object obj = ResourceManager.GetObject("background_items", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap baseline_grade_black_24dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_grade_black_24dp", resourceCulture);

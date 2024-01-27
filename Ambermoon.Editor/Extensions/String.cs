@@ -62,12 +62,12 @@ namespace Ambermoon.Editor.Extensions {
     }
     #endregion
     #region --- get enum by description -----------------------------------------------------------
-    internal static T GetEnumByDescription<T>(this string? source) where T : System.Enum {
+    internal static T GetEnumByDescription<T>(this string? source) where T : Enum {
       foreach (MemberInfo member in typeof(T).GetMembers()) {
         if (member.GetCustomAttributes<DescriptionAttribute>()
                   .FirstOrDefault()?
                   .Description == source) {
-          return (T)System.Enum.Parse(typeof(T), member.Name);
+          return (T)Enum.Parse(typeof(T), member.Name);
         }
       }
 
@@ -75,9 +75,9 @@ namespace Ambermoon.Editor.Extensions {
     }
     #endregion
     #region --- get enum by name ------------------------------------------------------------------
-    internal static T GetEnumByName<T>(this string source) where T : System.Enum {
+    internal static T GetEnumByName<T>(this string source) where T : Enum {
       try { 
-        return (T)System.Enum.Parse(typeof(T), source);
+        return (T)Enum.Parse(typeof(T), source);
       } catch (Exception ex) {
         throw new ArgumentException(ex.Message, nameof(source));
       }

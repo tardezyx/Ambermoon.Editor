@@ -113,6 +113,7 @@
       // splitContainer
       // 
       splitContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+      splitContainer.BackColor = Color.Transparent;
       splitContainer.FixedPanel = FixedPanel.Panel1;
       splitContainer.Location = new Point(0, 24);
       splitContainer.Name = "splitContainer";
@@ -120,13 +121,19 @@
       // splitContainer.Panel1
       // 
       splitContainer.Panel1.Controls.Add(trv);
+      // 
+      // splitContainer.Panel2
+      // 
+      splitContainer.Panel2.BackColor = Color.Transparent;
       splitContainer.Size = new System.Drawing.Size(828, 537);
       splitContainer.SplitterDistance = 160;
       splitContainer.TabIndex = 2;
       // 
       // trv
       // 
+      trv.BackColor = Color.LightGray;
       trv.Dock = DockStyle.Fill;
+      trv.ForeColor = SystemColors.ControlText;
       trv.Location = new Point(0, 0);
       trv.Name = "trv";
       treeNode1.Name = "trvNodeInfo";

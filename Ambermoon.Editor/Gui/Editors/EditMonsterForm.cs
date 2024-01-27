@@ -17,6 +17,7 @@ namespace Ambermoon.Editor.Gui.Editors {
     private readonly SortableBindingList<CharValue> _attributes = [];
     private          int                            _currentAnimationFrame = 0;
     private readonly MonsterData                    _monster;
+    private readonly Dictionary<int, string>        _races = [];
     private readonly SortableBindingList<CharValue> _skills = [];
     private readonly SortableBindingList<Spell>     _spells = [];
     #endregion
@@ -27,17 +28,19 @@ namespace Ambermoon.Editor.Gui.Editors {
 
       _monster = monster;
 
-      cbxClass.DataSource                    = _monster.Class.GetValuesAsOrderedStringList();
-      cbxCombatBackgroundDaytime.DataSource  = CombatBackgroundDaytime.Day.GetValuesAsOrderedStringList();
-      cbxElement.DataSource                  = _monster.Element.GetValuesAsOrderedStringList();
-      cbxGender.DataSource                   = _monster.Gender.GetValuesAsOrderedStringList();
-      cbxRace.DataSource                     = _monster.Race.GetValuesAsOrderedStringList();
-      cbxType.DataSource                     = _monster.Type.GetValuesAsOrderedStringList();
-      nudCombatGraphicIndex.Maximum          = Repository.Current.GameData!.MonsterImages.Count;
-      nudPaletteIndex.Maximum                = Repository.Current.GameData!.Palettes.Count;
-      pbxCombatGraphic.BackColor             = Color.Black;
-      pbxCombatGraphic.BackgroundImageLayout = ImageLayout.Zoom;
-      pbxCombatGraphic.SizeMode              = PictureBoxSizeMode.CenterImage;
+      int index = 0;
+      foreach (string raceName in Repository.Current.GameData!.RaceNames) {
+        _races.Add(index++, raceName);
+      }
+
+      cbxClass.DataSource                   = _monster.Class.GetValuesAsOrderedStringList();
+      cbxCombatBackgroundDaytime.DataSource = CombatBackgroundDaytime.Day.GetValuesAsOrderedStringList();
+      cbxElement.DataSource                 = _monster.Element.GetValuesAsOrderedStringList();
+      cbxGender.DataSource                  = _monster.Gender.GetValuesAsOrderedStringList();
+      cbxRace.DataSource                    = _monster.Race.GetValuesAsOrderedStringList();
+      cbxType.DataSource                    = _monster.Type.GetValuesAsOrderedStringList();
+      nudCombatGraphicIndex.Maximum         = Repository.Current.GameData!.MonsterImages.Count;
+      nudPaletteIndex.Maximum               = Repository.Current.GameData!.Palettes.Count;
     }
     #endregion
     #region --- init dgv: attributes --------------------------------------------------------------
@@ -62,48 +65,6 @@ namespace Ambermoon.Editor.Gui.Editors {
 
       dgvAttributes.DataSource = _attributes;
       dgvAttributes.AutoResizeColumns();
-
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
-    }
-    #endregion
-    #region --- init dgv: equipment ---------------------------------------------------------------
-    private void InitDGVEquipment() {
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
-
-      dgvEquipment.AutoGenerateColumns = false;
-
-      //dgvEquipment.Columns.AddRange(new DataGridViewColumn[] {
-        //new DataGridViewTextBoxColumn() { DataPropertyName = nameof(SkillValue.Name), ReadOnly = true },
-      //});
-
-      foreach (DataGridViewColumn column in dgvEquipment.Columns) {
-        column.HeaderText = column.Name = column.DataPropertyName;
-        column.SortMode = DataGridViewColumnSortMode.NotSortable;
-      }
-
-      //dgvEquipment.DataSource = _equipment;
-      dgvEquipment.AutoResizeColumns();
-
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
-    }
-    #endregion
-    #region --- init dgv: items -------------------------------------------------------------------
-    private void InitDGVItems() {
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
-
-      dgvItems.AutoGenerateColumns = false;
-
-      //dgvItems.Columns.AddRange(new DataGridViewColumn[] {
-        //new DataGridViewTextBoxColumn() { DataPropertyName = nameof(SkillValue.Name), ReadOnly = true },
-      //});
-
-      foreach (DataGridViewColumn column in dgvItems.Columns) {
-        column.HeaderText = column.Name = column.DataPropertyName;
-        column.SortMode = DataGridViewColumnSortMode.NotSortable;
-      }
-
-      //dgvItems.DataSource = _skills;
-      dgvItems.AutoResizeColumns();
 
       _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
@@ -153,6 +114,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       }
 
       dgvSpells.DataSource = _spells;
+      dgvSpells.ClearSelection();
       dgvSpells.AutoResizeColumns();
 
       _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
@@ -168,10 +130,30 @@ namespace Ambermoon.Editor.Gui.Editors {
       MapMonsterToControls();
       GetCombatGraphics();
       InitDGVAttributes();
-      InitDGVEquipment();
-      InitDGVItems();
       InitDGVSkills();
       InitDGVSpells();
+
+      _animationTimer.Start();
+    }
+    #endregion
+    #region --- update animation ------------------------------------------------------------------
+    private void UpdateAnimation() {
+      if (_animationFrames.Count == 0) {
+        _animationTimer.Interval = 1000;
+        return;
+      }
+
+      _animationTimer.Interval = (int)(1000 / nudFPS.Value);
+
+      if (_currentAnimationFrame > _animationFrames.Count - 1) {
+        _currentAnimationFrame = 0;
+      }
+
+      try { 
+        pbxCombatGraphic.Image = _animationFrames[_currentAnimationFrame];
+      } catch { }
+
+      _currentAnimationFrame++;
     }
     #endregion
     #region --- update check boxes: battle flags --------------------------------------------------
@@ -361,6 +343,8 @@ namespace Ambermoon.Editor.Gui.Editors {
     #endregion
     #region --- wire events -----------------------------------------------------------------------
     private void WireEvents() {
+      _animationTimer.Tick += (s, e) => UpdateAnimation();
+
       btnAddSpell.Click += (s, e) => AddSpell();
       btnCancel.Click += (s, e) => Close();
       btnOK.Click += (s, e) => { MapControlsToMonster(); DialogResult = DialogResult.OK; Close(); };
@@ -373,6 +357,8 @@ namespace Ambermoon.Editor.Gui.Editors {
       chbxBattleFlagsDemon.CheckStateChanged += (s, e) => UpdateCheckBoxesBattleFlags(s, BattleFlags.Demon);
       chbxBattleFlagsNone.CheckStateChanged += (s, e) => UpdateCheckBoxesBattleFlags(s, BattleFlags.None);
       chbxBattleFlagsUndead.CheckStateChanged += (s, e) => UpdateCheckBoxesBattleFlags(s, BattleFlags.Undead);
+
+      cbxCombatBackgroundDaytime.SelectedValueChanged += (s, e) => GetCombatGraphics();
 
       chbxConditionsAging.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Aging);
       chbxConditionsBlind.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Blind);
@@ -413,14 +399,14 @@ namespace Ambermoon.Editor.Gui.Editors {
       chbxSpellMasteryUnused1.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.Unused1);
       chbxSpellMasteryUnused2.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.Unused2);
 
+      chbxZoom.CheckStateChanged += (s, e) => { pbxCombatGraphic.SizeMode = chbxZoom.Checked ? PictureBoxSizeMode.Zoom : PictureBoxSizeMode.CenterImage; };
+
       dgvSpells.CellClick += (s, e) => { 
         if(e.RowIndex > -1 && dgvSpells.Columns[e.ColumnIndex] is DataGridViewButtonColumn) {
           RemoveSpell((Spell)dgvSpells.Rows[e.RowIndex].DataBoundItem);
         }
       };
 
-      cbxCombatBackgroundDaytime.SelectedValueChanged += (s, e) => GetCombatGraphics();
-      chbxZoom.CheckStateChanged += (s, e) => { pbxCombatGraphic.SizeMode = chbxZoom.Checked ? PictureBoxSizeMode.Zoom : PictureBoxSizeMode.CenterImage; };
       nudCombatBackgroundIndex.ValueChanged += (s, e) => GetCombatGraphics();
       nudCombatGraphicIndex.ValueChanged += (s, e) => GetCombatGraphics();
     }
@@ -467,7 +453,6 @@ namespace Ambermoon.Editor.Gui.Editors {
     #endregion
     #region --- get combat graphics ---------------------------------------------------------------
     private void GetCombatGraphics() {
-      _animationTimer.Stop();
       _animationFrames.Clear();
 
       if (Repository.Current.GameData is null) { 
@@ -496,23 +481,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       foreach (ImageData frame in monsterImage.Frames) {
         Bitmap combatGraphicBitmap = WindowsExtensions.ToBitmap(frame, palette, true);
         _animationFrames.Add(combatGraphicBitmap);
-      }
-
-      // animation timer
-      if (_animationFrames.Count > 0) {
-        _animationTimer.Interval = 125;
-
-        _animationTimer.Tick += (s, e) => {
-          if (_currentAnimationFrame > _animationFrames.Count - 1) {
-            _currentAnimationFrame = 0;
-          }
-
-          pbxCombatGraphic.Image = _animationFrames[_currentAnimationFrame];
-
-          _currentAnimationFrame++;
-        };
-     
-        _animationTimer.Start();
       }
     }
     #endregion
