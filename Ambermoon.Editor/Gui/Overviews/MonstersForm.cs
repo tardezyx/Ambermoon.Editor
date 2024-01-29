@@ -25,26 +25,30 @@ namespace Ambermoon.Editor.Gui.Overviews {
       dgv.Columns.AddRange(new DataGridViewColumn[] {
         new DataGridViewButtonColumn () { DataPropertyName = "Remove", Text = "X", UseColumnTextForButtonValue = true },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Index) },
+        new DataGridViewImageColumn()   { DataPropertyName = "Graphic" },
+        new DataGridViewImageColumn()   { DataPropertyName = "Icon" },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Name) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Level) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Type) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Race) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Class) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Gender) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Class) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Level) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Element) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.DefeatExperience) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Food) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Gold) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Morale) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.AttacksPerRound) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Gold) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Food) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BaseAttackDamage) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.MagicAttackLevel) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.AttacksPerRound) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BaseDefense) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.MagicDefenseLevel) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BonusSpellDamage) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BonusMaxSpellDamage) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BonusSpellDamagePercentage) },
         new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BonusSpellDamageReduction) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.SpellMastery) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.SpellTypeImmunity) },
+        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Conditions) },
       });
 
       foreach (DataGridViewColumn column in dgv.Columns) {
@@ -64,6 +68,29 @@ namespace Ambermoon.Editor.Gui.Overviews {
       WireEvents();
     }
     #endregion
+    #region --- on shown --------------------------------------------------------------------------
+    protected override void OnShown(EventArgs e) {
+      base.OnShown(e);
+
+      SetGraphics();
+    }
+    #endregion
+    #region --- set graphics ----------------------------------------------------------------------
+    private void SetGraphics() {
+      foreach (DataGridViewRow row in dgv.Rows) {
+        if (
+          row.DataBoundItem is MonsterData monster
+          && row.Cells["Graphic"] is DataGridViewImageCell combatGraphicCell
+          && row.Cells["Icon"] is DataGridViewImageCell combatIconCell
+        ) {
+          combatGraphicCell.ImageLayout = DataGridViewImageCellLayout.Zoom;
+          combatGraphicCell.Value       = monster.GetCombatGraphic();
+          //combatIconCell.ImageLayout    = DataGridViewImageCellLayout.Zoom;
+          combatIconCell.Value          = monster.GetCombatIcon();
+        }
+      }
+    }
+    #endregion
     #region --- wire events -----------------------------------------------------------------------
     private void WireEvents() {
       btnAdd.Click += (s, e) => AddMonster();
@@ -79,6 +106,8 @@ namespace Ambermoon.Editor.Gui.Overviews {
           ChangeMonster((MonsterData)dgv.Rows[e.RowIndex].DataBoundItem, e.RowIndex);
         }
       };
+
+      dgv.Sorted += (s, e) => SetGraphics();
     }
     #endregion
 

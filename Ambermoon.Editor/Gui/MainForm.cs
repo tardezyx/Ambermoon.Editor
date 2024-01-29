@@ -9,6 +9,7 @@ namespace Ambermoon.Editor.Gui {
     #region --- fields ----------------------------------------------------------------------------
     #pragma warning disable CS0649 // wrong warning as forms are set within ShowForm()
     //private readonly InfoForm?          _infoForm;
+    private readonly ItemsForm?         _itemsForm;
     private readonly MapsForm?          _mapsForm;
     private readonly MonstersForm?      _monstersForm;
     private readonly MonsterGroupsForm? _monsterGroupsForm;
@@ -17,6 +18,7 @@ namespace Ambermoon.Editor.Gui {
     #endregion
     #region --- local enum: entity type -----------------------------------------------------------
     private enum EntityType {
+      Items,
       Maps,
       Monsters,
       MonsterGroups,
@@ -107,10 +109,11 @@ namespace Ambermoon.Editor.Gui {
 
       switch (nodeName) { 
         //case "trvNodeInfo":                    ShowForm(EntityType.Maps);          break;
-        case "trvNodeMaps":                    ShowForm(EntityType.Maps);          break;
         case "trvNodeCharactersMonsters":      ShowForm(EntityType.Monsters);      break;
         case "trvNodeCharactersMonsterGroups": ShowForm(EntityType.MonsterGroups); break;
         case "trvNodeCharactersNPCs":          ShowForm(EntityType.NPCs);          break;
+        case "trvNodeItems":                   ShowForm(EntityType.Items);         break;
+        case "trvNodeMaps":                    ShowForm(EntityType.Maps);          break;
       }
     }
     #endregion
@@ -118,6 +121,7 @@ namespace Ambermoon.Editor.Gui {
     private void ShowForm(EntityType type) {
       if (Repository.Current.GameData is not null) {
         Form? form = type switch {
+          EntityType.Items         => _itemsForm,
           EntityType.Maps          => _mapsForm,
           EntityType.Monsters      => _monstersForm,
           EntityType.MonsterGroups => _monsterGroupsForm,
@@ -125,8 +129,9 @@ namespace Ambermoon.Editor.Gui {
           _                        => throw new NotImplementedException(),
         };
 
-        if (form is null || form.IsDisposed) { 
+        if (form is null || form.IsDisposed) {
           form = type switch {
+            EntityType.Items         => new ItemsForm(),
             EntityType.Maps          => new MapsForm(),
             EntityType.Monsters      => new MonstersForm(),
             EntityType.MonsterGroups => new MonsterGroupsForm(),
@@ -136,6 +141,7 @@ namespace Ambermoon.Editor.Gui {
 
           form.Dock = DockStyle.Fill;
           form.TopLevel = false;
+
           splitContainer.Panel2.Controls.Add(form);
         }
 

@@ -6,6 +6,7 @@ using Ambermoon.Data.GameDataRepository.Windows;
 using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Models;
+using Image = Ambermoon.Data.GameDataRepository.Image;
 using Spell = Ambermoon.Editor.Models.Spell;
 using Timer = System.Windows.Forms.Timer;
 
@@ -17,7 +18,6 @@ namespace Ambermoon.Editor.Gui.Editors {
     private readonly SortableBindingList<CharValue> _attributes = [];
     private          int                            _currentAnimationFrame = 0;
     private readonly MonsterData                    _monster;
-    private readonly Dictionary<int, string>        _races = [];
     private readonly SortableBindingList<CharValue> _skills = [];
     private readonly SortableBindingList<Spell>     _spells = [];
     #endregion
@@ -28,20 +28,12 @@ namespace Ambermoon.Editor.Gui.Editors {
 
       _monster = monster;
 
-      int index = 0;
-      foreach (string raceName in Repository.Current.GameData!.RaceNames) {
-        _races.Add(index++, raceName);
-      }
-
       cbxClass.DataSource                   = _monster.Class.GetValuesAsOrderedStringList();
       cbxCombatBackgroundDaytime.DataSource = CombatBackgroundDaytime.Day.GetValuesAsOrderedStringList();
       cbxElement.DataSource                 = _monster.Element.GetValuesAsOrderedStringList();
       cbxGender.DataSource                  = _monster.Gender.GetValuesAsOrderedStringList();
       cbxRace.DataSource                    = _monster.Race.GetValuesAsOrderedStringList();
       cbxType.DataSource                    = _monster.Type.GetValuesAsOrderedStringList();
-      nudCombatBackgroundIndex.Maximum      = Repository.Current.CombatBackgrounds.Count;
-      nudCombatGraphicIndex.Maximum         = Repository.Current.GameData!.MonsterImages.Count;
-      nudPaletteIndex.Maximum               = Repository.Current.GameData!.Palettes.Count;
     }
     #endregion
     #region --- init dgv: attributes --------------------------------------------------------------
@@ -129,7 +121,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       WireEvents();
 
       MapMonsterToControls();
-      GetCombatGraphics();
       InitDGVAttributes();
       InitDGVSkills();
       InitDGVSpells();
@@ -152,7 +143,7 @@ namespace Ambermoon.Editor.Gui.Editors {
 
       try { 
         pbxCombatGraphic.Image = _animationFrames[_currentAnimationFrame];
-      } catch { }
+      } catch { } // ignore if frames have been cleared inbetween
 
       _currentAnimationFrame++;
     }
@@ -460,35 +451,84 @@ namespace Ambermoon.Editor.Gui.Editors {
         return;
       }
 
+      int combatBackgroundIndex = (int)nudCombatBackgroundIndex.Value;
+      int combatGraphicIndex = (int)nudCombatGraphicIndex.Value;
+
+      if (
+        _monster.GetCombatIcon(combatGraphicIndex) is Bitmap combatIcon
+        && combatIcon.GetScaledBitmap(1.5f)?.GetHicon() is IntPtr hIcon
+      ) {
+        Icon = Icon.FromHandle(hIcon);
+        User32.DestroyIcon(hIcon);
+      }
+
+      CombatBackgroundImage backgroundImage = Repository.Current.GameData
+        .DistinctCombatBackgroundImages
+        .OrderBy(x => x.PaletteIndices[0] == x.PaletteIndices[1])
+        .ToList()[combatBackgroundIndex];
+
       CombatBackgroundDaytime daytime = cbxCombatBackgroundDaytime.Text
         .GetEnumByName<CombatBackgroundDaytime>();
 
-      CombatBackground background = Repository.Current.CombatBackgrounds
-        .First(x => x.Index == nudCombatBackgroundIndex.Value);
+      if (
+        backgroundImage.PaletteIndices[(int)daytime] is uint paletteIndex
+        && _monster.GetPalette(paletteIndex) is Palette palette
+      ) {
+        if (_monster.GetImage(combatGraphicIndex) is Image monsterImage) { 
+          foreach (ImageData frame in monsterImage.Frames) {
+            _animationFrames.Add(
+              WindowsExtensions.ToBitmap(frame, palette, true)
+            );
+          }
+        }
 
-      Data.GameDataRepository.Image monsterImage = Repository.Current.GameData
-        .MonsterImages[(uint)nudCombatGraphicIndex.Value];
-
-      Palette palette = background.GetPalette(daytime);
-
-      foreach (ImageData frame in monsterImage.Frames) {
-        Bitmap combatGraphicBitmap = WindowsExtensions.ToBitmap(frame, palette, true);
-        _animationFrames.Add(combatGraphicBitmap);
+        cbxCombatBackgroundDaytime.Enabled = backgroundImage.PaletteIndices[0] != backgroundImage.PaletteIndices[1];
+        nudPaletteIndex.Value              = palette.Index;
+        pbxCombatGraphic.BackgroundImage   = WindowsExtensions.ToBitmap(backgroundImage.Frames[0], palette, true);
       }
-
-      nudPaletteIndex.Value = palette.Index;
-      pbxCombatGraphic.BackgroundImage = background.GetRenderedFrame(daytime);
     }
     #endregion
     #region --- map controls to monster -----------------------------------------------------------
     private void MapControlsToMonster() {
-      _monster.Name = tbxName.Text;
-      
-      _monster.Class   = cbxClass.Text.GetEnumByName<Class>();
+      uint.TryParse(tbxIndex.Text, out uint _monsterIndex);
+
+      _monster.AttacksPerRound = (uint)nudAttacksPerRound.Value;
+      _monster.BaseAttackDamage = (uint)nudAttackBase.Value;
+      _monster.BaseDefense = (uint)nudDefenseBase.Value;
+      //_monster.BonusAttackDamage = nudAttackBonus.Value;
+      //_monster.BonusDefense = nudDefenseBonus.Value;
+      _monster.BonusSpellDamage = (uint)nudBonusSpellDamageBase.Value;
+      _monster.BonusMaxSpellDamage = (uint)nudBonusSpellDamageMax.Value;
+      _monster.BonusSpellDamagePercentage = (int)nudBonusSpellDamagePercentage.Value;
+      _monster.BonusSpellDamageReduction = (int)nudBonusSpellDamageReduction.Value;
+      _monster.Class = cbxClass.Text.GetEnumByName<Class>();
+      //_monster.CombatGraphicIndex = (uint)nudCombatGraphicIndex.Value;
+      _monster.DefeatExperience = (uint)nudDefeatExperience.Value;
       _monster.Element = cbxElement.Text.GetEnumByName<CharacterElement>();
-      _monster.Gender  = cbxGender.Text.GetEnumByName<Gender>();
-      _monster.Race    = cbxRace.Text.GetEnumByName<Race>();
-      //_monster.Type    = cbxType.Text.GetEnumByName<CharacterType>();
+      _monster.MagicDefenseLevel = (int)nudDefenseMagicLevel.Value;
+      _monster.Food = (uint)nudFood.Value;
+      _monster.Gender = cbxGender.Text.GetEnumByName<Gender>();
+      _monster.Gold = (uint)nudGold.Value;
+      _monster.HitPoints.BonusValue = (int)nudHitPointsBonus.Value;
+      _monster.HitPoints.CurrentValue = (uint)nudHitPointsCurrent.Value;
+      _monster.HitPoints.MaxValue = (uint)nudHitPointsMax.Value;
+      //_monster.Index = _monsterIndex;
+      _monster.LearnedSpellsAlchemistic = 0;
+      _monster.LearnedSpellsDestruction = 0;
+      _monster.LearnedSpellsFunctional = 0;
+      _monster.LearnedSpellsHealing = 0;
+      _monster.LearnedSpellsMystic = 0;
+      _monster.LearnedSpellsType5 = 0;
+      _monster.LearnedSpellsType6 = 0;
+      _monster.Level = (uint)nudLevel.Value;
+      _monster.MagicAttackLevel = (int)nudAttackMagicLevel.Value;
+      _monster.Morale = (uint)nudMorale.Value;
+      _monster.Name = tbxName.Text;
+      _monster.Race = cbxRace.Text.GetEnumByName<Race>();
+      _monster.SpellPoints.BonusValue = (int)nudSpellPointsBonus.Value;
+      _monster.SpellPoints.CurrentValue = (uint)nudSpellPointsCurrent.Value;
+      _monster.SpellPoints.MaxValue = (uint)nudSpellPointsMax.Value;
+      //_monster.Type = cbxType.Text.GetEnumByName<CharacterType>();
 
       _monster.BattleFlags = BattleFlags.None
         | (chbxBattleFlagsAnimal.Checked ? BattleFlags.Animal : BattleFlags.None)
@@ -538,34 +578,6 @@ namespace Ambermoon.Editor.Gui.Editors {
         | (chbxSpellMasteryUnused1.Checked ? SpellTypeMastery.Unused1 : SpellTypeMastery.None)
         | (chbxSpellMasteryUnused2.Checked ? SpellTypeMastery.Unused2 : SpellTypeMastery.None);
 
-      _monster.BaseAttackDamage = (uint)nudAttackBase.Value;
-      //_monster.BonusAttackDamage = nudAttackBonus.Value;
-
-      _monster.MagicAttackLevel = (int)nudAttackMagicLevel.Value;
-      _monster.AttacksPerRound = (uint)nudAttacksPerRound.Value;
-      _monster.BonusSpellDamage = (uint)nudBonusSpellDamageBase.Value;
-      _monster.BonusMaxSpellDamage = (uint)nudBonusSpellDamageMax.Value;
-      _monster.BonusSpellDamagePercentage = (int)nudBonusSpellDamagePercentage.Value;
-      _monster.BonusSpellDamageReduction = (int)nudBonusSpellDamageReduction.Value;
-      _monster.DefeatExperience = (uint)nudDefeatExperience.Value;
-      _monster.BaseDefense = (uint)nudDefenseBase.Value;
-      //_monster.BonusDefense = nudDefenseBonus.Value;
-      //_monster.CombatGraphicIndex = (uint)nudCombatGraphicIndex.Value;
-      _monster.MagicDefenseLevel = (int)nudDefenseMagicLevel.Value;
-      _monster.Food = (uint)nudFood.Value;
-      _monster.Gold = (uint)nudGold.Value;
-      _monster.HitPoints.BonusValue = (int)nudHitPointsBonus.Value;
-      _monster.HitPoints.CurrentValue = (uint)nudHitPointsCurrent.Value;
-      _monster.HitPoints.MaxValue = (uint)nudHitPointsMax.Value;
-      _monster.Level = (uint)nudLevel.Value;
-      _monster.Morale = (uint)nudMorale.Value;
-      _monster.SpellPoints.BonusValue = (int)nudSpellPointsBonus.Value;
-      _monster.SpellPoints.CurrentValue = (uint)nudSpellPointsCurrent.Value;
-      _monster.SpellPoints.MaxValue = (uint)nudSpellPointsMax.Value;
-
-      tbxIndex.Text = _monster.Index.ToString();
-      tbxName.Text = _monster.Name;
-
       foreach (CharValue attribute in _attributes) {
         if (Repository.Current.GetAttributeIndex(attribute.Name) is int index) {
           _monster.Attributes[index].BonusValue = attribute.Bonus;
@@ -587,14 +599,6 @@ namespace Ambermoon.Editor.Gui.Editors {
           //_monster.Skills[index].TotalMaxValue = attribute.TotalMax;
         }
       }
-
-      _monster.LearnedSpellsAlchemistic = 0;
-      _monster.LearnedSpellsDestruction = 0;
-      _monster.LearnedSpellsFunctional = 0;
-      _monster.LearnedSpellsHealing = 0;
-      _monster.LearnedSpellsMystic = 0;
-      _monster.LearnedSpellsType5 = 0;
-      _monster.LearnedSpellsType6 = 0;
 
       foreach (Spell spell in _spells) {
         uint spellValue = (uint)Math.Pow(2, spell.Index + 1);
@@ -667,31 +671,60 @@ namespace Ambermoon.Editor.Gui.Editors {
       chbxSpellMasteryUnused1.Checked = _monster.SpellMastery.HasFlag(SpellTypeMastery.Unused1);
       chbxSpellMasteryUnused2.Checked = _monster.SpellMastery.HasFlag(SpellTypeMastery.Unused2);
 
+      nudAttackBase.SetMinMaxByProperty(_monster, nameof(_monster.BaseAttackDamage));
       nudAttackBase.Value = _monster.BaseAttackDamage;
+      nudAttackBonus.SetMinMaxByProperty(_monster, nameof(_monster.BonusAttackDamage));
       nudAttackBonus.Value = _monster.BonusAttackDamage;
+      nudAttackMagicLevel.SetMinMaxByProperty(_monster, nameof(_monster.MagicAttackLevel));
       nudAttackMagicLevel.Value = _monster.MagicAttackLevel;
+      nudAttacksPerRound.SetMinMaxByProperty(_monster, nameof(_monster.AttacksPerRound));
       nudAttacksPerRound.Value = _monster.AttacksPerRound;
+      nudBonusSpellDamageBase.SetMinMaxByProperty(_monster, nameof(_monster.BonusSpellDamage));
       nudBonusSpellDamageBase.Value = _monster.BonusSpellDamage;
+      nudBonusSpellDamageMax.SetMinMaxByProperty(_monster, nameof(_monster.BonusMaxSpellDamage));
       nudBonusSpellDamageMax.Value = _monster.BonusMaxSpellDamage;
+      nudBonusSpellDamagePercentage.SetMinMaxByProperty(_monster, nameof(_monster.BonusSpellDamagePercentage));
       nudBonusSpellDamagePercentage.Value = _monster.BonusSpellDamagePercentage;
+      nudBonusSpellDamageReduction.SetMinMaxByProperty(_monster, nameof(_monster.BonusSpellDamageReduction));
       nudBonusSpellDamageReduction.Value = _monster.BonusSpellDamageReduction;
+      nudCombatBackgroundIndex.Maximum = Repository.Current.GameData!.DistinctCombatBackgroundImages.Count - 1;
+      nudCombatBackgroundIndex.Minimum = 0;
+      nudCombatGraphicIndex.Maximum = Repository.Current.GameData!.MonsterImages.Keys.Max();
+      nudCombatGraphicIndex.Minimum = Repository.Current.GameData!.MonsterImages.Keys.Min();
       nudCombatGraphicIndex.Value = _monster.CombatGraphicIndex;
+      nudDefeatExperience.SetMinMaxByProperty(_monster, nameof(_monster.DefeatExperience));
       nudDefeatExperience.Value = _monster.DefeatExperience;
+      nudDefenseBase.SetMinMaxByProperty(_monster, nameof(_monster.BaseDefense));
       nudDefenseBase.Value = _monster.BaseDefense;
+      nudDefenseBonus.SetMinMaxByProperty(_monster, nameof(_monster.BonusDefense));
       nudDefenseBonus.Value = _monster.BonusDefense;
+      nudDefenseMagicLevel.SetMinMaxByProperty(_monster, nameof(_monster.MagicDefenseLevel));
       nudDefenseMagicLevel.Value = _monster.MagicDefenseLevel;
+      nudFood.SetMinMaxByProperty(_monster, nameof(_monster.Food));
       nudFood.Value = _monster.Food;
+      nudGold.SetMinMaxByProperty(_monster, nameof(_monster.Gold));
       nudGold.Value = _monster.Gold;
+      nudHitPointsBonus.SetMinMaxByProperty(_monster, nameof(_monster.HitPoints.BonusValue));
       nudHitPointsBonus.Value = _monster.HitPoints.BonusValue;
+      nudHitPointsCurrent.SetMinMaxByProperty(_monster, nameof(_monster.HitPoints.CurrentValue));
       nudHitPointsCurrent.Value = _monster.HitPoints.CurrentValue;
+      nudHitPointsMax.SetMinMaxByProperty(_monster, nameof(_monster.HitPoints.MaxValue));
       nudHitPointsMax.Value = _monster.HitPoints.MaxValue;
+      nudLevel.SetMinMaxByProperty(_monster, nameof(_monster.Level));
       nudLevel.Value = _monster.Level;
+      nudMorale.SetMinMaxByProperty(_monster, nameof(_monster.Morale));
       nudMorale.Value = _monster.Morale;
+      nudPaletteIndex.Maximum = Repository.Current.GameData!.Palettes.Keys.Max();
+      nudPaletteIndex.Minimum = Repository.Current.GameData!.Palettes.Keys.Min();
+      nudSpellPointsBonus.SetMinMaxByProperty(_monster, nameof(_monster.SpellPoints.BonusValue));
       nudSpellPointsBonus.Value = _monster.SpellPoints.BonusValue;
+      nudSpellPointsCurrent.SetMinMaxByProperty(_monster, nameof(_monster.SpellPoints.CurrentValue));
       nudSpellPointsCurrent.Value = _monster.SpellPoints.CurrentValue;
+      nudSpellPointsMax.SetMinMaxByProperty(_monster, nameof(_monster.SpellPoints.MaxValue));
       nudSpellPointsMax.Value = _monster.SpellPoints.MaxValue;
 
       tbxIndex.Text = _monster.Index.ToString();
+      tbxName.SetMaxLengthByProperty(_monster, nameof(_monster.Name));
       tbxName.Text = _monster.Name;
 
       int index = 0;
@@ -733,6 +766,8 @@ namespace Ambermoon.Editor.Gui.Editors {
       foreach (Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Mystic, _monster.LearnedSpellsMystic)) { _spells.Add(spell); }
       foreach (Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Unknown1, _monster.LearnedSpellsType5)) { _spells.Add(spell); }
       foreach (Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Unknown2, _monster.LearnedSpellsType5)) { _spells.Add(spell); }
+
+      GetCombatGraphics();
     }
     #endregion
     #region --- remove spell ----------------------------------------------------------------------

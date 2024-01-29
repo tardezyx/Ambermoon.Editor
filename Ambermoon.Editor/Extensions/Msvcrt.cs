@@ -8,32 +8,52 @@ namespace Ambermoon.Editor.Extensions {
     private static partial int memcmp(IntPtr b1, IntPtr b2, long count);
     #endregion
 
-    #region --- compare mem cmp -------------------------------------------------------------------
-    public static bool CompareMemCmp(Bitmap b1, Bitmap b2) {
-      if (b1 is null != b2 is null) {
+    #region --- are bitmaps equal -----------------------------------------------------------------
+    public static bool AreBitmapsEqual(Bitmap bitmap1, Bitmap bitmap2) {
+      if (bitmap1 is null != bitmap2 is null) {
         return false;
       }
 
-      if (b1 is null || b2 is null) {
+      // only true if both are null due to the check before
+      // but needed to prevent further null warnings
+      if (bitmap1 is null || bitmap2 is null) {
         return true;
       }
       
-      if (b1.Size != b2.Size) return false;
+      if (bitmap1.Size != bitmap2.Size) {
+        return false;
+      }
 
-      var bd1 = b1.LockBits(new Rectangle(new Point(0, 0), b1.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-      var bd2 = b2.LockBits(new Rectangle(new Point(0, 0), b2.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+      BitmapData bitmap1data = bitmap1.LockBits(
+        new Rectangle(
+          new Point(0, 0),
+          bitmap1.Size
+        ),
+        ImageLockMode.ReadOnly,
+        PixelFormat.Format32bppArgb
+      );
+
+      BitmapData bitmap2data = bitmap2.LockBits(
+        new Rectangle(
+          new Point(0, 0),
+          bitmap2.Size
+        ),
+        ImageLockMode.ReadOnly,
+        PixelFormat.Format32bppArgb
+      );
 
       try {
-        IntPtr bd1scan0 = bd1.Scan0;
-        IntPtr bd2scan0 = bd2.Scan0;
+        IntPtr bitmap1scanline = bitmap1data.Scan0;
+        IntPtr bitmap2scanline = bitmap2data.Scan0;
 
-        int stride = bd1.Stride;
-        int len = stride * b1.Height;
-
-        return memcmp(bd1scan0, bd2scan0, len) == 0;
+        return memcmp(
+          bitmap1scanline,
+          bitmap2scanline,
+          bitmap1data.Stride * bitmap1.Height
+        ) == 0;
       } finally {
-        b1.UnlockBits(bd1);
-        b2.UnlockBits(bd2);
+        bitmap1.UnlockBits(bitmap1data);
+        bitmap2.UnlockBits(bitmap2data);
       }
     }
     #endregion

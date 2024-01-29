@@ -1,7 +1,7 @@
 ﻿using Ambermoon.Editor.Gui.Custom;
 
 namespace Ambermoon.Editor.Gui.Editors {
-  partial class EditMonsterForm {
+  partial class EditItemForm {
     /// <summary>
     /// Required designer variable.
     /// </summary>
@@ -57,7 +57,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       cbxClass = new ComboBox();
       cbxRace = new ComboBox();
       cbxType = new ComboBox();
-      chbxZoom = new CheckBox();
       label8 = new Label();
       nudCombatBackgroundIndex = new NumericUpDown();
       pbxCombatGraphic = new ExtendedPictureBox();
@@ -140,18 +139,9 @@ namespace Ambermoon.Editor.Gui.Editors {
       chbxConditionsNone = new CheckBox();
       chbxConditionsIrritated = new CheckBox();
       grbxEquipment = new GroupBox();
-      pbxEquipmentLeftFinger = new ExtendedPictureBox();
-      pbxEquipmentFeet = new ExtendedPictureBox();
-      pbxEquipmentRightFinger = new ExtendedPictureBox();
-      pbxEquipmentLeftHand = new ExtendedPictureBox();
-      pbxEquipmentBody = new ExtendedPictureBox();
-      pbxEquipmentRightHand = new ExtendedPictureBox();
-      pbxEquipmentChest = new ExtendedPictureBox();
-      pbxEquipmentHead = new ExtendedPictureBox();
       pbxEquipmentNeck = new ExtendedPictureBox();
       extendedPictureBox1 = new ExtendedPictureBox();
       grbxItems = new GroupBox();
-      pbxEquipmentItem1 = new ExtendedPictureBox();
       extendedPictureBox2 = new ExtendedPictureBox();
       grbxBonusSpellDamage = new GroupBox();
       nudBonusSpellDamageReduction = new NumericUpDown();
@@ -168,12 +158,22 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxCombatGraphic = new GroupBox();
       nudFPS = new NumericUpDown();
       label27 = new Label();
+      chbxZoom = new CheckBox();
       nudPaletteIndex = new NumericUpDown();
       nudCombatGraphicIndex = new NumericUpDown();
       label22 = new Label();
       label9 = new Label();
       label21 = new Label();
       cbxCombatBackgroundDaytime = new ComboBox();
+      pbxEquipmentHead = new ExtendedPictureBox();
+      pbxEquipmentChest = new ExtendedPictureBox();
+      pbxEquipmentRightHand = new ExtendedPictureBox();
+      pbxEquipmentBody = new ExtendedPictureBox();
+      pbxEquipmentLeftHand = new ExtendedPictureBox();
+      pbxEquipmentRightFinger = new ExtendedPictureBox();
+      pbxEquipmentFeet = new ExtendedPictureBox();
+      pbxEquipmentLeftFinger = new ExtendedPictureBox();
+      pbxEquipmentItem1 = new ExtendedPictureBox();
       grbxAttributes.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)dgvAttributes).BeginInit();
       grbxSkills.SuspendLayout();
@@ -208,18 +208,9 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxSpellImmunity.SuspendLayout();
       grbxConditions.SuspendLayout();
       grbxEquipment.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentLeftFinger).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentFeet).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentRightFinger).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentLeftHand).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentBody).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentRightHand).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentChest).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentHead).BeginInit();
       ((System.ComponentModel.ISupportInitialize)pbxEquipmentNeck).BeginInit();
       ((System.ComponentModel.ISupportInitialize)extendedPictureBox1).BeginInit();
       grbxItems.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentItem1).BeginInit();
       ((System.ComponentModel.ISupportInitialize)extendedPictureBox2).BeginInit();
       grbxBonusSpellDamage.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)nudBonusSpellDamageReduction).BeginInit();
@@ -232,6 +223,15 @@ namespace Ambermoon.Editor.Gui.Editors {
       ((System.ComponentModel.ISupportInitialize)nudFPS).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudPaletteIndex).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudCombatGraphicIndex).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentHead).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentChest).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentRightHand).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentBody).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentLeftHand).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentRightFinger).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentFeet).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentLeftFinger).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentItem1).BeginInit();
       SuspendLayout();
       // 
       // tbxName
@@ -239,7 +239,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       tbxName.CharacterCasing = CharacterCasing.Upper;
       tbxName.Font = new Font("Segoe UI", 9F);
       tbxName.Location = new Point(61, 22);
-      tbxName.MaxLength = 150;
+      tbxName.MaxLength = 15;
       tbxName.Name = "tbxName";
       tbxName.Size = new System.Drawing.Size(119, 23);
       tbxName.TabIndex = 0;
@@ -599,17 +599,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       cbxType.Size = new System.Drawing.Size(84, 23);
       cbxType.TabIndex = 0;
       // 
-      // chbxZoom
-      // 
-      chbxZoom.AutoSize = true;
-      chbxZoom.Font = new Font("Segoe UI", 9F);
-      chbxZoom.Location = new Point(226, 132);
-      chbxZoom.Name = "chbxZoom";
-      chbxZoom.Size = new System.Drawing.Size(58, 19);
-      chbxZoom.TabIndex = 50;
-      chbxZoom.Text = "Zoom";
-      chbxZoom.UseVisualStyleBackColor = true;
-      // 
       // label8
       // 
       label8.AutoSize = true;
@@ -624,10 +613,12 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       nudCombatBackgroundIndex.Font = new Font("Segoe UI", 9F);
       nudCombatBackgroundIndex.Location = new Point(83, 161);
-      nudCombatBackgroundIndex.Maximum = new decimal(new int[] { 15, 0, 0, 0 });
+      nudCombatBackgroundIndex.Maximum = new decimal(new int[] { 17, 0, 0, 0 });
+      nudCombatBackgroundIndex.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
       nudCombatBackgroundIndex.Name = "nudCombatBackgroundIndex";
       nudCombatBackgroundIndex.Size = new System.Drawing.Size(37, 23);
       nudCombatBackgroundIndex.TabIndex = 50;
+      nudCombatBackgroundIndex.Value = new decimal(new int[] { 1, 0, 0, 0 });
       // 
       // pbxCombatGraphic
       // 
@@ -1215,9 +1206,9 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxSpellImmunity.Controls.Add(chbxSpellImmunityAlchemistic);
       grbxSpellImmunity.Controls.Add(chbxSpellImmunityNone);
       grbxSpellImmunity.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-      grbxSpellImmunity.Location = new Point(690, 211);
+      grbxSpellImmunity.Location = new Point(689, 211);
       grbxSpellImmunity.Name = "grbxSpellImmunity";
-      grbxSpellImmunity.Size = new System.Drawing.Size(178, 153);
+      grbxSpellImmunity.Size = new System.Drawing.Size(179, 153);
       grbxSpellImmunity.TabIndex = 43;
       grbxSpellImmunity.TabStop = false;
       grbxSpellImmunity.Text = "Spell Immunity";
@@ -1555,78 +1546,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxEquipment.TabStop = false;
       grbxEquipment.Text = "Equipment";
       // 
-      // pbxEquipmentLeftFinger
-      // 
-      pbxEquipmentLeftFinger.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-      pbxEquipmentLeftFinger.Location = new Point(193, 230);
-      pbxEquipmentLeftFinger.Name = "pbxEquipmentLeftFinger";
-      pbxEquipmentLeftFinger.Size = new System.Drawing.Size(24, 24);
-      pbxEquipmentLeftFinger.TabIndex = 56;
-      pbxEquipmentLeftFinger.TabStop = false;
-      // 
-      // pbxEquipmentFeet
-      // 
-      pbxEquipmentFeet.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-      pbxEquipmentFeet.Location = new Point(145, 230);
-      pbxEquipmentFeet.Name = "pbxEquipmentFeet";
-      pbxEquipmentFeet.Size = new System.Drawing.Size(24, 24);
-      pbxEquipmentFeet.TabIndex = 55;
-      pbxEquipmentFeet.TabStop = false;
-      // 
-      // pbxEquipmentRightFinger
-      // 
-      pbxEquipmentRightFinger.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-      pbxEquipmentRightFinger.Location = new Point(97, 230);
-      pbxEquipmentRightFinger.Name = "pbxEquipmentRightFinger";
-      pbxEquipmentRightFinger.Size = new System.Drawing.Size(24, 24);
-      pbxEquipmentRightFinger.TabIndex = 54;
-      pbxEquipmentRightFinger.TabStop = false;
-      // 
-      // pbxEquipmentLeftHand
-      // 
-      pbxEquipmentLeftHand.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-      pbxEquipmentLeftHand.Location = new Point(193, 152);
-      pbxEquipmentLeftHand.Name = "pbxEquipmentLeftHand";
-      pbxEquipmentLeftHand.Size = new System.Drawing.Size(24, 24);
-      pbxEquipmentLeftHand.TabIndex = 53;
-      pbxEquipmentLeftHand.TabStop = false;
-      // 
-      // pbxEquipmentBody
-      // 
-      pbxEquipmentBody.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-      pbxEquipmentBody.Location = new Point(193, 112);
-      pbxEquipmentBody.Name = "pbxEquipmentBody";
-      pbxEquipmentBody.Size = new System.Drawing.Size(24, 24);
-      pbxEquipmentBody.TabIndex = 52;
-      pbxEquipmentBody.TabStop = false;
-      // 
-      // pbxEquipmentRightHand
-      // 
-      pbxEquipmentRightHand.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-      pbxEquipmentRightHand.Location = new Point(97, 152);
-      pbxEquipmentRightHand.Name = "pbxEquipmentRightHand";
-      pbxEquipmentRightHand.Size = new System.Drawing.Size(24, 24);
-      pbxEquipmentRightHand.TabIndex = 51;
-      pbxEquipmentRightHand.TabStop = false;
-      // 
-      // pbxEquipmentChest
-      // 
-      pbxEquipmentChest.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-      pbxEquipmentChest.Location = new Point(193, 75);
-      pbxEquipmentChest.Name = "pbxEquipmentChest";
-      pbxEquipmentChest.Size = new System.Drawing.Size(24, 24);
-      pbxEquipmentChest.TabIndex = 51;
-      pbxEquipmentChest.TabStop = false;
-      // 
-      // pbxEquipmentHead
-      // 
-      pbxEquipmentHead.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-      pbxEquipmentHead.Location = new Point(145, 75);
-      pbxEquipmentHead.Name = "pbxEquipmentHead";
-      pbxEquipmentHead.Size = new System.Drawing.Size(24, 24);
-      pbxEquipmentHead.TabIndex = 51;
-      pbxEquipmentHead.TabStop = false;
-      // 
       // pbxEquipmentNeck
       // 
       pbxEquipmentNeck.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
@@ -1658,15 +1577,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxItems.TabIndex = 46;
       grbxItems.TabStop = false;
       grbxItems.Text = "Items";
-      // 
-      // pbxEquipmentItem1
-      // 
-      pbxEquipmentItem1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-      pbxEquipmentItem1.Location = new Point(50, 79);
-      pbxEquipmentItem1.Name = "pbxEquipmentItem1";
-      pbxEquipmentItem1.Size = new System.Drawing.Size(24, 24);
-      pbxEquipmentItem1.TabIndex = 51;
-      pbxEquipmentItem1.TabStop = false;
       // 
       // extendedPictureBox2
       // 
@@ -1710,7 +1620,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       nudBonusSpellDamagePercentage.Font = new Font("Segoe UI", 9F);
       nudBonusSpellDamagePercentage.Location = new Point(78, 80);
-      nudBonusSpellDamagePercentage.Maximum = new decimal(new int[] { 0, 0, 0, 0 });
+      nudBonusSpellDamagePercentage.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
       nudBonusSpellDamagePercentage.Minimum = new decimal(new int[] { 100, 0, 0, int.MinValue });
       nudBonusSpellDamagePercentage.Name = "nudBonusSpellDamagePercentage";
       nudBonusSpellDamagePercentage.Size = new System.Drawing.Size(44, 23);
@@ -1821,9 +1731,9 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       grbxCombatGraphic.Controls.Add(nudFPS);
       grbxCombatGraphic.Controls.Add(label27);
+      grbxCombatGraphic.Controls.Add(chbxZoom);
       grbxCombatGraphic.Controls.Add(nudPaletteIndex);
       grbxCombatGraphic.Controls.Add(nudCombatGraphicIndex);
-      grbxCombatGraphic.Controls.Add(chbxZoom);
       grbxCombatGraphic.Controls.Add(label22);
       grbxCombatGraphic.Controls.Add(label9);
       grbxCombatGraphic.Controls.Add(pbxCombatGraphic);
@@ -1860,12 +1770,23 @@ namespace Ambermoon.Editor.Gui.Editors {
       label27.TabIndex = 55;
       label27.Text = "FPS";
       // 
+      // chbxZoom
+      // 
+      chbxZoom.AutoSize = true;
+      chbxZoom.Font = new Font("Segoe UI", 9F);
+      chbxZoom.Location = new Point(226, 132);
+      chbxZoom.Name = "chbxZoom";
+      chbxZoom.Size = new System.Drawing.Size(58, 19);
+      chbxZoom.TabIndex = 50;
+      chbxZoom.Text = "Zoom";
+      chbxZoom.UseVisualStyleBackColor = true;
+      // 
       // nudPaletteIndex
       // 
       nudPaletteIndex.Enabled = false;
       nudPaletteIndex.Font = new Font("Segoe UI", 9F);
       nudPaletteIndex.Location = new Point(305, 160);
-      nudPaletteIndex.Maximum = new decimal(new int[] { 99, 0, 0, 0 });
+      nudPaletteIndex.Maximum = new decimal(new int[] { 15, 0, 0, 0 });
       nudPaletteIndex.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
       nudPaletteIndex.Name = "nudPaletteIndex";
       nudPaletteIndex.ReadOnly = true;
@@ -1898,7 +1819,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       label9.AutoSize = true;
       label9.Font = new Font("Segoe UI", 9F);
-      label9.Location = new Point(6, 133);
+      label9.Location = new Point(5, 133);
       label9.Name = "label9";
       label9.Size = new System.Drawing.Size(48, 15);
       label9.TabIndex = 52;
@@ -1923,6 +1844,87 @@ namespace Ambermoon.Editor.Gui.Editors {
       cbxCombatBackgroundDaytime.Name = "cbxCombatBackgroundDaytime";
       cbxCombatBackgroundDaytime.Size = new System.Drawing.Size(72, 23);
       cbxCombatBackgroundDaytime.TabIndex = 50;
+      // 
+      // pbxEquipmentHead
+      // 
+      pbxEquipmentHead.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
+      pbxEquipmentHead.Location = new Point(145, 75);
+      pbxEquipmentHead.Name = "pbxEquipmentHead";
+      pbxEquipmentHead.Size = new System.Drawing.Size(24, 24);
+      pbxEquipmentHead.TabIndex = 51;
+      pbxEquipmentHead.TabStop = false;
+      // 
+      // pbxEquipmentChest
+      // 
+      pbxEquipmentChest.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
+      pbxEquipmentChest.Location = new Point(193, 75);
+      pbxEquipmentChest.Name = "pbxEquipmentChest";
+      pbxEquipmentChest.Size = new System.Drawing.Size(24, 24);
+      pbxEquipmentChest.TabIndex = 51;
+      pbxEquipmentChest.TabStop = false;
+      // 
+      // pbxEquipmentRightHand
+      // 
+      pbxEquipmentRightHand.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
+      pbxEquipmentRightHand.Location = new Point(97, 152);
+      pbxEquipmentRightHand.Name = "pbxEquipmentRightHand";
+      pbxEquipmentRightHand.Size = new System.Drawing.Size(24, 24);
+      pbxEquipmentRightHand.TabIndex = 51;
+      pbxEquipmentRightHand.TabStop = false;
+      // 
+      // pbxEquipmentBody
+      // 
+      pbxEquipmentBody.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
+      pbxEquipmentBody.Location = new Point(193, 112);
+      pbxEquipmentBody.Name = "pbxEquipmentBody";
+      pbxEquipmentBody.Size = new System.Drawing.Size(24, 24);
+      pbxEquipmentBody.TabIndex = 52;
+      pbxEquipmentBody.TabStop = false;
+      // 
+      // pbxEquipmentLeftHand
+      // 
+      pbxEquipmentLeftHand.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
+      pbxEquipmentLeftHand.Location = new Point(193, 152);
+      pbxEquipmentLeftHand.Name = "pbxEquipmentLeftHand";
+      pbxEquipmentLeftHand.Size = new System.Drawing.Size(24, 24);
+      pbxEquipmentLeftHand.TabIndex = 53;
+      pbxEquipmentLeftHand.TabStop = false;
+      // 
+      // pbxEquipmentRightFinger
+      // 
+      pbxEquipmentRightFinger.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
+      pbxEquipmentRightFinger.Location = new Point(97, 230);
+      pbxEquipmentRightFinger.Name = "pbxEquipmentRightFinger";
+      pbxEquipmentRightFinger.Size = new System.Drawing.Size(24, 24);
+      pbxEquipmentRightFinger.TabIndex = 54;
+      pbxEquipmentRightFinger.TabStop = false;
+      // 
+      // pbxEquipmentFeet
+      // 
+      pbxEquipmentFeet.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
+      pbxEquipmentFeet.Location = new Point(145, 230);
+      pbxEquipmentFeet.Name = "pbxEquipmentFeet";
+      pbxEquipmentFeet.Size = new System.Drawing.Size(24, 24);
+      pbxEquipmentFeet.TabIndex = 55;
+      pbxEquipmentFeet.TabStop = false;
+      // 
+      // pbxEquipmentLeftFinger
+      // 
+      pbxEquipmentLeftFinger.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
+      pbxEquipmentLeftFinger.Location = new Point(193, 230);
+      pbxEquipmentLeftFinger.Name = "pbxEquipmentLeftFinger";
+      pbxEquipmentLeftFinger.Size = new System.Drawing.Size(24, 24);
+      pbxEquipmentLeftFinger.TabIndex = 56;
+      pbxEquipmentLeftFinger.TabStop = false;
+      // 
+      // pbxEquipmentItem1
+      // 
+      pbxEquipmentItem1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
+      pbxEquipmentItem1.Location = new Point(50, 79);
+      pbxEquipmentItem1.Name = "pbxEquipmentItem1";
+      pbxEquipmentItem1.Size = new System.Drawing.Size(24, 24);
+      pbxEquipmentItem1.TabIndex = 51;
+      pbxEquipmentItem1.TabStop = false;
       // 
       // EditMonsterForm
       // 
@@ -1955,6 +1957,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       DoubleBuffered = true;
       MinimumSize = new System.Drawing.Size(1548, 668);
       Name = "EditMonsterForm";
+      ShowIcon = false;
       Text = "Monster";
       grbxAttributes.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)dgvAttributes).EndInit();
@@ -1999,18 +2002,9 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxConditions.ResumeLayout(false);
       grbxConditions.PerformLayout();
       grbxEquipment.ResumeLayout(false);
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentLeftFinger).EndInit();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentFeet).EndInit();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentRightFinger).EndInit();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentLeftHand).EndInit();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentBody).EndInit();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentRightHand).EndInit();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentChest).EndInit();
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentHead).EndInit();
       ((System.ComponentModel.ISupportInitialize)pbxEquipmentNeck).EndInit();
       ((System.ComponentModel.ISupportInitialize)extendedPictureBox1).EndInit();
       grbxItems.ResumeLayout(false);
-      ((System.ComponentModel.ISupportInitialize)pbxEquipmentItem1).EndInit();
       ((System.ComponentModel.ISupportInitialize)extendedPictureBox2).EndInit();
       grbxBonusSpellDamage.ResumeLayout(false);
       grbxBonusSpellDamage.PerformLayout();
@@ -2025,6 +2019,15 @@ namespace Ambermoon.Editor.Gui.Editors {
       ((System.ComponentModel.ISupportInitialize)nudFPS).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudPaletteIndex).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudCombatGraphicIndex).EndInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentHead).EndInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentChest).EndInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentRightHand).EndInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentBody).EndInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentLeftHand).EndInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentRightFinger).EndInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentFeet).EndInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentLeftFinger).EndInit();
+      ((System.ComponentModel.ISupportInitialize)pbxEquipmentItem1).EndInit();
       ResumeLayout(false);
       PerformLayout();
     }
