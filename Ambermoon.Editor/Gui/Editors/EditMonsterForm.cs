@@ -14,6 +14,7 @@ namespace Ambermoon.Editor.Gui.Editors {
   public partial class EditMonsterForm : CustomForm {
     #region --- fields ----------------------------------------------------------------------------
     private readonly List<Bitmap>                   _animationFrames = [];
+    private readonly List<Bitmap>                   _animationFramesScaled = [];
     private readonly Timer                          _animationTimer = new();
     private readonly SortableBindingList<CharValue> _attributes = [];
     private          int                            _currentAnimationFrame = 0;
@@ -27,90 +28,58 @@ namespace Ambermoon.Editor.Gui.Editors {
       InitializeComponent();
 
       _monster = monster;
-
-      cbxClass.DataSource                   = _monster.Class.GetValuesAsOrderedStringList();
-      cbxCombatBackgroundDaytime.DataSource = CombatBackgroundDaytime.Day.GetValuesAsOrderedStringList();
-      cbxElement.DataSource                 = _monster.Element.GetValuesAsOrderedStringList();
-      cbxGender.DataSource                  = _monster.Gender.GetValuesAsOrderedStringList();
-      cbxRace.DataSource                    = _monster.Race.GetValuesAsOrderedStringList();
-      cbxType.DataSource                    = _monster.Type.GetValuesAsOrderedStringList();
     }
     #endregion
     #region --- init dgv: attributes --------------------------------------------------------------
     private void InitDGVAttributes() {
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
-
-      dgvAttributes.AutoGenerateColumns = false;
       dgvAttributes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
       dgvAttributes.Columns.AddRange(new DataGridViewColumn[] {
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(CharValue.Name),                   ReadOnly = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(CharValue.Short),                  ReadOnly = true },
-        new NumericUpDownColumn()       { DataPropertyName = nameof(CharValue.Current), MaxValue = 99 },
-        new NumericUpDownColumn()       { DataPropertyName = nameof(CharValue.Bonus),   MaxValue = 99, ReadOnly = true },
-        new NumericUpDownColumn()       { DataPropertyName = nameof(CharValue.Max),     MaxValue = 99 },
+        new DataGridViewTextBoxColumn() { Name = nameof(CharValue.Name),                   ReadOnly = true },
+        new DataGridViewTextBoxColumn() { Name = nameof(CharValue.Short),                  ReadOnly = true },
+        new NumericUpDownColumn()       { Name = nameof(CharValue.Current), MaxValue = 99 },
+        new NumericUpDownColumn()       { Name = nameof(CharValue.Bonus),   MaxValue = 99, ReadOnly = true },
+        new NumericUpDownColumn()       { Name = nameof(CharValue.Max),     MaxValue = 99 },
       });
 
       foreach (DataGridViewColumn column in dgvAttributes.Columns) {
-        column.HeaderText = column.Name = column.DataPropertyName;
         column.SortMode = DataGridViewColumnSortMode.NotSortable;
       }
 
       dgvAttributes.DataSource = _attributes;
-      dgvAttributes.AutoResizeColumns();
-
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
     #region --- init dgv: skills ------------------------------------------------------------------
     private void InitDGVSkills() {
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
-
-      dgvSkills.AutoGenerateColumns = false;
       dgvSkills.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
       dgvSkills.Columns.AddRange(new DataGridViewColumn[] {
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(CharValue.Name),                   ReadOnly = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(CharValue.Short),                  ReadOnly = true },
-        new NumericUpDownColumn()       { DataPropertyName = nameof(CharValue.Current), MaxValue = 99 },
-        new NumericUpDownColumn()       { DataPropertyName = nameof(CharValue.Bonus),   MaxValue = 99, ReadOnly = true },
-        new NumericUpDownColumn()       { DataPropertyName = nameof(CharValue.Max),     MaxValue = 99 },
+        new DataGridViewTextBoxColumn() { Name = nameof(CharValue.Name),                   ReadOnly = true },
+        new DataGridViewTextBoxColumn() { Name = nameof(CharValue.Short),                  ReadOnly = true },
+        new NumericUpDownColumn()       { Name = nameof(CharValue.Current), MaxValue = 99 },
+        new NumericUpDownColumn()       { Name = nameof(CharValue.Bonus),   MaxValue = 99, ReadOnly = true },
+        new NumericUpDownColumn()       { Name = nameof(CharValue.Max),     MaxValue = 99 },
       });
 
       foreach (DataGridViewColumn column in dgvSkills.Columns) {
-        column.HeaderText = column.Name = column.DataPropertyName;
         column.SortMode = DataGridViewColumnSortMode.NotSortable;
       }
 
       dgvSkills.DataSource = _skills;
-      dgvSkills.AutoResizeColumns();
-
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
     #region --- init dgv: spells ------------------------------------------------------------------
     private void InitDGVSpells() {
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
-
-      dgvSpells.AutoGenerateColumns = false;
       dgvSpells.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
       dgvSpells.Columns.AddRange(new DataGridViewColumn[] {
-        new DataGridViewButtonColumn () { DataPropertyName = "Remove", Text = "X", UseColumnTextForButtonValue = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(Spell.School), ReadOnly = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(Spell.Index),  ReadOnly = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(Spell.Name),   ReadOnly = true },
+        new DataGridViewButtonColumn () { Name = "Remove", Text = "X", UseColumnTextForButtonValue = true },
+        new DataGridViewTextBoxColumn() { Name = nameof(Spell.School), ReadOnly = true },
+        new DataGridViewTextBoxColumn() { Name = nameof(Spell.Index),  ReadOnly = true },
+        new DataGridViewTextBoxColumn() { Name = nameof(Spell.Name),   ReadOnly = true },
       });
 
-      foreach (DataGridViewColumn column in dgvSpells.Columns) {
-        column.HeaderText = column.Name = column.DataPropertyName;
-      }
-
       dgvSpells.DataSource = _spells;
-      dgvSpells.ClearSelection();
-      dgvSpells.AutoResizeColumns();
-
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
     #region --- on load ---------------------------------------------------------------------------
@@ -119,6 +88,7 @@ namespace Ambermoon.Editor.Gui.Editors {
 
       CenterToParent();
       WireEvents();
+      SetControls();
 
       MapMonsterToControls();
       InitDGVAttributes();
@@ -454,12 +424,8 @@ namespace Ambermoon.Editor.Gui.Editors {
       int combatBackgroundIndex = (int)nudCombatBackgroundIndex.Value;
       int combatGraphicIndex = (int)nudCombatGraphicIndex.Value;
 
-      if (
-        _monster.GetCombatIcon(combatGraphicIndex) is Bitmap combatIcon
-        && combatIcon.GetScaledBitmap(1.5f)?.GetHicon() is IntPtr hIcon
-      ) {
-        Icon = Icon.FromHandle(hIcon);
-        User32.DestroyIcon(hIcon);
+      if (_monster.GetCombatIconGraphic(combatGraphicIndex) is Bitmap combatIconGraphic) {
+        Icon = combatIconGraphic.GetIcon(24, 24);
       }
 
       CombatBackgroundImage backgroundImage = Repository.Current.GameData
@@ -671,60 +637,31 @@ namespace Ambermoon.Editor.Gui.Editors {
       chbxSpellMasteryUnused1.Checked = _monster.SpellMastery.HasFlag(SpellTypeMastery.Unused1);
       chbxSpellMasteryUnused2.Checked = _monster.SpellMastery.HasFlag(SpellTypeMastery.Unused2);
 
-      nudAttackBase.SetMinMaxByProperty(_monster, nameof(_monster.BaseAttackDamage));
       nudAttackBase.Value = _monster.BaseAttackDamage;
-      nudAttackBonus.SetMinMaxByProperty(_monster, nameof(_monster.BonusAttackDamage));
       nudAttackBonus.Value = _monster.BonusAttackDamage;
-      nudAttackMagicLevel.SetMinMaxByProperty(_monster, nameof(_monster.MagicAttackLevel));
       nudAttackMagicLevel.Value = _monster.MagicAttackLevel;
-      nudAttacksPerRound.SetMinMaxByProperty(_monster, nameof(_monster.AttacksPerRound));
       nudAttacksPerRound.Value = _monster.AttacksPerRound;
-      nudBonusSpellDamageBase.SetMinMaxByProperty(_monster, nameof(_monster.BonusSpellDamage));
       nudBonusSpellDamageBase.Value = _monster.BonusSpellDamage;
-      nudBonusSpellDamageMax.SetMinMaxByProperty(_monster, nameof(_monster.BonusMaxSpellDamage));
       nudBonusSpellDamageMax.Value = _monster.BonusMaxSpellDamage;
-      nudBonusSpellDamagePercentage.SetMinMaxByProperty(_monster, nameof(_monster.BonusSpellDamagePercentage));
       nudBonusSpellDamagePercentage.Value = _monster.BonusSpellDamagePercentage;
-      nudBonusSpellDamageReduction.SetMinMaxByProperty(_monster, nameof(_monster.BonusSpellDamageReduction));
       nudBonusSpellDamageReduction.Value = _monster.BonusSpellDamageReduction;
-      nudCombatBackgroundIndex.Maximum = Repository.Current.GameData!.DistinctCombatBackgroundImages.Count - 1;
-      nudCombatBackgroundIndex.Minimum = 0;
-      nudCombatGraphicIndex.Maximum = Repository.Current.GameData!.MonsterImages.Keys.Max();
-      nudCombatGraphicIndex.Minimum = Repository.Current.GameData!.MonsterImages.Keys.Min();
       nudCombatGraphicIndex.Value = _monster.CombatGraphicIndex;
-      nudDefeatExperience.SetMinMaxByProperty(_monster, nameof(_monster.DefeatExperience));
       nudDefeatExperience.Value = _monster.DefeatExperience;
-      nudDefenseBase.SetMinMaxByProperty(_monster, nameof(_monster.BaseDefense));
       nudDefenseBase.Value = _monster.BaseDefense;
-      nudDefenseBonus.SetMinMaxByProperty(_monster, nameof(_monster.BonusDefense));
       nudDefenseBonus.Value = _monster.BonusDefense;
-      nudDefenseMagicLevel.SetMinMaxByProperty(_monster, nameof(_monster.MagicDefenseLevel));
       nudDefenseMagicLevel.Value = _monster.MagicDefenseLevel;
-      nudFood.SetMinMaxByProperty(_monster, nameof(_monster.Food));
       nudFood.Value = _monster.Food;
-      nudGold.SetMinMaxByProperty(_monster, nameof(_monster.Gold));
       nudGold.Value = _monster.Gold;
-      nudHitPointsBonus.SetMinMaxByProperty(_monster, nameof(_monster.HitPoints.BonusValue));
       nudHitPointsBonus.Value = _monster.HitPoints.BonusValue;
-      nudHitPointsCurrent.SetMinMaxByProperty(_monster, nameof(_monster.HitPoints.CurrentValue));
       nudHitPointsCurrent.Value = _monster.HitPoints.CurrentValue;
-      nudHitPointsMax.SetMinMaxByProperty(_monster, nameof(_monster.HitPoints.MaxValue));
       nudHitPointsMax.Value = _monster.HitPoints.MaxValue;
-      nudLevel.SetMinMaxByProperty(_monster, nameof(_monster.Level));
       nudLevel.Value = _monster.Level;
-      nudMorale.SetMinMaxByProperty(_monster, nameof(_monster.Morale));
       nudMorale.Value = _monster.Morale;
-      nudPaletteIndex.Maximum = Repository.Current.GameData!.Palettes.Keys.Max();
-      nudPaletteIndex.Minimum = Repository.Current.GameData!.Palettes.Keys.Min();
-      nudSpellPointsBonus.SetMinMaxByProperty(_monster, nameof(_monster.SpellPoints.BonusValue));
       nudSpellPointsBonus.Value = _monster.SpellPoints.BonusValue;
-      nudSpellPointsCurrent.SetMinMaxByProperty(_monster, nameof(_monster.SpellPoints.CurrentValue));
       nudSpellPointsCurrent.Value = _monster.SpellPoints.CurrentValue;
-      nudSpellPointsMax.SetMinMaxByProperty(_monster, nameof(_monster.SpellPoints.MaxValue));
       nudSpellPointsMax.Value = _monster.SpellPoints.MaxValue;
 
       tbxIndex.Text = _monster.Index.ToString();
-      tbxName.SetMaxLengthByProperty(_monster, nameof(_monster.Name));
       tbxName.Text = _monster.Name;
 
       int index = 0;
@@ -768,6 +705,48 @@ namespace Ambermoon.Editor.Gui.Editors {
       foreach (Spell spell in Repository.Current.GetSpellsByUint(SpellSchool.Unknown2, _monster.LearnedSpellsType5)) { _spells.Add(spell); }
 
       GetCombatGraphics();
+    }
+    #endregion
+    #region --- set controls ------------------------------------------------------------------------
+    private void SetControls() {
+      cbxClass.DataSource                   = _monster.Class.GetValuesAsOrderedStringList();
+      cbxCombatBackgroundDaytime.DataSource = CombatBackgroundDaytime.Day.GetValuesAsOrderedStringList();
+      cbxElement.DataSource                 = _monster.Element.GetValuesAsOrderedStringList();
+      cbxGender.DataSource                  = _monster.Gender.GetValuesAsOrderedStringList();
+      cbxRace.DataSource                    = _monster.Race.GetValuesAsOrderedStringList();
+      cbxType.DataSource                    = _monster.Type.GetValuesAsOrderedStringList();
+
+      nudAttackBase.SetMinMaxByProperty(_monster, nameof(_monster.BaseAttackDamage));
+      nudAttackBonus.SetMinMaxByProperty(_monster, nameof(_monster.BonusAttackDamage));
+      nudAttackMagicLevel.SetMinMaxByProperty(_monster, nameof(_monster.MagicAttackLevel));
+      nudAttacksPerRound.SetMinMaxByProperty(_monster, nameof(_monster.AttacksPerRound));
+      nudBonusSpellDamageBase.SetMinMaxByProperty(_monster, nameof(_monster.BonusSpellDamage));
+      nudBonusSpellDamageMax.SetMinMaxByProperty(_monster, nameof(_monster.BonusMaxSpellDamage));
+      nudBonusSpellDamagePercentage.SetMinMaxByProperty(_monster, nameof(_monster.BonusSpellDamagePercentage));
+      nudBonusSpellDamageReduction.SetMinMaxByProperty(_monster, nameof(_monster.BonusSpellDamageReduction));
+      nudCombatBackgroundIndex.Maximum = Repository.Current.GameData!.DistinctCombatBackgroundImages.Count - 1;
+      nudCombatBackgroundIndex.Minimum = 0;
+      nudCombatGraphicIndex.Maximum = Repository.Current.GameData!.MonsterImages.Keys.Max();
+      nudCombatGraphicIndex.Minimum = Repository.Current.GameData!.MonsterImages.Keys.Min();
+      nudDefeatExperience.SetMinMaxByProperty(_monster, nameof(_monster.DefeatExperience));
+      nudDefenseBase.SetMinMaxByProperty(_monster, nameof(_monster.BaseDefense));
+      nudDefenseBonus.SetMinMaxByProperty(_monster, nameof(_monster.BonusDefense));
+      nudDefenseMagicLevel.SetMinMaxByProperty(_monster, nameof(_monster.MagicDefenseLevel));
+      nudFood.SetMinMaxByProperty(_monster, nameof(_monster.Food));
+      nudGold.SetMinMaxByProperty(_monster, nameof(_monster.Gold));
+      nudHitPointsBonus.SetMinMaxByProperty(_monster, nameof(_monster.HitPoints.BonusValue));
+      nudHitPointsCurrent.SetMinMaxByProperty(_monster, nameof(_monster.HitPoints.CurrentValue));
+      nudHitPointsMax.SetMinMaxByProperty(_monster, nameof(_monster.HitPoints.MaxValue));
+      nudLevel.SetMinMaxByProperty(_monster, nameof(_monster.Level));
+      nudMorale.SetMinMaxByProperty(_monster, nameof(_monster.Morale));
+      nudPaletteIndex.Maximum = Repository.Current.GameData!.Palettes.Keys.Max();
+      nudPaletteIndex.Minimum = Repository.Current.GameData!.Palettes.Keys.Min();
+      nudSpellPointsBonus.SetMinMaxByProperty(_monster, nameof(_monster.SpellPoints.BonusValue));
+      nudSpellPointsCurrent.SetMinMaxByProperty(_monster, nameof(_monster.SpellPoints.CurrentValue));
+      nudSpellPointsMax.SetMinMaxByProperty(_monster, nameof(_monster.SpellPoints.MaxValue));
+      tbxName.SetMaxLengthByProperty(_monster, nameof(_monster.Name));
+
+      pbxCombatGraphic.SizeMode = chbxZoom.Checked ? PictureBoxSizeMode.Zoom : PictureBoxSizeMode.CenterImage;
     }
     #endregion
     #region --- remove spell ----------------------------------------------------------------------

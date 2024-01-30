@@ -5,7 +5,6 @@ using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 
 namespace Ambermoon.Editor.Models {
-
   internal class Repository {
     #region --- fields ----------------------------------------------------------------------------
     private static readonly Repository _instance;
@@ -100,6 +99,8 @@ namespace Ambermoon.Editor.Models {
       if (GameData is null) {
         return;
       }
+
+      var blub = GameData.Palettes[1];
 
       int asdadafd = 0;
     }

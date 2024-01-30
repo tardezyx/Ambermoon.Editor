@@ -1,5 +1,4 @@
 ﻿using Ambermoon.Data.GameDataRepository.Data;
-using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Editors;
 using Ambermoon.Editor.Models;
@@ -18,33 +17,23 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #endregion
     #region --- init dgv --------------------------------------------------------------------------
     private void InitDGV() {
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
-
-      dgv.AutoGenerateColumns = false;
-
       dgv.Columns.AddRange(new DataGridViewColumn[] {
-        new DataGridViewButtonColumn () { DataPropertyName = "Remove", Text = "X", UseColumnTextForButtonValue = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MapData.Index) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MapData.World) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MapData.Type) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MapData.Width) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MapData.Height) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MapData.Flags) },
+        new DataGridViewButtonColumn () { Name = "Remove", Text = "X", UseColumnTextForButtonValue = true },
+        new DataGridViewTextBoxColumn() { Name = nameof(MapData.Index) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MapData.World) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MapData.Type) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MapData.Width) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MapData.Height) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MapData.Flags) },
       });
 
-      foreach (DataGridViewColumn column in dgv.Columns) {
-        column.HeaderText = column.Name = column.DataPropertyName;
-      }
-
       dgv.DataSource = _maps.ForDisplay;
-      dgv.AutoResizeColumns();
-
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
     #region --- on load ---------------------------------------------------------------------------
     protected override void OnLoad(EventArgs e) {
       base.OnLoad(e);
+
       InitDGV();
       WireEvents();
     }

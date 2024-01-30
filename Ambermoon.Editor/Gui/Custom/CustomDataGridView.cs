@@ -4,7 +4,6 @@ namespace Ambermoon.Editor.Gui.Custom {
   internal class CustomDataGridView : DataGridView {
     #region --- constructor -----------------------------------------------------------------------
     public CustomDataGridView() : base() {
-
       if (!Settings.IsNotInDesignMode) { 
         return;
       }
@@ -14,6 +13,7 @@ namespace Ambermoon.Editor.Gui.Custom {
         true
       );
 
+      AutoGenerateColumns                     = false;
       BackgroundColor                         = Color.LightGray;
       BorderStyle                             = BorderStyle.FixedSingle;
       ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -62,6 +62,8 @@ namespace Ambermoon.Editor.Gui.Custom {
       base.OnDataBindingComplete(e);
 
       foreach (DataGridViewColumn column in Columns) {
+        column.DataPropertyName = column.HeaderText = column.Name;
+
         if (column is DataGridViewButtonColumn buttonColumn) {
           buttonColumn.FlatStyle                  = FlatStyle.Flat;
           buttonColumn.DefaultCellStyle.BackColor = Color.FromArgb(255, 192, 192, 192);
@@ -75,6 +77,7 @@ namespace Ambermoon.Editor.Gui.Custom {
         //}
       }
 
+      AutoResizeColumns();
       ClearSelection();
     }
     #endregion

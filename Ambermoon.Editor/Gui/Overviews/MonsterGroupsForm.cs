@@ -1,4 +1,5 @@
-﻿using Ambermoon.Data.GameDataRepository.Data;
+﻿using Ambermoon.Data.GameDataRepository;
+using Ambermoon.Data.GameDataRepository.Data;
 using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Editors;
@@ -6,10 +7,6 @@ using Ambermoon.Editor.Models;
 
 namespace Ambermoon.Editor.Gui.Overviews {
   public partial class MonsterGroupsForm : CustomForm {
-    #region --- fields ----------------------------------------------------------------------------
-    private readonly ListWrapper<MonsterGroupData>           _monsterGroups;
-    private readonly SortableBindingList<MonsterGroupAsText> _monsterGroupsAsText;
-    #endregion
     #region --- local class: monster details ------------------------------------------------------
     private class MonsterDetails {
       public int    Count { get; set; } = 0;
@@ -32,6 +29,10 @@ namespace Ambermoon.Editor.Gui.Overviews {
       Name
     }
     #endregion
+    #region --- fields ----------------------------------------------------------------------------
+    private readonly ListWrapper<MonsterGroupData>           _monsterGroups;
+    private readonly SortableBindingList<MonsterGroupAsText> _monsterGroupsAsText;
+    #endregion
 
     #region --- constructor -----------------------------------------------------------------------
     public MonsterGroupsForm() {
@@ -41,7 +42,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
       _monsterGroupsAsText = [];
 
       Dictionary<OrderBy, string> orderOptions = [];
-      foreach (OrderBy entry in ((OrderBy[])System.Enum.GetValues(typeof(OrderBy))).Distinct()) {
+      foreach (OrderBy entry in ((OrderBy[])Enum.GetValues(typeof(OrderBy))).Distinct()) {
         orderOptions.Add(entry, entry.ToString());
       }
 
@@ -53,28 +54,18 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #endregion
     #region --- init dgv --------------------------------------------------------------------------
     private void InitDGV() {
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
-
-      dgv.AutoGenerateColumns = false;
       dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
       dgv.Columns.AddRange(new DataGridViewColumn[] {
-        new DataGridViewButtonColumn () { DataPropertyName = "Remove", Text = "X", UseColumnTextForButtonValue = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterGroupAsText.Index) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterGroupAsText.Monsters) },
+        new DataGridViewButtonColumn () { Name = "Remove", Text = "X", UseColumnTextForButtonValue = true },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterGroupAsText.Index) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterGroupAsText.Monsters) },
       });
 
-      foreach (DataGridViewColumn column in dgv.Columns) {
-        column.HeaderText = column.Name = column.DataPropertyName;
-        if (column.Name == nameof(MonsterGroupAsText.Monsters)) {
-          column.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-        }
-      }
+      dgv.Columns[nameof(MonsterGroupAsText.Monsters)].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
       dgv.DataSource = _monsterGroupsAsText;
       ResizeDGV();
-
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
     #region --- on load ---------------------------------------------------------------------------
@@ -190,9 +181,12 @@ namespace Ambermoon.Editor.Gui.Overviews {
             Index = monsterIndex,
           };
 
-          if (Repository.Current.GameData?.Monsters.FirstOrDefault(x => x.Index == monsterIndex) is MonsterData monsterData) {
-            monsterDetails.Level = monsterData.Level;
-            monsterDetails.Name = monsterData.Name;
+          if (
+            Repository.Current.GameData is GameDataRepository repository
+            && repository.Monsters.ContainsKey(monsterIndex)
+          ) {
+            monsterDetails.Level = repository.Monsters[monsterIndex].Level;
+            monsterDetails.Name = repository.Monsters[monsterIndex].Name;
           }
 
           result.Add(monsterDetails);

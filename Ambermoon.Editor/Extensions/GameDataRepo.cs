@@ -47,8 +47,8 @@ namespace Ambermoon.Editor.Extensions {
       );
     }
     #endregion
-    #region --- monster data: get combat icon -----------------------------------------------------
-    internal static Bitmap? GetCombatIcon(this MonsterData source, int combatGraphicIndex = -1) {
+    #region --- monster data: get combat icon graphic ---------------------------------------------
+    internal static Bitmap? GetCombatIconGraphic(this MonsterData source, int combatGraphicIndex = -1) {
       uint imageIndex = combatGraphicIndex == -1
         ? source.CombatGraphicIndex
         : (uint)combatGraphicIndex;

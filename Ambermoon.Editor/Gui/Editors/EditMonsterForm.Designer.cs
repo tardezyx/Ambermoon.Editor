@@ -633,7 +633,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       pbxCombatGraphic.BackColor = Color.Black;
       pbxCombatGraphic.BackgroundImageLayout = ImageLayout.Zoom;
-      pbxCombatGraphic.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
       pbxCombatGraphic.Location = new Point(6, 22);
       pbxCombatGraphic.Name = "pbxCombatGraphic";
       pbxCombatGraphic.Size = new System.Drawing.Size(347, 103);
@@ -1557,7 +1556,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       // pbxEquipmentLeftFinger
       // 
-      pbxEquipmentLeftFinger.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
       pbxEquipmentLeftFinger.Location = new Point(193, 230);
       pbxEquipmentLeftFinger.Name = "pbxEquipmentLeftFinger";
       pbxEquipmentLeftFinger.Size = new System.Drawing.Size(24, 24);
@@ -1566,7 +1564,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       // pbxEquipmentFeet
       // 
-      pbxEquipmentFeet.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
       pbxEquipmentFeet.Location = new Point(145, 230);
       pbxEquipmentFeet.Name = "pbxEquipmentFeet";
       pbxEquipmentFeet.Size = new System.Drawing.Size(24, 24);
@@ -1575,7 +1572,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       // pbxEquipmentRightFinger
       // 
-      pbxEquipmentRightFinger.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
       pbxEquipmentRightFinger.Location = new Point(97, 230);
       pbxEquipmentRightFinger.Name = "pbxEquipmentRightFinger";
       pbxEquipmentRightFinger.Size = new System.Drawing.Size(24, 24);
@@ -1584,7 +1580,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       // pbxEquipmentLeftHand
       // 
-      pbxEquipmentLeftHand.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
       pbxEquipmentLeftHand.Location = new Point(193, 152);
       pbxEquipmentLeftHand.Name = "pbxEquipmentLeftHand";
       pbxEquipmentLeftHand.Size = new System.Drawing.Size(24, 24);
@@ -1593,7 +1588,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       // pbxEquipmentBody
       // 
-      pbxEquipmentBody.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
       pbxEquipmentBody.Location = new Point(193, 112);
       pbxEquipmentBody.Name = "pbxEquipmentBody";
       pbxEquipmentBody.Size = new System.Drawing.Size(24, 24);
@@ -1602,7 +1596,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       // pbxEquipmentRightHand
       // 
-      pbxEquipmentRightHand.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
       pbxEquipmentRightHand.Location = new Point(97, 152);
       pbxEquipmentRightHand.Name = "pbxEquipmentRightHand";
       pbxEquipmentRightHand.Size = new System.Drawing.Size(24, 24);
@@ -1611,7 +1604,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       // pbxEquipmentChest
       // 
-      pbxEquipmentChest.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
       pbxEquipmentChest.Location = new Point(193, 75);
       pbxEquipmentChest.Name = "pbxEquipmentChest";
       pbxEquipmentChest.Size = new System.Drawing.Size(24, 24);
@@ -1620,7 +1612,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       // pbxEquipmentHead
       // 
-      pbxEquipmentHead.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
       pbxEquipmentHead.Location = new Point(145, 75);
       pbxEquipmentHead.Name = "pbxEquipmentHead";
       pbxEquipmentHead.Size = new System.Drawing.Size(24, 24);
@@ -1629,7 +1620,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       // pbxEquipmentNeck
       // 
-      pbxEquipmentNeck.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
       pbxEquipmentNeck.Location = new Point(97, 75);
       pbxEquipmentNeck.Name = "pbxEquipmentNeck";
       pbxEquipmentNeck.Size = new System.Drawing.Size(24, 24);
@@ -1640,7 +1630,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       extendedPictureBox1.BackgroundImage = Properties.Resources.background_equipment;
       extendedPictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-      extendedPictureBox1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
       extendedPictureBox1.Location = new Point(6, 22);
       extendedPictureBox1.Name = "extendedPictureBox1";
       extendedPictureBox1.Size = new System.Drawing.Size(303, 245);
@@ -1661,7 +1650,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       // pbxEquipmentItem1
       // 
-      pbxEquipmentItem1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
       pbxEquipmentItem1.Location = new Point(50, 79);
       pbxEquipmentItem1.Name = "pbxEquipmentItem1";
       pbxEquipmentItem1.Size = new System.Drawing.Size(24, 24);
@@ -1672,7 +1660,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       extendedPictureBox2.BackgroundImage = Properties.Resources.background_items;
       extendedPictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
-      extendedPictureBox2.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
       extendedPictureBox2.Location = new Point(6, 22);
       extendedPictureBox2.Name = "extendedPictureBox2";
       extendedPictureBox2.Size = new System.Drawing.Size(303, 245);

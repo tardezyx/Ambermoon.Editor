@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 namespace Ambermoon.Editor.Extensions {
   internal static partial class Extensions {
@@ -15,11 +16,16 @@ namespace Ambermoon.Editor.Extensions {
         (int)(source.Height * factor)
       );
 
-      Bitmap result = new(rectangle.Width, rectangle.Height);
-      Graphics graph = Graphics.FromImage(result);
+      Bitmap result = new(
+        rectangle.Width,
+        rectangle.Height,
+        PixelFormat.Format32bppArgb
+      );
 
-      graph.InterpolationMode = InterpolationMode.High;
+      Graphics graph = Graphics.FromImage(result);
       graph.CompositingQuality = CompositingQuality.HighQuality;
+      graph.InterpolationMode = InterpolationMode.NearestNeighbor;
+      graph.PixelOffsetMode = PixelOffsetMode.HighQuality;
       graph.SmoothingMode = SmoothingMode.HighQuality;
       graph.DrawImage(source, rectangle);
 
@@ -34,6 +40,23 @@ namespace Ambermoon.Editor.Extensions {
           height / source.Height
         )
       );
+    }
+    #endregion
+    #region --- get icon (via width & height) -----------------------------------------------------
+    internal static Icon? GetIcon(this Bitmap source, int width, int height) {
+      Icon? result = null;
+
+      float factor = Math.Min(
+        width  / source.Width,
+        height / source.Height
+      );
+
+      if (source.GetScaledBitmap(factor)?.GetHicon() is IntPtr hIcon) {
+        result = (Icon?)Icon.FromHandle(hIcon).Clone();
+        User32.DestroyIcon(hIcon);
+      }
+
+      return result;
     }
     #endregion
   }

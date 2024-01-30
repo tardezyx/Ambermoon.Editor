@@ -18,47 +18,36 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #endregion
     #region --- init dgv --------------------------------------------------------------------------
     private void InitDGV() {
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
-
-      dgv.AutoGenerateColumns = false;
-
       dgv.Columns.AddRange(new DataGridViewColumn[] {
-        new DataGridViewButtonColumn () { DataPropertyName = "Remove", Text = "X", UseColumnTextForButtonValue = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Index) },
-        new DataGridViewImageColumn()   { DataPropertyName = "Graphic" },
-        new DataGridViewImageColumn()   { DataPropertyName = "Icon" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Name) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Race) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Gender) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Class) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Level) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Element) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.DefeatExperience) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Morale) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Gold) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Food) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BaseAttackDamage) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.MagicAttackLevel) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.AttacksPerRound) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BaseDefense) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.MagicDefenseLevel) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BonusSpellDamage) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BonusMaxSpellDamage) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BonusSpellDamagePercentage) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.BonusSpellDamageReduction) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.SpellMastery) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.SpellTypeImmunity) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(MonsterData.Conditions) },
+        new DataGridViewButtonColumn () { Name = "Remove", Text = "X", UseColumnTextForButtonValue = true },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.Index) },
+        new DataGridViewImageColumn()   { Name = "Graphic" },
+        new DataGridViewImageColumn()   { Name = "Icon" },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.Name) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.Race) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.Gender) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.Class) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.Level) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.Element) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.DefeatExperience) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.Morale) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.Gold) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.Food) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.BaseAttackDamage) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.MagicAttackLevel) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.AttacksPerRound) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.BaseDefense) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.MagicDefenseLevel) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.BonusSpellDamage) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.BonusMaxSpellDamage) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.BonusSpellDamagePercentage) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.BonusSpellDamageReduction) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.SpellMastery) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.SpellTypeImmunity) },
+        new DataGridViewTextBoxColumn() { Name = nameof(MonsterData.Conditions) },
       });
 
-      foreach (DataGridViewColumn column in dgv.Columns) {
-        column.HeaderText = column.Name = column.DataPropertyName;
-      }
-
       dgv.DataSource = _monsters.ForDisplay;
-      dgv.AutoResizeColumns();
-
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
     #region --- on load ---------------------------------------------------------------------------
@@ -86,7 +75,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
           combatGraphicCell.ImageLayout = DataGridViewImageCellLayout.Zoom;
           combatGraphicCell.Value       = monster.GetCombatGraphic();
           //combatIconCell.ImageLayout    = DataGridViewImageCellLayout.Zoom;
-          combatIconCell.Value          = monster.GetCombatIcon();
+          combatIconCell.Value          = monster.GetCombatIconGraphic();
         }
       }
     }

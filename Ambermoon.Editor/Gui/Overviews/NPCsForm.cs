@@ -1,5 +1,4 @@
 ﻿using Ambermoon.Data.GameDataRepository.Data;
-using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Editors;
 using Ambermoon.Editor.Models;
@@ -19,29 +18,18 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #endregion
     #region --- init dgv --------------------------------------------------------------------------
     private void InitDGV() {
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
-
-      dgv.AutoGenerateColumns = false;
-
       dgv.Columns.AddRange(new DataGridViewColumn[] {
-        new DataGridViewButtonColumn () { DataPropertyName = "Remove", Text = "X", UseColumnTextForButtonValue = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(NpcData.Index) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(NpcData.Name) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(NpcData.Level) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(NpcData.Type) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(NpcData.Race) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(NpcData.Class) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(NpcData.Gender) },
+        new DataGridViewButtonColumn () { Name = "Remove", Text = "X", UseColumnTextForButtonValue = true },
+        new DataGridViewTextBoxColumn() { Name = nameof(NpcData.Index) },
+        new DataGridViewTextBoxColumn() { Name = nameof(NpcData.Name) },
+        new DataGridViewTextBoxColumn() { Name = nameof(NpcData.Level) },
+        new DataGridViewTextBoxColumn() { Name = nameof(NpcData.Type) },
+        new DataGridViewTextBoxColumn() { Name = nameof(NpcData.Race) },
+        new DataGridViewTextBoxColumn() { Name = nameof(NpcData.Class) },
+        new DataGridViewTextBoxColumn() { Name = nameof(NpcData.Gender) },
       });
 
-      foreach (DataGridViewColumn column in dgv.Columns) {
-        column.HeaderText = column.Name = column.DataPropertyName;
-      }
-
       dgv.DataSource = _npcs.ForDisplay;
-      dgv.AutoResizeColumns();
-
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
     #region --- on load ---------------------------------------------------------------------------

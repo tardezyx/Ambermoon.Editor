@@ -1,7 +1,10 @@
-﻿namespace Ambermoon.Editor.Gui.Custom {
+﻿using Ambermoon.Editor.Extensions;
+
+namespace Ambermoon.Editor.Gui.Custom {
   public partial class CustomForm : Form {
     #region --- constructor -----------------------------------------------------------------------
     public CustomForm() {
+      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
       InitializeComponent();
     }
     #endregion
@@ -20,6 +23,7 @@
       base.OnShown(e);
 
       Refresh();
+      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
   }

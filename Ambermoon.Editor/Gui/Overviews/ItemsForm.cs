@@ -18,66 +18,56 @@ namespace Ambermoon.Editor.Gui.Overviews {
     #endregion
     #region --- init dgv --------------------------------------------------------------------------
     private void InitDGV() {
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, false, 0);
-
-      dgv.AutoGenerateColumns = false;
-
       dgv.Columns.AddRange(new DataGridViewColumn[] {
-        new DataGridViewButtonColumn () { DataPropertyName = "Remove", Text = "X", UseColumnTextForButtonValue = true },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.Index) },
-        new DataGridViewImageColumn()   { DataPropertyName = "Graphic" },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.Type) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.Name) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.Weight) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.Price) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.EnchantPrice) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.EquipmentSlot) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.NumberOfFingers) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.NumberOfHands) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.BreakChance) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.Attribute) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.AttributeValue) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.Skill) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.SkillValue) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.PenaltySkill1) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.PenaltyValue1) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.PenaltySkill2) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.PenaltyValue2) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.HitPoints) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.Damage) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.MagicAttackLevel) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.Defense) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.MagicDefenseLevel) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.AmmunitionType) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.UsedAmmunitionType) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.InitialNumberOfRecharges) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.MaxNumberOfRecharges) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.Spell) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.InitialSpellCharges) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.MaxSpellCharges) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.Flags) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.DefaultSlotFlags) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.SpecialItemPurpose) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.TextIndex) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.TextSubIndex) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.Transportation) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.Gender) },
-        new DataGridViewTextBoxColumn() { DataPropertyName = nameof(ItemData.Classes) },
+        new DataGridViewButtonColumn () { Name = "Remove", Text = "X", UseColumnTextForButtonValue = true },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.Index) },
+        new DataGridViewImageColumn()   { Name = "Graphic" },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.Type) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.Name) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.Weight) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.Price) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.EnchantPrice) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.EquipmentSlot) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.NumberOfFingers) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.NumberOfHands) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.BreakChance) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.Attribute) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.AttributeValue) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.Skill) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.SkillValue) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.PenaltySkill1) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.PenaltyValue1) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.PenaltySkill2) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.PenaltyValue2) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.HitPoints) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.Damage) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.MagicAttackLevel) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.Defense) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.MagicDefenseLevel) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.AmmunitionType) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.UsedAmmunitionType) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.InitialNumberOfRecharges) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.MaxNumberOfRecharges) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.Spell) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.InitialSpellCharges) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.MaxSpellCharges) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.Flags) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.DefaultSlotFlags) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.SpecialItemPurpose) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.TextIndex) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.TextSubIndex) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.Transportation) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.Gender) },
+        new DataGridViewTextBoxColumn() { Name = nameof(ItemData.Classes) },
       });
 
-      foreach (DataGridViewColumn column in dgv.Columns) {
-        column.HeaderText = column.Name = column.DataPropertyName;
-      }
-
       dgv.DataSource = _items.ForDisplay;
-      dgv.AutoResizeColumns();
-
-      _ = User32.SendMessage(Handle, (int)User32.WindowMessages.SetRedraw, true, 0);
     }
     #endregion
     #region --- on load ---------------------------------------------------------------------------
     protected override void OnLoad(EventArgs e) {
       base.OnLoad(e);
+
       InitDGV();
       WireEvents();
     }
@@ -96,7 +86,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
           row.DataBoundItem is ItemData item
           && row.Cells["Graphic"] is DataGridViewImageCell graphicCell
         ) {
-          graphicCell.ImageLayout = DataGridViewImageCellLayout.Zoom;
+          //graphicCell.ImageLayout = DataGridViewImageCellLayout.Zoom;
           graphicCell.Value       = item.GetGraphic();
         }
       }

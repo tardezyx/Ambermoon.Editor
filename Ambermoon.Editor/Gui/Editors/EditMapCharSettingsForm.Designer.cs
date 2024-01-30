@@ -72,7 +72,6 @@
       this.pictureBoxGraphic.BackColor = System.Drawing.Color.Black;
       this.pictureBoxGraphic.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
       this.pictureBoxGraphic.ContextMenuStrip = this.contextMenuStripImage;
-      this.pictureBoxGraphic.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
       this.pictureBoxGraphic.Location = new System.Drawing.Point(12, 12);
       this.pictureBoxGraphic.Name = "pictureBoxGraphic";
       this.pictureBoxGraphic.Size = new System.Drawing.Size(68, 68);
