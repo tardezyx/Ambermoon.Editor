@@ -26,6 +26,29 @@ namespace Ambermoon.Editor.Extensions {
       );
     }
     #endregion
+    #region --- item data: get text ---------------------------------------------------------------
+    internal static string GetText(this ItemData source, int textIndex = -1, int textSubIndex = -1) {
+      uint? index = textIndex == -1
+        ? source.TextIndex
+        : (uint)textIndex;
+
+      uint? subIndex = textSubIndex == -1
+        ? source.TextSubIndex
+        : (uint)textSubIndex;
+
+      if (
+        index.HasValue
+        && subIndex.HasValue
+        && Repository.Current.GameData is GameDataRepository repository
+        && repository.ItemTexts.ContainsKey((uint)index)
+        && repository.ItemTexts[(uint)index] is TextList textList
+        && subIndex < textList.Count) {
+        return textList[(int)subIndex];
+      }
+      
+      return string.Empty;
+    }
+    #endregion
 
     #region --- monster data: get combat graphic --------------------------------------------------
     internal static Bitmap? GetCombatGraphic(this MonsterData source, int combatGraphicIndex = -1, uint paletteIndex = 21) {

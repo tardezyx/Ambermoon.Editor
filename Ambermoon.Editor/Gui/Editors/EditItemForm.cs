@@ -3,6 +3,8 @@ using Ambermoon.Data.GameDataRepository.Data;
 using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Models;
+using Attribute = Ambermoon.Data.Attribute;
+using Spell = Ambermoon.Data.Spell;
 
 namespace Ambermoon.Editor.Gui.Editors {
   public partial class EditItemForm : CustomForm {
@@ -30,20 +32,20 @@ namespace Ambermoon.Editor.Gui.Editors {
       //InitDGVAttributes();
     }
     #endregion
-    #region --- set controls ------------------------------------------------------------------------
+    #region --- set controls ----------------------------------------------------------------------
     private void SetControls() {
-      cbxAmmunitionType.DataSource = _item.AmmunitionType.GetValuesAsOrderedStringList();
-      cbxAttribute.DataSource      = _item.Attribute.GetValuesAsOrderedStringList();
-      cbxEquipmentSlot.DataSource  = _item.EquipmentSlot.GetValuesAsOrderedStringList();
-      cbxGender.DataSource         = _item.Gender.GetValuesAsOrderedStringList();
-      cbxPenaltySkill1.DataSource  = _item.PenaltySkill1.GetValuesAsOrderedStringList();
-      cbxPenaltySkill2.DataSource  = _item.PenaltySkill2.GetValuesAsOrderedStringList();
-      cbxSkill.DataSource          = _item.Skill.GetValuesAsOrderedStringList();
+      cbxAmmunitionType.DataSource = AmmunitionType.None.GetValuesAsOrderedStringList();
+      cbxAttribute.DataSource = Attribute.Age.GetValuesAsOrderedStringList();
+      cbxEquipmentSlot.DataSource = EquipmentSlot.None.GetValuesAsOrderedStringList();
+      cbxGender.DataSource = GenderFlag.None.GetValuesAsOrderedStringList();
+      cbxPenaltySkill1.DataSource = Skill.Attack.GetValuesAsOrderedStringList();
+      cbxPenaltySkill2.DataSource = Skill.Attack.GetValuesAsOrderedStringList();
+      cbxSkill.DataSource = Skill.Attack.GetValuesAsOrderedStringList();
       cbxSpecialPurpose.DataSource = SpecialItemPurpose.Compass.GetValuesAsOrderedStringList();
-      cbxSpell.DataSource          = _item.Spell.GetValuesAsOrderedStringList();
+      cbxSpell.DataSource = Spell.None.GetValuesAsOrderedStringList();
       cbxTransportation.DataSource = Transportation.FlyingDisc.GetValuesAsOrderedStringList();
-      cbxType.DataSource           = _item.Type.GetValuesAsOrderedStringList();
-      cbxUsedAmmunition.DataSource = _item.UsedAmmunitionType.GetValuesAsOrderedStringList();
+      cbxType.DataSource = ItemType.None.GetValuesAsOrderedStringList();
+      cbxUsedAmmunition.DataSource = AmmunitionType.None.GetValuesAsOrderedStringList();
 
       nudAttribute.SetMinMaxByProperty(_item, nameof(_item.AttributeValue));
       nudBreakChance.SetMinMaxByProperty(_item, nameof(_item.BreakChance));
@@ -66,24 +68,168 @@ namespace Ambermoon.Editor.Gui.Editors {
       nudPrice.SetMinMaxByProperty(_item, nameof(_item.Price));
       nudSpellPoints.SetMinMaxByProperty(_item, nameof(_item.SpellPoints));
       nudSkill.SetMinMaxByProperty(_item, nameof(_item.SkillValue));
-      nudText.SetMinMaxByProperty(_item, nameof(_item.TextIndex));
-      nudTextSub.SetMinMaxByProperty(_item, nameof(_item.TextSubIndex));
+      nudText.Maximum = Repository.Current.GameData!.ItemTexts.Keys.Max();
+      nudText.Minimum = 0;
+      nudTextSub.Maximum = -1;
+      nudTextSub.Minimum = -1;
       nudWeight.SetMinMaxByProperty(_item, nameof(_item.Weight));
-      tbxName.SetMaxLengthByProperty(_item, nameof(_item.Name));
 
       pbxGraphic.SizeMode = chbxZoom.Checked ? PictureBoxSizeMode.Zoom : PictureBoxSizeMode.CenterImage;
+      pbxTextBorder.Image = new Bitmap(Properties.Resources.background_text);
+
+      tbxName.SetMaxLengthByProperty(_item, nameof(_item.Name));
     }
     #endregion
-    #region --- update check boxes: battle flags --------------------------------------------------
-    private void UpdateCheckBoxesBattleFlags(object? s, BattleFlags flag) {
+    #region --- update check boxes: classes -------------------------------------------------------
+    private void UpdateCheckBoxesClasses(object? s, ClassFlag flag) {
       if (s is CheckBox checkBox && checkBox.Checked) {
-        if (flag == BattleFlags.None) {
+        if (flag == ClassFlag.None) {
+          chbxClassesAdventurer.Checked = false;
+          chbxClassesAlchemist.Checked = false;
+          chbxClassesAll.Checked = false;
+          chbxClassesAllWithUnused.Checked = false;
+          chbxClassesAnimal.Checked = false;
+          chbxClassesHealer.Checked = false;
+          chbxClassesMage.Checked = false;
+          chbxClassesMonster.Checked = false;
+          chbxClassesMystic.Checked = false;
+          chbxClassesPaladin.Checked = false;
+          chbxClassesRanger.Checked = false;
+          chbxClassesThief.Checked = false;
+          chbxClassesUnused1.Checked = false;
+          chbxClassesUnused2.Checked = false;
+          chbxClassesUnused3.Checked = false;
+          chbxClassesUnused4.Checked = false;
+          chbxClassesWarrior.Checked = false;
+        } else {
+          chbxClassesNone.Checked = false;
+
+          if (flag == ClassFlag.All) {
+            chbxClassesAdventurer.Checked = true;
+            chbxClassesAlchemist.Checked = true;
+            chbxClassesAnimal.Checked = true;
+            chbxClassesHealer.Checked = true;
+            chbxClassesMage.Checked = true;
+            chbxClassesMystic.Checked = true;
+            chbxClassesPaladin.Checked = true;
+            chbxClassesRanger.Checked = true;
+            chbxClassesThief.Checked = true;
+            chbxClassesWarrior.Checked = true;
+          }
+
+          if (flag == ClassFlag.AllWithUnused) {
+            chbxClassesAdventurer.Checked = true;
+            chbxClassesAlchemist.Checked = true;
+            chbxClassesAnimal.Checked = true;
+            chbxClassesHealer.Checked = true;
+            chbxClassesMage.Checked = true;
+            chbxClassesMonster.Checked = true;
+            chbxClassesMystic.Checked = true;
+            chbxClassesPaladin.Checked = true;
+            chbxClassesRanger.Checked = true;
+            chbxClassesThief.Checked = true;
+            chbxClassesUnused1.Checked = true;
+            chbxClassesUnused2.Checked = true;
+            chbxClassesUnused3.Checked = true;
+            chbxClassesUnused4.Checked = true;
+            chbxClassesWarrior.Checked = true;
+          }
+        }
+      }
+
+      chbxClassesAll.Checked = chbxClassesAdventurer.Checked
+        && chbxClassesAlchemist.Checked
+        && chbxClassesAnimal.Checked
+        && chbxClassesHealer.Checked
+        && chbxClassesMage.Checked
+        && chbxClassesMystic.Checked
+        && chbxClassesPaladin.Checked
+        && chbxClassesRanger.Checked
+        && chbxClassesThief.Checked
+        && chbxClassesWarrior.Checked;
+
+      chbxClassesAll.Enabled = !chbxClassesAll.Checked;
+
+      chbxClassesAllWithUnused.Checked = chbxClassesAdventurer.Checked
+        && chbxClassesAlchemist.Checked
+        && chbxClassesAnimal.Checked
+        && chbxClassesHealer.Checked
+        && chbxClassesMage.Checked
+        && chbxClassesMonster.Checked
+        && chbxClassesMystic.Checked
+        && chbxClassesPaladin.Checked
+        && chbxClassesRanger.Checked
+        && chbxClassesThief.Checked
+        && chbxClassesUnused1.Checked
+        && chbxClassesUnused2.Checked
+        && chbxClassesUnused3.Checked
+        && chbxClassesUnused4.Checked
+        && chbxClassesWarrior.Checked;
+
+      chbxClassesAllWithUnused.Enabled = !chbxClassesAllWithUnused.Checked;
+
+      if (
+           !chbxClassesAdventurer.Checked
+        && !chbxClassesAlchemist.Checked
+        && !chbxClassesAll.Checked
+        && !chbxClassesAllWithUnused.Checked
+        && !chbxClassesAnimal.Checked
+        && !chbxClassesHealer.Checked
+        && !chbxClassesMage.Checked
+        && !chbxClassesMonster.Checked
+        && !chbxClassesMystic.Checked
+        && !chbxClassesPaladin.Checked
+        && !chbxClassesRanger.Checked
+        && !chbxClassesThief.Checked
+        && !chbxClassesUnused1.Checked
+        && !chbxClassesUnused2.Checked
+        && !chbxClassesUnused3.Checked
+        && !chbxClassesUnused4.Checked
+        && !chbxClassesWarrior.Checked
+      ) {
+        chbxClassesNone.Checked = true;
+        chbxClassesNone.Enabled = false;
+      } else {
+        chbxClassesNone.Enabled = true;
+      }
+    }
+    #endregion
+    #region --- update check boxes: default slot --------------------------------------------------
+    private void UpdateCheckBoxesDefaultSlot(object? s, ItemSlotFlags flag) {
+      if (s is CheckBox checkBox && checkBox.Checked) {
+        if (flag == ItemSlotFlags.None) {
+          chbxDefaultSlotFlagBroken.Checked = false;
+          chbxDefaultSlotFlagCursed.Checked = false;
+          chbxDefaultSlotFlagIdentified.Checked = false;
+          chbxDefaultSlotFlagLocked.Checked = false;
+        } else {
+          chbxDefaultSlotFlagNone.Checked = false;
+        }
+
+        if (
+             !chbxDefaultSlotFlagCursed.Checked
+          && !chbxDefaultSlotFlagBroken.Checked
+          && !chbxDefaultSlotFlagIdentified.Checked
+          && !chbxDefaultSlotFlagLocked.Checked
+        ) {
+          chbxDefaultSlotFlagNone.Checked = true;
+          chbxDefaultSlotFlagNone.Enabled = false;
+        } else {
+          chbxDefaultSlotFlagNone.Enabled = true;
+        }
+      }
+    }
+    #endregion
+    #region --- update check boxes: item flags ----------------------------------------------------
+    private void UpdateCheckBoxesItemFlags(object? s, ItemFlags flag) {
+      if (s is CheckBox checkBox && checkBox.Checked) {
+        if (flag == ItemFlags.None) {
           chbxItemFlagsAccursed.Checked = false;
-          chbxItemFlagsRemovableDuringFight.Checked = false;
+          chbxItemFlagsCloneable.Checked = false;
           chbxItemFlagsDestroyAfterUsage.Checked = false;
           chbxItemFlagsIndestructible.Checked = false;
-          chbxItemFlagsCloneable.Checked = false;
           chbxItemFlagsNotImportant.Checked = false;
+          chbxItemFlagsRemovableDuringFight.Checked = false;
           chbxItemFlagsStackable.Checked = false;
         } else {
           chbxItemFlagsNone.Checked = false;
@@ -92,11 +238,11 @@ namespace Ambermoon.Editor.Gui.Editors {
 
       if (
            !chbxItemFlagsAccursed.Checked
-        && !chbxItemFlagsRemovableDuringFight.Checked
+        && !chbxItemFlagsCloneable.Checked
         && !chbxItemFlagsDestroyAfterUsage.Checked
         && !chbxItemFlagsIndestructible.Checked
-        && !chbxItemFlagsCloneable.Checked
         && !chbxItemFlagsNotImportant.Checked
+        && !chbxItemFlagsRemovableDuringFight.Checked
         && !chbxItemFlagsStackable.Checked
       ) {
         chbxItemFlagsNone.Checked = true;
@@ -106,416 +252,196 @@ namespace Ambermoon.Editor.Gui.Editors {
       }
     }
     #endregion
-    #region --- update check boxes: conditions ----------------------------------------------------
-    private void UpdateCheckBoxesConditions(object? s, Condition flag) {
-      //if (s is CheckBox checkBox && checkBox.Checked) {
-      //  if (flag == Condition.None) {
-      //    chbxClassesAdventurer.Checked = false;
-      //    chbxClassesWarrior.Checked = false;
-      //    chbxClassesPaladin.Checked = false;
-      //    chbxClassesHealer.Checked = false;
-      //    chbxClassesAlchemist.Checked = false;
-      //    chbxClassesMystic.Checked = false;
-      //    chbxClassesMonster.Checked = false;
-      //    chbxConditionsDrugged.Checked = false;
-      //    chbxConditionsExhausted.Checked = false;
-      //    chbxClassesThief.Checked = false;
-      //    chbxClassesRanger.Checked = false;
-      //    chbxConditionsPanic.Checked = false;
-      //    chbxClassesMage.Checked = false;
-      //    chbxClassesAnimal.Checked = false;
-      //    chbxConditionsSleep.Checked = false;
-      //    chbxClassesUnused1.Checked = false;
-      //  } else {
-      //    chbxClassesNone.Checked = false;
-      //  }
-      //}
-
-      //if (
-      //     !chbxClassesAdventurer.Checked
-      //  && !chbxClassesWarrior.Checked
-      //  && !chbxClassesPaladin.Checked
-      //  && !chbxClassesHealer.Checked
-      //  && !chbxClassesAlchemist.Checked
-      //  && !chbxClassesMystic.Checked
-      //  && !chbxClassesMonster.Checked
-      //  && !chbxConditionsDrugged.Checked
-      //  && !chbxConditionsExhausted.Checked
-      //  && !chbxClassesThief.Checked
-      //  && !chbxClassesRanger.Checked
-      //  && !chbxConditionsPanic.Checked
-      //  && !chbxClassesMage.Checked
-      //  && !chbxClassesAnimal.Checked
-      //  && !chbxConditionsSleep.Checked
-      //  && !chbxClassesUnused1.Checked
-      //) {
-      //  chbxClassesNone.Checked = true;
-      //  chbxClassesNone.Enabled = false;
-      //} else {
-      //  chbxClassesNone.Enabled = true;
-      //}
-    }
-    #endregion
-    #region --- update check boxes: spell immunity ------------------------------------------------
-    private void UpdateCheckBoxesSpellImmunity(object? s, SpellTypeImmunity flag) {
-      //if (s is CheckBox checkBox && checkBox.Checked) {
-      //  if (flag == SpellTypeImmunity.None) {
-      //    chbxSpellImmunityAlchemistic.Checked = false;
-      //    chbxSpellImmunityDestruction.Checked = false;
-      //    chbxSpellImmunityFunction.Checked = false;
-      //    chbxSpellImmunityHealing.Checked = false;
-      //    chbxSpellImmunityMystic.Checked = false;
-      //    chbxSpellImmunityUnused.Checked = false;
-      //    chbxSpellImmunityUnused1.Checked = false;
-      //    chbxSpellImmunityUnused2.Checked = false;
-      //  } else {
-      //    chbxSpellImmunityNone.Checked = false;
-      //  }
-      //}
-
-      //if (
-      //     !chbxSpellImmunityAlchemistic.Checked
-      //  && !chbxSpellImmunityDestruction.Checked
-      //  && !chbxSpellImmunityFunction.Checked
-      //  && !chbxSpellImmunityHealing.Checked
-      //  && !chbxSpellImmunityMystic.Checked
-      //  && !chbxSpellImmunityUnused.Checked
-      //  && !chbxSpellImmunityUnused1.Checked
-      //  && !chbxSpellImmunityUnused2.Checked
-      //) {
-      //  chbxSpellImmunityNone.Checked = true;
-      //  chbxSpellImmunityNone.Enabled = false;
-      //} else {
-      //  chbxSpellImmunityNone.Enabled = true;
-      //}
-    }
-    #endregion
-    #region --- update check boxes: spell mastery -------------------------------------------------
-    private void UpdateCheckBoxesSpellMastery(object? s, SpellTypeMastery flag) {
-      //if (s is CheckBox checkBox && checkBox.Checked) {
-      //  if (flag == SpellTypeMastery.None) {
-      //    chbxDefaultSlotFlagBroken.Checked = false;
-      //    chbxSpellMasteryAll.Enabled = true;
-      //    chbxSpellMasteryAll.Checked = false;
-      //    chbxDefaultSlotFlagIdentified.Checked = false;
-      //    chbxDefaultSlotFlagCursed.Checked = false;
-      //    chbxDefaultSlotFlagLocked.Checked = false;
-      //    chbxSpellMasteryMastered.Checked = false;
-      //    chbxSpellMasteryMystic.Checked = false;
-      //    chbxSpellMasteryUnused1.Checked = false;
-      //    chbxSpellMasteryUnused2.Checked = false;
-      //  } else {
-      //    chbxDefaultSlotFlagNone.Checked = false;
-
-      //    if (flag == SpellTypeMastery.All) {
-      //      chbxDefaultSlotFlagBroken.Checked = true;
-      //      chbxDefaultSlotFlagIdentified.Checked = true;
-      //      chbxDefaultSlotFlagCursed.Checked = true;
-      //      chbxDefaultSlotFlagLocked.Checked = true;
-      //      chbxSpellMasteryMystic.Checked = true;
-      //      chbxSpellMasteryUnused1.Checked = true;
-      //      chbxSpellMasteryUnused2.Checked = true;
-      //    }
-      //  }
-      //}
-
-      //chbxSpellMasteryAll.Checked = chbxDefaultSlotFlagBroken.Checked
-      //  && chbxDefaultSlotFlagIdentified.Checked
-      //  && chbxDefaultSlotFlagCursed.Checked
-      //  && chbxDefaultSlotFlagLocked.Checked
-      //  && chbxSpellMasteryMystic.Checked
-      //  && chbxSpellMasteryUnused1.Checked
-      //  && chbxSpellMasteryUnused2.Checked;
-
-      //chbxSpellMasteryAll.Enabled = !chbxSpellMasteryAll.Checked;
-
-      //chbxSpellMasteryMastered.Enabled = chbxDefaultSlotFlagBroken.Checked
-      //  || chbxDefaultSlotFlagIdentified.Checked
-      //  || chbxDefaultSlotFlagCursed.Checked
-      //  || chbxDefaultSlotFlagLocked.Checked
-      //  || chbxSpellMasteryMystic.Checked
-      //  || chbxSpellMasteryUnused1.Checked
-      //  || chbxSpellMasteryUnused2.Checked;
-
-      //if (!chbxSpellMasteryMastered.Enabled) {
-      //  chbxSpellMasteryMastered.Checked = false;
-      //}
-
-      //if (
-      //     !chbxDefaultSlotFlagBroken.Checked
-      //  && !chbxSpellMasteryAll.Checked
-      //  && !chbxDefaultSlotFlagIdentified.Checked
-      //  && !chbxDefaultSlotFlagCursed.Checked
-      //  && !chbxDefaultSlotFlagLocked.Checked
-      //  && !chbxSpellMasteryMastered.Checked
-      //  && !chbxSpellMasteryMystic.Checked
-      //  && !chbxSpellMasteryUnused1.Checked
-      //  && !chbxSpellMasteryUnused2.Checked
-      //) {
-      //  chbxDefaultSlotFlagNone.Checked = true;
-      //  chbxDefaultSlotFlagNone.Enabled = false;
-      //} else {
-      //  chbxDefaultSlotFlagNone.Enabled = true;
-      //}
-    }
-    #endregion
     #region --- wire events -----------------------------------------------------------------------
     private void WireEvents() {
       btnCancel.Click += (s, e) => Close();
       btnOK.Click += (s, e) => { MapControlsToItem(); DialogResult = DialogResult.OK; Close(); };
 
-      //chbxItemFlagsAccursed.CheckStateChanged += (s, e) => UpdateCheckBoxesBattleFlags(s, BattleFlags.Animal);
-      //chbxItemFlagsRemovableDuringFight.CheckStateChanged += (s, e) => UpdateCheckBoxesBattleFlags(s, BattleFlags.EarthSpellDamageBonus);
-      //chbxItemFlagsDestroyAfterUsage.CheckStateChanged += (s, e) => UpdateCheckBoxesBattleFlags(s, BattleFlags.FireSpellDamageBonus);
-      //chbxItemFlagsIndestructible.CheckStateChanged += (s, e) => UpdateCheckBoxesBattleFlags(s, BattleFlags.WindSpellDamageBonus);
-      //chbxItemFlagsCloneable.CheckStateChanged += (s, e) => UpdateCheckBoxesBattleFlags(s, BattleFlags.Boss);
-      //chbxItemFlagsNotImportant.CheckStateChanged += (s, e) => UpdateCheckBoxesBattleFlags(s, BattleFlags.Demon);
-      //chbxItemFlagsNone.CheckStateChanged += (s, e) => UpdateCheckBoxesBattleFlags(s, BattleFlags.None);
-      //chbxItemFlagsStackable.CheckStateChanged += (s, e) => UpdateCheckBoxesBattleFlags(s, BattleFlags.Undead);
+      chbxDefaultSlotFlagBroken.CheckStateChanged += (s, e) => UpdateCheckBoxesDefaultSlot(s, ItemSlotFlags.Broken);
+      chbxDefaultSlotFlagCursed.CheckStateChanged += (s, e) => UpdateCheckBoxesDefaultSlot(s, ItemSlotFlags.Cursed);
+      chbxDefaultSlotFlagIdentified.CheckStateChanged += (s, e) => UpdateCheckBoxesDefaultSlot(s, ItemSlotFlags.Identified);
+      chbxDefaultSlotFlagLocked.CheckStateChanged += (s, e) => UpdateCheckBoxesDefaultSlot(s, ItemSlotFlags.Locked);
+      chbxDefaultSlotFlagNone.CheckStateChanged += (s, e) => UpdateCheckBoxesDefaultSlot(s, ItemSlotFlags.None);
 
-      //chbxClassesAdventurer.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Aging);
-      //chbxClassesWarrior.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Blind);
-      //chbxClassesPaladin.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Crazy);
-      //chbxClassesHealer.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.DeadAshes);
-      //chbxClassesAlchemist.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.DeadCorpse);
-      //chbxClassesMystic.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.DeadDust);
-      //chbxClassesMonster.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Diseased);
-      //chbxConditionsDrugged.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Drugged);
-      //chbxConditionsExhausted.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Exhausted);
-      //chbxClassesThief.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Irritated);
-      //chbxClassesRanger.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Lamed);
-      //chbxClassesNone.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.None);
-      //chbxConditionsPanic.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Panic);
-      //chbxClassesMage.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Petrified);
-      //chbxClassesAnimal.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Poisoned);
-      //chbxConditionsSleep.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Sleep);
-      //chbxClassesUnused1.CheckStateChanged += (s, e) => UpdateCheckBoxesConditions(s, Condition.Unused);
+      chbxClassesAdventurer.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Adventurer);
+      chbxClassesAlchemist.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Alchemist);
+      chbxClassesAll.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.All);
+      chbxClassesAllWithUnused.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.AllWithUnused);
+      chbxClassesAnimal.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Animal);
+      chbxClassesHealer.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Healer);
+      chbxClassesMage.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Mage);
+      chbxClassesMonster.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Monster);
+      chbxClassesMystic.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Mystic);
+      chbxClassesNone.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.None);
+      chbxClassesPaladin.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Paladin);
+      chbxClassesRanger.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Ranger);
+      chbxClassesThief.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Thief);
+      chbxClassesUnused1.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Unknown1);
+      chbxClassesUnused2.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Unknown2);
+      chbxClassesUnused3.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Unknown3);
+      chbxClassesUnused4.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Unknown4);
+      chbxClassesWarrior.CheckStateChanged += (s, e) => UpdateCheckBoxesClasses(s, ClassFlag.Warrior);
 
-      //chbxSpellImmunityAlchemistic.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellImmunity(s, SpellTypeImmunity.Alchemistic);
-      //chbxSpellImmunityDestruction.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellImmunity(s, SpellTypeImmunity.Destruction);
-      //chbxSpellImmunityFunction.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellImmunity(s, SpellTypeImmunity.Function);
-      //chbxSpellImmunityHealing.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellImmunity(s, SpellTypeImmunity.Healing);
-      //chbxSpellImmunityMystic.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellImmunity(s, SpellTypeImmunity.Mystic);
-      //chbxSpellImmunityNone.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellImmunity(s, SpellTypeImmunity.None);
-      //chbxSpellImmunityUnused.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellImmunity(s, SpellTypeImmunity.Unused);
-      //chbxSpellImmunityUnused1.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellImmunity(s, SpellTypeImmunity.Unused1);
-      //chbxSpellImmunityUnused2.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellImmunity(s, SpellTypeImmunity.Unused2);
+      chbxFormatText.CheckStateChanged += (s, e) => rtbxText.FormatOutput(chbxFormatText.Checked);
 
-      //chbxDefaultSlotFlagNone.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.None);
-      //chbxDefaultSlotFlagBroken.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.Alchemistic);
-      //chbxSpellMasteryAll.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.All);
-      //chbxDefaultSlotFlagIdentified.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.Destruction);
-      //chbxDefaultSlotFlagCursed.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.Function);
-      //chbxDefaultSlotFlagLocked.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.Healing);
-      //chbxSpellMasteryMastered.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.Mastered);
-      //chbxSpellMasteryMystic.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.Mystic);
-      //chbxSpellMasteryUnused1.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.Unused1);
-      //chbxSpellMasteryUnused2.CheckStateChanged += (s, e) => UpdateCheckBoxesSpellMastery(s, SpellTypeMastery.Unused2);
+      chbxItemFlagsAccursed.CheckStateChanged += (s, e) => UpdateCheckBoxesItemFlags(s, ItemFlags.Accursed);
+      chbxItemFlagsCloneable.CheckStateChanged += (s, e) => UpdateCheckBoxesItemFlags(s, ItemFlags.Cloneable);
+      chbxItemFlagsDestroyAfterUsage.CheckStateChanged += (s, e) => UpdateCheckBoxesItemFlags(s, ItemFlags.DestroyAfterUsage);
+      chbxItemFlagsIndestructible.CheckStateChanged += (s, e) => UpdateCheckBoxesItemFlags(s, ItemFlags.Indestructible);
+      chbxItemFlagsNone.CheckStateChanged += (s, e) => UpdateCheckBoxesItemFlags(s, ItemFlags.None);
+      chbxItemFlagsNotImportant.CheckStateChanged += (s, e) => UpdateCheckBoxesItemFlags(s, ItemFlags.NotImportant);
+      chbxItemFlagsRemovableDuringFight.CheckStateChanged += (s, e) => UpdateCheckBoxesItemFlags(s, ItemFlags.RemovableDuringFight);
+      chbxItemFlagsStackable.CheckStateChanged += (s, e) => UpdateCheckBoxesItemFlags(s, ItemFlags.Stackable);
 
       chbxZoom.CheckStateChanged += (s, e) => { pbxGraphic.SizeMode = chbxZoom.Checked ? PictureBoxSizeMode.Zoom : PictureBoxSizeMode.CenterImage; };
 
       nudGraphicIndex.ValueChanged += (s, e) => {
-        if (_item.GetGraphic((int)nudGraphicIndex.Value) is Bitmap itemGraphic) { 
-          Icon             = itemGraphic.GetIcon(24, 24);
+        if (_item.GetGraphic((int)nudGraphicIndex.Value) is Bitmap itemGraphic) {
+          Icon = itemGraphic.GetIcon(24, 24);
           pbxGraphic.Image = itemGraphic;
         }
       };
+
+      nudText.ValueChanged += (s, e) => {
+        if (nudText.Value == 0) {
+          nudTextSub.Minimum = -1;
+          nudTextSub.Value   = -1;
+          nudTextSub.Maximum = -1;
+        } else {
+          nudTextSub.Maximum = Repository.Current.GameData!.ItemTexts[(uint)nudText.Value].Count - 1;
+          nudTextSub.Value   = 0;
+          nudTextSub.Minimum = 0;
+        }
+
+        rtbxText.Text = _item.GetText((int)nudText.Value, (int)nudTextSub.Value);
+      };
+
+      nudTextSub.ValueChanged += (s, e) => rtbxText.Text = _item.GetText((int)nudText.Value, (int)nudTextSub.Value);
     }
     #endregion
 
-    #region --- map controls to item -----------------------------------------------------------
+    #region --- map controls to item --------------------------------------------------------------
     private void MapControlsToItem() {
+      _item.AmmunitionType = cbxAmmunitionType.Text.GetEnumByName<AmmunitionType>();
+      _item.Attribute = cbxAttribute.Text.GetEnumByName<Attribute>();
+      _item.AttributeValue = (int)nudAttribute.Value;
+      _item.BreakChance = (uint)nudBreakChance.Value;
+      _item.Damage = (uint)nudDamage.Value;
+      _item.Defense = (uint)nudDefense.Value;
+      _item.EnchantPrice = (uint)nudEnchantPrice.Value;
+      _item.EquipmentSlot = cbxEquipmentSlot.Text.GetEnumByName<EquipmentSlot>();
+      _item.Gender = cbxGender.Text.GetEnumByName<GenderFlag>();
+      _item.GraphicIndex = (uint)nudGraphicIndex.Value;
+      _item.HitPoints = (uint)nudHitPoints.Value;
+      _item.InitialNumberOfRecharges = (uint)nudInitialRecharges.Value;
+      _item.InitialSpellCharges = (uint)nudInitialSpellCharges.Value;
+      _item.MagicAttackLevel = (uint)nudMagicAttackLevel.Value;
+      _item.MagicDefenseLevel = (uint)nudMagicDefenseLevel.Value;
+      _item.MaxNumberOfRecharges = (uint)nudMaxRecharges.Value;
+      _item.MaxSpellCharges = (uint)nudMaxSpellCharges.Value;
       _item.Name = tbxName.Text;
+      _item.NumberOfFingers = (uint)nudFingers.Value;
+      _item.NumberOfHands = (uint)nudHands.Value;
+      _item.PenaltySkill1 = cbxPenaltySkill1.Text.GetEnumByName<Skill>();
+      _item.PenaltySkill2 = cbxPenaltySkill2.Text.GetEnumByName<Skill>();
+      _item.PenaltyValue1 = (uint)nudPenaltySkill1.Value;
+      _item.PenaltyValue2 = (uint)nudPenaltySkill2.Value;
+      _item.Price = (uint)nudPrice.Value;
+      _item.Skill = cbxSkill.Text.GetEnumByName<Skill>();
+      _item.SkillValue = (uint)nudSkill.Value;
+      //_item.SpecialItemPurpose = cbxSpecialPurpose.Text.GetEnumByName<SpecialItemPurpose>();
+      _item.Spell = cbxSpell.Text.GetEnumByName<Spell>();
+      _item.SpellPoints = (uint)nudSpellPoints.Value;
+      //_item.TextIndex = (int)nudText.Value == 0 ? null : (uint)nudText.Value;
+      //_item.TextSubIndex = (int)nudTextSub.Value == -1 ? null : (uint)nudTextSub.Value;
+      //_item.Transportation     = cbxTransportation.Text.GetEnumByName<Transportation>();
+      _item.Type = cbxType.Text.GetEnumByName<ItemType>();
+      _item.UsedAmmunitionType = cbxUsedAmmunition.Text.GetEnumByName<AmmunitionType>();
+      _item.Weight = (uint)nudWeight.Value;
 
-      //_item.Class   = cbxClass.Text.GetEnumByName<Class>();
-      //_item.Element = cbxElement.Text.GetEnumByName<CharacterElement>();
-      //_item.Gender  = cbxGender.Text.GetEnumByName<Gender>();
-      //_item.Race    = cbxRace.Text.GetEnumByName<Race>();
-      ////_item.Type    = cbxType.Text.GetEnumByName<CharacterType>();
+      _item.Classes = ClassFlag.None
+        | (chbxClassesAdventurer.Checked ? ClassFlag.Adventurer: ClassFlag.None)
+        | (chbxClassesAlchemist.Checked ? ClassFlag.Alchemist : ClassFlag.None)
+        | (chbxClassesAll.Checked ? ClassFlag.All : ClassFlag.None)
+        | (chbxClassesAllWithUnused.Checked ? ClassFlag.AllWithUnused : ClassFlag.None)
+        | (chbxClassesAnimal.Checked ? ClassFlag.Animal : ClassFlag.None)
+        | (chbxClassesHealer.Checked ? ClassFlag.Healer : ClassFlag.None)
+        | (chbxClassesMage.Checked ? ClassFlag.Mage : ClassFlag.None)
+        | (chbxClassesMonster.Checked ? ClassFlag.Monster : ClassFlag.None)
+        | (chbxClassesMystic.Checked ? ClassFlag.Mystic : ClassFlag.None)
+        | (chbxClassesPaladin.Checked ? ClassFlag.Paladin : ClassFlag.None)
+        | (chbxClassesRanger.Checked ? ClassFlag.Ranger : ClassFlag.None)
+        | (chbxClassesThief.Checked ? ClassFlag.Thief : ClassFlag.None)
+        | (chbxClassesUnused1.Checked ? ClassFlag.Unknown1 : ClassFlag.None)
+        | (chbxClassesUnused2.Checked ? ClassFlag.Unknown2 : ClassFlag.None)
+        | (chbxClassesUnused3.Checked ? ClassFlag.Unknown3 : ClassFlag.None)
+        | (chbxClassesUnused4.Checked ? ClassFlag.Unknown4 : ClassFlag.None)
+        | (chbxClassesWarrior.Checked ? ClassFlag.Warrior : ClassFlag.None);
 
-      //_item.BattleFlags = BattleFlags.None
-      //  | (chbxBattleFlagsAnimal.Checked ? BattleFlags.Animal : BattleFlags.None)
-      //  | (chbxBattleFlagsBonusEarth.Checked ? BattleFlags.EarthSpellDamageBonus : BattleFlags.None)
-      //  | (chbxBattleFlagsBonusFire.Checked ? BattleFlags.FireSpellDamageBonus : BattleFlags.None)
-      //  | (chbxBattleFlagsBonusWind.Checked ? BattleFlags.WindSpellDamageBonus : BattleFlags.None)
-      //  | (chbxBattleFlagsBoss.Checked ? BattleFlags.Boss : BattleFlags.None)
-      //  | (chbxBattleFlagsDemon.Checked ? BattleFlags.Demon : BattleFlags.None)
-      //  | (chbxBattleFlagsUndead.Checked ? BattleFlags.Undead : BattleFlags.None);
+      _item.DefaultSlotFlags = ItemSlotFlags.None
+        | (chbxDefaultSlotFlagBroken.Checked ? ItemSlotFlags.Broken : ItemSlotFlags.None)
+        | (chbxDefaultSlotFlagCursed.Checked ? ItemSlotFlags.Cursed : ItemSlotFlags.None)
+        | (chbxDefaultSlotFlagIdentified.Checked ? ItemSlotFlags.Identified : ItemSlotFlags.None)
+        | (chbxDefaultSlotFlagLocked.Checked ? ItemSlotFlags.Locked : ItemSlotFlags.None);
 
-      //_item.Conditions = Condition.None
-      //  | (chbxConditionsAging.Checked ? Condition.Aging : Condition.None)
-      //  | (chbxConditionsBlind.Checked ? Condition.Blind : Condition.None)
-      //  | (chbxConditionsCrazy.Checked ? Condition.Crazy : Condition.None)
-      //  | (chbxConditionsDeadAshes.Checked ? Condition.DeadAshes : Condition.None)
-      //  | (chbxConditionsDeadCorpse.Checked ? Condition.DeadCorpse : Condition.None)
-      //  | (chbxConditionsDeadDust.Checked ? Condition.DeadDust : Condition.None)
-      //  | (chbxConditionsDiseased.Checked ? Condition.Diseased : Condition.None)
-      //  | (chbxConditionsDrugged.Checked ? Condition.Drugged : Condition.None)
-      //  | (chbxConditionsExhausted.Checked ? Condition.Exhausted : Condition.None)
-      //  | (chbxConditionsIrritated.Checked ? Condition.Irritated : Condition.None)
-      //  | (chbxConditionsLamed.Checked ? Condition.Lamed : Condition.None)
-      //  | (chbxConditionsPanic.Checked ? Condition.Panic : Condition.None)
-      //  | (chbxConditionsPetrified.Checked ? Condition.Petrified : Condition.None)
-      //  | (chbxConditionsPoisoned.Checked ? Condition.Poisoned : Condition.None)
-      //  | (chbxConditionsSleep.Checked ? Condition.Sleep : Condition.None)
-      //  | (chbxConditionsUnused.Checked ? Condition.Unused : Condition.None);
-
-      //_item.SpellTypeImmunity = SpellTypeImmunity.None
-      //  | (chbxSpellImmunityAlchemistic.Checked ? SpellTypeImmunity.Alchemistic : SpellTypeImmunity.None)
-      //  | (chbxSpellImmunityDestruction.Checked ? SpellTypeImmunity.Destruction : SpellTypeImmunity.None)
-      //  | (chbxSpellImmunityFunction.Checked ? SpellTypeImmunity.Function : SpellTypeImmunity.None)
-      //  | (chbxSpellImmunityHealing.Checked ? SpellTypeImmunity.Healing : SpellTypeImmunity.None)
-      //  | (chbxSpellImmunityMystic.Checked ? SpellTypeImmunity.Mystic : SpellTypeImmunity.None)
-      //  | (chbxSpellImmunityUnused.Checked ? SpellTypeImmunity.Unused : SpellTypeImmunity.None)
-      //  | (chbxSpellImmunityUnused1.Checked ? SpellTypeImmunity.Unused1 : SpellTypeImmunity.None)
-      //  | (chbxSpellImmunityUnused2.Checked ? SpellTypeImmunity.Unused2 : SpellTypeImmunity.None);
-
-      //_item.SpellMastery = SpellTypeMastery.None
-      //  | (chbxSpellMasteryAlchemistic.Checked ? SpellTypeMastery.Alchemistic : SpellTypeMastery.None)
-      //  | (chbxSpellMasteryAll.Checked ? SpellTypeMastery.All : SpellTypeMastery.None)
-      //  | (chbxSpellMasteryDestruction.Checked ? SpellTypeMastery.Destruction : SpellTypeMastery.None)
-      //  | (chbxSpellMasteryFunction.Checked ? SpellTypeMastery.Function : SpellTypeMastery.None)
-      //  | (chbxSpellMasteryHealing.Checked ? SpellTypeMastery.Healing : SpellTypeMastery.None)
-      //  | (chbxSpellMasteryMastered.Checked ? SpellTypeMastery.Mastered : SpellTypeMastery.None)
-      //  | (chbxSpellMasteryMystic.Checked ? SpellTypeMastery.Mystic : SpellTypeMastery.None)
-      //  | (chbxSpellMasteryUnused1.Checked ? SpellTypeMastery.Unused1 : SpellTypeMastery.None)
-      //  | (chbxSpellMasteryUnused2.Checked ? SpellTypeMastery.Unused2 : SpellTypeMastery.None);
-
-      //_item.BaseAttackDamage = (uint)nudAttackBase.Value;
-      ////_item.BonusAttackDamage = nudAttackBonus.Value;
-
-      //_item.MagicAttackLevel = (int)nudAttackMagicLevel.Value;
-      //_item.AttacksPerRound = (uint)nudAttacksPerRound.Value;
-      //_item.BonusSpellDamage = (uint)nudBonusSpellDamageBase.Value;
-      //_item.BonusMaxSpellDamage = (uint)nudBonusSpellDamageMax.Value;
-      //_item.BonusSpellDamagePercentage = (int)nudBonusSpellDamagePercentage.Value;
-      //_item.BonusSpellDamageReduction = (int)nudBonusSpellDamageReduction.Value;
-      //_item.DefeatExperience = (uint)nudDefeatExperience.Value;
-      //_item.BaseDefense = (uint)nudDefenseBase.Value;
-      ////_item.BonusDefense = nudDefenseBonus.Value;
-      ////_item.CombatGraphicIndex = (uint)nudCombatGraphicIndex.Value;
-      //_item.MagicDefenseLevel = (int)nudDefenseMagicLevel.Value;
-      //_item.Food = (uint)nudFood.Value;
-      //_item.Gold = (uint)nudGold.Value;
-      //_item.HitPoints.BonusValue = (int)nudHitPointsBonus.Value;
-      //_item.HitPoints.CurrentValue = (uint)nudHitPointsCurrent.Value;
-      //_item.HitPoints.MaxValue = (uint)nudHitPointsMax.Value;
-      //_item.Level = (uint)nudLevel.Value;
-      //_item.Morale = (uint)nudMorale.Value;
-      //_item.SpellPoints.BonusValue = (int)nudSpellPointsBonus.Value;
-      //_item.SpellPoints.CurrentValue = (uint)nudSpellPointsCurrent.Value;
-      //_item.SpellPoints.MaxValue = (uint)nudSpellPointsMax.Value;
-
-      //tbxIndex.Text = _item.Index.ToString();
-      //tbxName.Text = _item.Name;
-
-      //foreach (CharValue attribute in _attributes) {
-      //  if (Repository.Current.GetAttributeIndex(attribute.Name) is int index) {
-      //    _item.Attributes[index].BonusValue = attribute.Bonus;
-      //    _item.Attributes[index].CurrentValue = attribute.Current;
-      //    _item.Attributes[index].MaxValue = attribute.Max;
-      //    _item.Attributes[index].StoredValue = attribute.Stored;
-      //    //_item.Attributes[index].TotalCurrentValue = attribute.TotalCurrent;
-      //    //_item.Attributes[index].TotalMaxValue = attribute.TotalMax;
-      //  }
-      //}
-
-      //foreach (CharValue skill in _skills) {
-      //  if (Repository.Current.GetSkillIndex(skill.Name) is int index) {
-      //    _item.Skills[index].BonusValue = skill.Bonus;
-      //    _item.Skills[index].CurrentValue = skill.Current;
-      //    _item.Skills[index].MaxValue = skill.Max;
-      //    _item.Skills[index].StoredValue = skill.Stored;
-      //    //_item.Skills[index].TotalCurrentValue = attribute.TotalCurrent;
-      //    //_item.Skills[index].TotalMaxValue = attribute.TotalMax;
-      //  }
-      //}
-
-      //_item.LearnedSpellsAlchemistic = 0;
-      //_item.LearnedSpellsDestruction = 0;
-      //_item.LearnedSpellsFunctional = 0;
-      //_item.LearnedSpellsHealing = 0;
-      //_item.LearnedSpellsMystic = 0;
-      //_item.LearnedSpellsType5 = 0;
-      //_item.LearnedSpellsType6 = 0;
-
-      //foreach (Spell spell in _spells) {
-      //  uint spellValue = (uint)Math.Pow(2, spell.Index + 1);
-
-      //  switch (Repository.Current.GameData!.SpellClassNames.IndexOf(spell.School)) {
-      //    case 0: _item.LearnedSpellsHealing += spellValue; break;
-      //    case 1: _item.LearnedSpellsAlchemistic += spellValue; break;
-      //    case 2: _item.LearnedSpellsMystic += spellValue; break;
-      //    case 3: _item.LearnedSpellsDestruction += spellValue; break;
-      //    case 4: _item.LearnedSpellsType5 += spellValue; break;
-      //    case 5: _item.LearnedSpellsType6 += spellValue; break;
-      //    case 6: _item.LearnedSpellsFunctional += spellValue; break;
-      //  };
-      //}
+      _item.Flags = ItemFlags.None
+        | (chbxItemFlagsAccursed.Checked ? ItemFlags.Accursed : ItemFlags.None)
+        | (chbxItemFlagsCloneable.Checked ? ItemFlags.Cloneable : ItemFlags.None)
+        | (chbxItemFlagsDestroyAfterUsage.Checked ? ItemFlags.DestroyAfterUsage : ItemFlags.None)
+        | (chbxItemFlagsIndestructible.Checked ? ItemFlags.Indestructible : ItemFlags.None)
+        | (chbxItemFlagsNotImportant.Checked ? ItemFlags.NotImportant : ItemFlags.None)
+        | (chbxItemFlagsRemovableDuringFight.Checked ? ItemFlags.RemovableDuringFight : ItemFlags.None)
+        | (chbxItemFlagsStackable.Checked ? ItemFlags.Stackable : ItemFlags.None);
     }
     #endregion
-    #region --- map item to controls -----------------------------------------------------------
+    #region --- map item to controls --------------------------------------------------------------
     private void MapItemToControls() {
       cbxAmmunitionType.SelectedIndex = ((List<string>)cbxAmmunitionType.DataSource!).FindIndex(x => x == _item.AmmunitionType.ToString());
-      cbxAttribute.SelectedIndex      = ((List<string>)cbxAttribute.DataSource!).FindIndex(x => x == _item.Attribute.ToString());
-      cbxEquipmentSlot.SelectedIndex  = ((List<string>)cbxEquipmentSlot.DataSource!).FindIndex(x => x == _item.EquipmentSlot.ToString());
-      cbxGender.SelectedIndex         = ((List<string>)cbxGender.DataSource!).FindIndex(x => x == _item.Gender.ToString());
-      cbxPenaltySkill1.SelectedIndex  = ((List<string>)cbxPenaltySkill1.DataSource!).FindIndex(x => x == _item.PenaltySkill1.ToString());
-      cbxPenaltySkill2.SelectedIndex  = ((List<string>)cbxPenaltySkill2.DataSource!).FindIndex(x => x == _item.PenaltySkill2.ToString());
-      cbxSkill.SelectedIndex          = ((List<string>)cbxSkill.DataSource!).FindIndex(x => x == _item.Skill.ToString());
+      cbxAttribute.SelectedIndex = ((List<string>)cbxAttribute.DataSource!).FindIndex(x => x == _item.Attribute.ToString());
+      cbxEquipmentSlot.SelectedIndex = ((List<string>)cbxEquipmentSlot.DataSource!).FindIndex(x => x == _item.EquipmentSlot.ToString());
+      cbxGender.SelectedIndex = ((List<string>)cbxGender.DataSource!).FindIndex(x => x == _item.Gender.ToString());
+      cbxPenaltySkill1.SelectedIndex = ((List<string>)cbxPenaltySkill1.DataSource!).FindIndex(x => x == _item.PenaltySkill1.ToString());
+      cbxPenaltySkill2.SelectedIndex = ((List<string>)cbxPenaltySkill2.DataSource!).FindIndex(x => x == _item.PenaltySkill2.ToString());
+      cbxSkill.SelectedIndex = ((List<string>)cbxSkill.DataSource!).FindIndex(x => x == _item.Skill.ToString());
       cbxSpecialPurpose.SelectedIndex = ((List<string>)cbxSpecialPurpose.DataSource!).FindIndex(x => x == _item.SpecialItemPurpose.ToString());
-      cbxSpell.SelectedIndex          = ((List<string>)cbxSpell.DataSource!).FindIndex(x => x == _item.Spell.ToString());
+      cbxSpell.SelectedIndex = ((List<string>)cbxSpell.DataSource!).FindIndex(x => x == _item.Spell.ToString());
       cbxTransportation.SelectedIndex = ((List<string>)cbxTransportation.DataSource!).FindIndex(x => x == _item.Transportation.ToString());
-      cbxType.SelectedIndex           = ((List<string>)cbxType.DataSource!).FindIndex(x => x == _item.Type.ToString());
+      cbxType.SelectedIndex = ((List<string>)cbxType.DataSource!).FindIndex(x => x == _item.Type.ToString());
       cbxUsedAmmunition.SelectedIndex = ((List<string>)cbxUsedAmmunition.DataSource!).FindIndex(x => x == _item.UsedAmmunitionType.ToString());
 
-      //chbxBattleFlagsAnimal.Checked = _item.BattleFlags.HasFlag(BattleFlags.Animal);
-      //chbxBattleFlagsBonusEarth.Checked = _item.BattleFlags.HasFlag(BattleFlags.EarthSpellDamageBonus);
-      //chbxBattleFlagsBonusFire.Checked = _item.BattleFlags.HasFlag(BattleFlags.FireSpellDamageBonus);
-      //chbxBattleFlagsBonusWind.Checked = _item.BattleFlags.HasFlag(BattleFlags.WindSpellDamageBonus);
-      //chbxBattleFlagsBoss.Checked = _item.BattleFlags.HasFlag(BattleFlags.Boss);
-      //chbxBattleFlagsDemon.Checked = _item.BattleFlags.HasFlag(BattleFlags.Demon);
-      //chbxBattleFlagsNone.Checked = _item.BattleFlags == BattleFlags.None;
-      //chbxBattleFlagsUndead.Checked = _item.BattleFlags.HasFlag(BattleFlags.Undead);
+      chbxClassesNone.Checked = _item.Classes.HasFlag(ClassFlag.None);
+      chbxClassesAdventurer.Checked = _item.Classes.HasFlag(ClassFlag.Adventurer);
+      chbxClassesAlchemist.Checked = _item.Classes.HasFlag(ClassFlag.Alchemist);
+      chbxClassesAnimal.Checked = _item.Classes.HasFlag(ClassFlag.Animal);
+      chbxClassesHealer.Checked = _item.Classes.HasFlag(ClassFlag.Healer);
+      chbxClassesMage.Checked = _item.Classes.HasFlag(ClassFlag.Mage);
+      chbxClassesMonster.Checked = _item.Classes.HasFlag(ClassFlag.Monster);
+      chbxClassesMystic.Checked = _item.Classes.HasFlag(ClassFlag.Mystic);
+      chbxClassesPaladin.Checked = _item.Classes.HasFlag(ClassFlag.Paladin);
+      chbxClassesRanger.Checked = _item.Classes.HasFlag(ClassFlag.Ranger);
+      chbxClassesThief.Checked = _item.Classes.HasFlag(ClassFlag.Thief);
+      chbxClassesWarrior.Checked = _item.Classes.HasFlag(ClassFlag.Warrior);
+      chbxClassesAll.Checked = _item.Classes.HasFlag(ClassFlag.All);
+      chbxClassesUnused1.Checked = _item.Classes.HasFlag(ClassFlag.Unknown1);
+      chbxClassesUnused2.Checked = _item.Classes.HasFlag(ClassFlag.Unknown2);
+      chbxClassesUnused3.Checked = _item.Classes.HasFlag(ClassFlag.Unknown3);
+      chbxClassesUnused4.Checked = _item.Classes.HasFlag(ClassFlag.Unknown4);
+      chbxClassesAllWithUnused.Checked = _item.Classes.HasFlag(ClassFlag.AllWithUnused);
 
-      //chbxConditionsAging.Checked = _item.Conditions.HasFlag(Condition.Aging);
-      //chbxConditionsBlind.Checked = _item.Conditions.HasFlag(Condition.Blind);
-      //chbxConditionsCrazy.Checked = _item.Conditions.HasFlag(Condition.Crazy);
-      //chbxConditionsDeadAshes.Checked = _item.Conditions.HasFlag(Condition.DeadAshes);
-      //chbxConditionsDeadCorpse.Checked = _item.Conditions.HasFlag(Condition.DeadCorpse);
-      //chbxConditionsDeadDust.Checked = _item.Conditions.HasFlag(Condition.DeadDust);
-      //chbxConditionsDiseased.Checked = _item.Conditions.HasFlag(Condition.Diseased);
-      //chbxConditionsDrugged.Checked = _item.Conditions.HasFlag(Condition.Drugged);
-      //chbxConditionsExhausted.Checked = _item.Conditions.HasFlag(Condition.Exhausted);
-      //chbxConditionsIrritated.Checked = _item.Conditions.HasFlag(Condition.Irritated);
-      //chbxConditionsLamed.Checked = _item.Conditions.HasFlag(Condition.Lamed);
-      //chbxConditionsNone.Checked = _item.Conditions == Condition.None;
-      //chbxConditionsPanic.Checked = _item.Conditions.HasFlag(Condition.Panic);
-      //chbxConditionsPetrified.Checked = _item.Conditions.HasFlag(Condition.Petrified);
-      //chbxConditionsPoisoned.Checked = _item.Conditions.HasFlag(Condition.Poisoned);
-      //chbxConditionsSleep.Checked = _item.Conditions.HasFlag(Condition.Sleep);
-      //chbxConditionsUnused.Checked = _item.Conditions.HasFlag(Condition.Unused);
+      chbxDefaultSlotFlagNone.Checked = _item.DefaultSlotFlags.HasFlag(ItemSlotFlags.None);
+      chbxDefaultSlotFlagBroken.Checked = _item.DefaultSlotFlags.HasFlag(ItemSlotFlags.Broken);
+      chbxDefaultSlotFlagCursed.Checked = _item.DefaultSlotFlags.HasFlag(ItemSlotFlags.Cursed);
+      chbxDefaultSlotFlagIdentified.Checked = _item.DefaultSlotFlags.HasFlag(ItemSlotFlags.Identified);
+      chbxDefaultSlotFlagLocked.Checked = _item.DefaultSlotFlags.HasFlag(ItemSlotFlags.Locked);
 
-      //chbxSpellImmunityAlchemistic.Checked = _item.SpellTypeImmunity.HasFlag(SpellTypeImmunity.Alchemistic);
-      //chbxSpellImmunityDestruction.Checked = _item.SpellTypeImmunity.HasFlag(SpellTypeImmunity.Destruction);
-      //chbxSpellImmunityFunction.Checked = _item.SpellTypeImmunity.HasFlag(SpellTypeImmunity.Function);
-      //chbxSpellImmunityHealing.Checked = _item.SpellTypeImmunity.HasFlag(SpellTypeImmunity.Healing);
-      //chbxSpellImmunityMystic.Checked = _item.SpellTypeImmunity.HasFlag(SpellTypeImmunity.Mystic);
-      //chbxSpellImmunityNone.Checked = _item.SpellTypeImmunity == SpellTypeImmunity.None;
-      //chbxSpellImmunityUnused.Checked = _item.SpellTypeImmunity.HasFlag(SpellTypeImmunity.Unused);
-      //chbxSpellImmunityUnused1.Checked = _item.SpellTypeImmunity.HasFlag(SpellTypeImmunity.Unused1);
-      //chbxSpellImmunityUnused2.Checked = _item.SpellTypeImmunity.HasFlag(SpellTypeImmunity.Unused2);
-
-      //chbxSpellMasteryAlchemistic.Checked = _item.SpellMastery.HasFlag(SpellTypeMastery.Alchemistic);
-      //chbxSpellMasteryAll.Checked = _item.SpellMastery.HasFlag(SpellTypeMastery.All);
-      //chbxSpellMasteryDestruction.Checked = _item.SpellMastery.HasFlag(SpellTypeMastery.Destruction);
-      //chbxSpellMasteryFunction.Checked = _item.SpellMastery.HasFlag(SpellTypeMastery.Function);
-      //chbxSpellMasteryHealing.Checked = _item.SpellMastery.HasFlag(SpellTypeMastery.Healing);
-      //chbxSpellMasteryMastered.Checked = _item.SpellMastery.HasFlag(SpellTypeMastery.Mastered);
-      //chbxSpellMasteryMystic.Checked = _item.SpellMastery.HasFlag(SpellTypeMastery.Mystic);
-      //chbxSpellMasteryNone.Checked = _item.SpellMastery == SpellTypeMastery.None;
-      //chbxSpellMasteryUnused1.Checked = _item.SpellMastery.HasFlag(SpellTypeMastery.Unused1);
-      //chbxSpellMasteryUnused2.Checked = _item.SpellMastery.HasFlag(SpellTypeMastery.Unused2);
+      chbxItemFlagsNone.Checked = _item.Flags.HasFlag(ItemFlags.None);
+      chbxItemFlagsAccursed.Checked = _item.Flags.HasFlag(ItemFlags.Accursed);
+      chbxItemFlagsCloneable.Checked = _item.Flags.HasFlag(ItemFlags.Cloneable);
+      chbxItemFlagsDestroyAfterUsage.Checked = _item.Flags.HasFlag(ItemFlags.DestroyAfterUsage);
+      chbxItemFlagsIndestructible.Checked = _item.Flags.HasFlag(ItemFlags.Indestructible);
+      chbxItemFlagsNotImportant.Checked = _item.Flags.HasFlag(ItemFlags.NotImportant);
+      chbxItemFlagsRemovableDuringFight.Checked = _item.Flags.HasFlag(ItemFlags.RemovableDuringFight);
+      chbxItemFlagsStackable.Checked = _item.Flags.HasFlag(ItemFlags.Stackable);
 
       nudAttribute.Value = _item.AttributeValue;
       nudBreakChance.Value = _item.BreakChance;
@@ -538,7 +464,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       nudSpellPoints.Value = _item.SpellPoints;
       nudSkill.Value = _item.SkillValue;
       nudText.Value = _item.TextIndex.HasValue ? (decimal)_item.TextIndex : 0;
-      nudTextSub.Value = _item.TextSubIndex.HasValue ? (decimal)_item.TextSubIndex : 0;
+      nudTextSub.Value = _item.TextSubIndex.HasValue ? (decimal)_item.TextSubIndex : -1;
       nudWeight.Value = _item.Weight;
 
       tbxIndex.Text = _item.Index.ToString();

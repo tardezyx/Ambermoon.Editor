@@ -76,7 +76,9 @@ namespace Ambermoon.Editor.Gui.Overviews {
       AutoScaleMode = AutoScaleMode.Font;
       ClientSize = new System.Drawing.Size(599, 318);
       Controls.Add(grbxMonsters);
+      DoubleBuffered = true;
       FormBorderStyle = FormBorderStyle.None;
+      Location = new Point(0, 0);
       Name = "NPCsForm";
       Text = "NPCsForm";
       ((System.ComponentModel.ISupportInitialize)dgv).EndInit();

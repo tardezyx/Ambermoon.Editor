@@ -35,6 +35,7 @@ namespace Ambermoon.Editor.Gui {
     protected override void OnLoad(EventArgs e) {
       base.OnLoad(e);
       
+      Settings.ReadFonts();
       Settings.ReadIni();
 
       if (Settings.AutoLoadRepository && Settings.DefaultPath.HasText()) {

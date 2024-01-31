@@ -317,6 +317,14 @@ namespace Ambermoon.Editor.Extensions {
     #endregion
     #endregion
 
+    #region --- CONSTANTS -------------------------------------------------------------------------
+    public const int EM_SETPARAFORMAT = 1095;
+    public const int PFM_LINESPACING = 0x00000100;
+    public const int PFM_SPACEAFTER  = 0x00000080;
+    public const int PFM_SPACEBEFORE = 0x00000040;
+    public const int SCF_SELECTION = 1;
+    #endregion
+
     #region === STRUCTURES ========================================================================
     #region --- combobox info ---------------------------------------------------------------------
     [StructLayout(LayoutKind.Sequential)]
@@ -483,6 +491,37 @@ namespace Ambermoon.Editor.Extensions {
     public struct LUID {
       public uint LowPart;
       public int HighPart;
+    }
+    #endregion
+    #region --- paraformat ------------------------------------------------------------------------
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PARAFORMAT {
+      public int   cbSize;
+      public uint  dwMask;
+      public short wNumbering;
+      public short wReserved;
+      public int   dxStartIndent;
+      public int   dxRightIndent;
+      public int   dxOffset;
+      public short wAlignment;
+      public short cTabCount;
+      [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
+      public int[] rgxTabs;
+      // PARAFORMAT2 from here onwards
+      public int   dySpaceBefore;
+      public int   dySpaceAfter;
+      public int   dyLineSpacing;
+      public short sStyle;
+      public byte  bLineSpacingRule;
+      public byte  bOutlineLevel;
+      public short wShadingWeight;
+      public short wShadingStyle;
+      public short wNumberingStart;
+      public short wNumberingStyle;
+      public short wNumberingTab;
+      public short wBorderSpace;
+      public short wBorderWidth;
+      public short wBorders;
     }
     #endregion
     #region --- pointl ----------------------------------------------------------------------------
@@ -684,6 +723,10 @@ namespace Ambermoon.Editor.Extensions {
     #region --- dll import: send message ----------------------------------------------------------
     [DllImport("user32.dll")]
     public static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
+    #endregion
+    #region --- dll import: send message ----------------------------------------------------------
+    [DllImport("user32", CharSet = CharSet.Auto)]
+    public static extern IntPtr SendMessage(HandleRef hWnd, int msg, int wParam, ref PARAFORMAT lParam);
     #endregion
     #region --- dll import: set foreground window -------------------------------------------------
     [DllImport("user32.dll")]

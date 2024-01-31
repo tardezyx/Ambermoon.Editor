@@ -100,9 +100,7 @@ namespace Ambermoon.Editor.Models {
         return;
       }
 
-      var blub = GameData.Palettes[1];
-
-      int asdadafd = 0;
+      int tempvarforspontaneuousdebugging = 0;
     }
     #endregion
     #region --- load ------------------------------------------------------------------------------

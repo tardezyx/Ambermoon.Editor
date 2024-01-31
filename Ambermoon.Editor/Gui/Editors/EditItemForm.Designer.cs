@@ -33,25 +33,25 @@ namespace Ambermoon.Editor.Gui.Editors {
       lblName = new Label();
       statusStrip = new StatusStrip();
       grbxGeneral = new GroupBox();
-      cbxPenaltySkill2 = new ComboBox();
       label8 = new Label();
       cbxSpecialPurpose = new ComboBox();
       label1 = new Label();
-      nudPenaltySkill2 = new NumericUpDown();
       nudWeight = new NumericUpDown();
       cbxType = new ComboBox();
-      label22 = new Label();
       label33 = new Label();
-      cbxPenaltySkill1 = new ComboBox();
       label4 = new Label();
-      nudPenaltySkill1 = new NumericUpDown();
       label31 = new Label();
       nudPrice = new NumericUpDown();
+      cbxTransportation = new ComboBox();
+      cbxPenaltySkill2 = new ComboBox();
+      nudPenaltySkill2 = new NumericUpDown();
+      label22 = new Label();
+      cbxPenaltySkill1 = new ComboBox();
+      nudPenaltySkill1 = new NumericUpDown();
       cbxAttribute = new ComboBox();
       cbxSkill = new ComboBox();
       label5 = new Label();
       label21 = new Label();
-      cbxTransportation = new ComboBox();
       label27 = new Label();
       nudSkill = new NumericUpDown();
       nudAttribute = new NumericUpDown();
@@ -96,16 +96,21 @@ namespace Ambermoon.Editor.Gui.Editors {
       chbxClassesUnused1 = new CheckBox();
       chbxClassesNone = new CheckBox();
       chbxClassesPaladin = new CheckBox();
-      grbxEquipment = new GroupBox();
+      grbxAttributes = new GroupBox();
+      label16 = new Label();
+      nudHitPoints = new NumericUpDown();
+      label13 = new Label();
+      nudDamage = new NumericUpDown();
+      label12 = new Label();
+      label28 = new Label();
+      nudSpellPoints = new NumericUpDown();
+      nudDefense = new NumericUpDown();
       label15 = new Label();
       nudBreakChance = new NumericUpDown();
-      label16 = new Label();
       label26 = new Label();
-      nudHitPoints = new NumericUpDown();
       cbxUsedAmmunition = new ComboBox();
       label32 = new Label();
       nudMagicDefenseLevel = new NumericUpDown();
-      label13 = new Label();
       cbxEquipmentSlot = new ComboBox();
       nudFingers = new NumericUpDown();
       label30 = new Label();
@@ -113,17 +118,12 @@ namespace Ambermoon.Editor.Gui.Editors {
       label23 = new Label();
       nudEnchantPrice = new NumericUpDown();
       nudMagicAttackLevel = new NumericUpDown();
-      nudDamage = new NumericUpDown();
       nudInitialRecharges = new NumericUpDown();
-      label12 = new Label();
       label19 = new Label();
-      label28 = new Label();
       nudInitialSpellCharges = new NumericUpDown();
-      nudSpellPoints = new NumericUpDown();
       nudMaxSpellCharges = new NumericUpDown();
       label24 = new Label();
       label17 = new Label();
-      nudDefense = new NumericUpDown();
       label18 = new Label();
       nudHands = new NumericUpDown();
       label20 = new Label();
@@ -134,58 +134,65 @@ namespace Ambermoon.Editor.Gui.Editors {
       nudGraphicIndex = new NumericUpDown();
       label9 = new Label();
       grbxTexts = new GroupBox();
-      rtbxTexts = new RichTextBox();
+      chbxFormatText = new CheckBox();
+      rtbxText = new CustomRichTextBox();
       label6 = new Label();
       nudTextSub = new NumericUpDown();
       label10 = new Label();
       nudText = new NumericUpDown();
+      pbxTextBorder = new ExtendedPictureBox();
+      grbxEquipment = new GroupBox();
+      grbxMagic = new GroupBox();
       grbxGeneral.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)nudPenaltySkill2).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudWeight).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)nudPenaltySkill1).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudPrice).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)nudPenaltySkill2).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)nudPenaltySkill1).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudSkill).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudAttribute).BeginInit();
       ((System.ComponentModel.ISupportInitialize)pbxGraphic).BeginInit();
       grbxFlags.SuspendLayout();
       grbxDefaultSlotFlags.SuspendLayout();
       grbxClasses.SuspendLayout();
-      grbxEquipment.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)nudBreakChance).BeginInit();
+      grbxAttributes.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)nudHitPoints).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)nudDamage).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)nudSpellPoints).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)nudDefense).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)nudBreakChance).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudMagicDefenseLevel).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudFingers).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudMaxRecharges).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudEnchantPrice).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudMagicAttackLevel).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)nudDamage).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudInitialRecharges).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudInitialSpellCharges).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)nudSpellPoints).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudMaxSpellCharges).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)nudDefense).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudHands).BeginInit();
       grbxGraphic.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)nudGraphicIndex).BeginInit();
       grbxTexts.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)nudTextSub).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudText).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)pbxTextBorder).BeginInit();
+      grbxEquipment.SuspendLayout();
+      grbxMagic.SuspendLayout();
       SuspendLayout();
       // 
       // tbxName
       // 
       tbxName.CharacterCasing = CharacterCasing.Upper;
       tbxName.Font = new Font("Segoe UI", 9F);
-      tbxName.Location = new Point(91, 22);
+      tbxName.Location = new Point(102, 22);
       tbxName.MaxLength = 15;
       tbxName.Name = "tbxName";
-      tbxName.Size = new System.Drawing.Size(119, 23);
+      tbxName.Size = new System.Drawing.Size(171, 23);
       tbxName.TabIndex = 0;
       // 
       // btnOK
       // 
       btnOK.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-      btnOK.Location = new Point(655, 525);
+      btnOK.Location = new Point(767, 558);
       btnOK.Name = "btnOK";
       btnOK.Size = new System.Drawing.Size(75, 23);
       btnOK.TabIndex = 1;
@@ -195,7 +202,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // btnCancel
       // 
       btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-      btnCancel.Location = new Point(736, 525);
+      btnCancel.Location = new Point(848, 558);
       btnCancel.Name = "btnCancel";
       btnCancel.Size = new System.Drawing.Size(75, 23);
       btnCancel.TabIndex = 2;
@@ -206,7 +213,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       tbxIndex.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
       tbxIndex.Enabled = false;
-      tbxIndex.Location = new Point(57, 526);
+      tbxIndex.Location = new Point(57, 559);
       tbxIndex.Name = "tbxIndex";
       tbxIndex.ReadOnly = true;
       tbxIndex.Size = new System.Drawing.Size(45, 23);
@@ -216,7 +223,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       lblIndex.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
       lblIndex.AutoSize = true;
-      lblIndex.Location = new Point(12, 529);
+      lblIndex.Location = new Point(12, 562);
       lblIndex.Name = "lblIndex";
       lblIndex.Size = new System.Drawing.Size(36, 15);
       lblIndex.TabIndex = 4;
@@ -235,61 +242,39 @@ namespace Ambermoon.Editor.Gui.Editors {
       // statusStrip
       // 
       statusStrip.BackColor = Color.Transparent;
-      statusStrip.Location = new Point(0, 538);
+      statusStrip.Location = new Point(0, 571);
       statusStrip.Name = "statusStrip";
-      statusStrip.Size = new System.Drawing.Size(823, 22);
+      statusStrip.Size = new System.Drawing.Size(935, 22);
       statusStrip.TabIndex = 6;
       statusStrip.Text = "statusStrip1";
       // 
       // grbxGeneral
       // 
-      grbxGeneral.Controls.Add(cbxPenaltySkill2);
       grbxGeneral.Controls.Add(label8);
       grbxGeneral.Controls.Add(cbxSpecialPurpose);
       grbxGeneral.Controls.Add(label1);
-      grbxGeneral.Controls.Add(nudPenaltySkill2);
       grbxGeneral.Controls.Add(nudWeight);
       grbxGeneral.Controls.Add(cbxType);
-      grbxGeneral.Controls.Add(label22);
       grbxGeneral.Controls.Add(label33);
       grbxGeneral.Controls.Add(lblName);
-      grbxGeneral.Controls.Add(cbxPenaltySkill1);
       grbxGeneral.Controls.Add(label4);
       grbxGeneral.Controls.Add(tbxName);
-      grbxGeneral.Controls.Add(nudPenaltySkill1);
       grbxGeneral.Controls.Add(label31);
       grbxGeneral.Controls.Add(nudPrice);
-      grbxGeneral.Controls.Add(cbxAttribute);
-      grbxGeneral.Controls.Add(cbxSkill);
-      grbxGeneral.Controls.Add(label5);
-      grbxGeneral.Controls.Add(label21);
       grbxGeneral.Controls.Add(cbxTransportation);
-      grbxGeneral.Controls.Add(label27);
-      grbxGeneral.Controls.Add(nudSkill);
-      grbxGeneral.Controls.Add(nudAttribute);
       grbxGeneral.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
       grbxGeneral.Location = new Point(12, 12);
       grbxGeneral.Name = "grbxGeneral";
-      grbxGeneral.Size = new System.Drawing.Size(503, 171);
+      grbxGeneral.Size = new System.Drawing.Size(283, 202);
       grbxGeneral.TabIndex = 9;
       grbxGeneral.TabStop = false;
       grbxGeneral.Text = "General";
-      // 
-      // cbxPenaltySkill2
-      // 
-      cbxPenaltySkill2.DropDownStyle = ComboBoxStyle.DropDownList;
-      cbxPenaltySkill2.Font = new Font("Segoe UI", 9F);
-      cbxPenaltySkill2.FormattingEnabled = true;
-      cbxPenaltySkill2.Location = new Point(91, 138);
-      cbxPenaltySkill2.Name = "cbxPenaltySkill2";
-      cbxPenaltySkill2.Size = new System.Drawing.Size(119, 23);
-      cbxPenaltySkill2.TabIndex = 56;
       // 
       // label8
       // 
       label8.AutoSize = true;
       label8.Font = new Font("Segoe UI", 9F);
-      label8.Location = new Point(276, 141);
+      label8.Location = new Point(6, 169);
       label8.Name = "label8";
       label8.Size = new System.Drawing.Size(45, 15);
       label8.TabIndex = 43;
@@ -300,34 +285,25 @@ namespace Ambermoon.Editor.Gui.Editors {
       cbxSpecialPurpose.DropDownStyle = ComboBoxStyle.DropDownList;
       cbxSpecialPurpose.Font = new Font("Segoe UI", 9F);
       cbxSpecialPurpose.FormattingEnabled = true;
-      cbxSpecialPurpose.Location = new Point(372, 51);
+      cbxSpecialPurpose.Location = new Point(102, 80);
       cbxSpecialPurpose.Name = "cbxSpecialPurpose";
-      cbxSpecialPurpose.Size = new System.Drawing.Size(119, 23);
+      cbxSpecialPurpose.Size = new System.Drawing.Size(171, 23);
       cbxSpecialPurpose.TabIndex = 64;
       // 
       // label1
       // 
       label1.AutoSize = true;
       label1.Font = new Font("Segoe UI", 9F);
-      label1.Location = new Point(276, 25);
+      label1.Location = new Point(6, 54);
       label1.Name = "label1";
       label1.Size = new System.Drawing.Size(31, 15);
       label1.TabIndex = 15;
       label1.Text = "Type";
       // 
-      // nudPenaltySkill2
-      // 
-      nudPenaltySkill2.Font = new Font("Segoe UI", 9F);
-      nudPenaltySkill2.Location = new Point(216, 139);
-      nudPenaltySkill2.Name = "nudPenaltySkill2";
-      nudPenaltySkill2.Size = new System.Drawing.Size(54, 23);
-      nudPenaltySkill2.TabIndex = 58;
-      nudPenaltySkill2.Value = new decimal(new int[] { 100, 0, 0, 0 });
-      // 
       // nudWeight
       // 
       nudWeight.Font = new Font("Segoe UI", 9F);
-      nudWeight.Location = new Point(372, 139);
+      nudWeight.Location = new Point(102, 167);
       nudWeight.Name = "nudWeight";
       nudWeight.Size = new System.Drawing.Size(54, 23);
       nudWeight.TabIndex = 42;
@@ -338,65 +314,36 @@ namespace Ambermoon.Editor.Gui.Editors {
       cbxType.DropDownStyle = ComboBoxStyle.DropDownList;
       cbxType.Font = new Font("Segoe UI", 9F);
       cbxType.FormattingEnabled = true;
-      cbxType.Location = new Point(372, 22);
+      cbxType.Location = new Point(102, 51);
       cbxType.Name = "cbxType";
-      cbxType.Size = new System.Drawing.Size(119, 23);
+      cbxType.Size = new System.Drawing.Size(171, 23);
       cbxType.TabIndex = 0;
-      // 
-      // label22
-      // 
-      label22.AutoSize = true;
-      label22.Font = new Font("Segoe UI", 9F);
-      label22.Location = new Point(6, 141);
-      label22.Name = "label22";
-      label22.Size = new System.Drawing.Size(79, 15);
-      label22.TabIndex = 57;
-      label22.Text = "Penalty Skill 2";
       // 
       // label33
       // 
       label33.AutoSize = true;
       label33.Font = new Font("Segoe UI", 9F);
-      label33.Location = new Point(276, 83);
+      label33.Location = new Point(6, 112);
       label33.Name = "label33";
       label33.Size = new System.Drawing.Size(83, 15);
       label33.TabIndex = 70;
       label33.Text = "Transportation";
       // 
-      // cbxPenaltySkill1
-      // 
-      cbxPenaltySkill1.DropDownStyle = ComboBoxStyle.DropDownList;
-      cbxPenaltySkill1.Font = new Font("Segoe UI", 9F);
-      cbxPenaltySkill1.FormattingEnabled = true;
-      cbxPenaltySkill1.Location = new Point(91, 109);
-      cbxPenaltySkill1.Name = "cbxPenaltySkill1";
-      cbxPenaltySkill1.Size = new System.Drawing.Size(119, 23);
-      cbxPenaltySkill1.TabIndex = 53;
-      // 
       // label4
       // 
       label4.AutoSize = true;
       label4.Font = new Font("Segoe UI", 9F);
-      label4.Location = new Point(276, 112);
+      label4.Location = new Point(6, 140);
       label4.Name = "label4";
       label4.Size = new System.Drawing.Size(33, 15);
       label4.TabIndex = 19;
       label4.Text = "Price";
       // 
-      // nudPenaltySkill1
-      // 
-      nudPenaltySkill1.Font = new Font("Segoe UI", 9F);
-      nudPenaltySkill1.Location = new Point(216, 110);
-      nudPenaltySkill1.Name = "nudPenaltySkill1";
-      nudPenaltySkill1.Size = new System.Drawing.Size(54, 23);
-      nudPenaltySkill1.TabIndex = 55;
-      nudPenaltySkill1.Value = new decimal(new int[] { 100, 0, 0, 0 });
-      // 
       // label31
       // 
       label31.AutoSize = true;
       label31.Font = new Font("Segoe UI", 9F);
-      label31.Location = new Point(276, 54);
+      label31.Location = new Point(6, 83);
       label31.Name = "label31";
       label31.Size = new System.Drawing.Size(90, 15);
       label31.TabIndex = 65;
@@ -405,19 +352,77 @@ namespace Ambermoon.Editor.Gui.Editors {
       // nudPrice
       // 
       nudPrice.Font = new Font("Segoe UI", 9F);
-      nudPrice.Location = new Point(372, 110);
+      nudPrice.Location = new Point(102, 138);
       nudPrice.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
       nudPrice.Name = "nudPrice";
       nudPrice.Size = new System.Drawing.Size(54, 23);
       nudPrice.TabIndex = 3;
       nudPrice.Value = new decimal(new int[] { 65535, 0, 0, 0 });
       // 
+      // cbxTransportation
+      // 
+      cbxTransportation.DropDownStyle = ComboBoxStyle.DropDownList;
+      cbxTransportation.Font = new Font("Segoe UI", 9F);
+      cbxTransportation.FormattingEnabled = true;
+      cbxTransportation.Location = new Point(102, 109);
+      cbxTransportation.Name = "cbxTransportation";
+      cbxTransportation.Size = new System.Drawing.Size(171, 23);
+      cbxTransportation.TabIndex = 71;
+      // 
+      // cbxPenaltySkill2
+      // 
+      cbxPenaltySkill2.DropDownStyle = ComboBoxStyle.DropDownList;
+      cbxPenaltySkill2.Font = new Font("Segoe UI", 9F);
+      cbxPenaltySkill2.FormattingEnabled = true;
+      cbxPenaltySkill2.Location = new Point(91, 109);
+      cbxPenaltySkill2.Name = "cbxPenaltySkill2";
+      cbxPenaltySkill2.Size = new System.Drawing.Size(119, 23);
+      cbxPenaltySkill2.TabIndex = 56;
+      // 
+      // nudPenaltySkill2
+      // 
+      nudPenaltySkill2.Font = new Font("Segoe UI", 9F);
+      nudPenaltySkill2.Location = new Point(216, 109);
+      nudPenaltySkill2.Name = "nudPenaltySkill2";
+      nudPenaltySkill2.Size = new System.Drawing.Size(54, 23);
+      nudPenaltySkill2.TabIndex = 58;
+      nudPenaltySkill2.Value = new decimal(new int[] { 100, 0, 0, 0 });
+      // 
+      // label22
+      // 
+      label22.AutoSize = true;
+      label22.Font = new Font("Segoe UI", 9F);
+      label22.Location = new Point(6, 112);
+      label22.Name = "label22";
+      label22.Size = new System.Drawing.Size(79, 15);
+      label22.TabIndex = 57;
+      label22.Text = "Penalty Skill 2";
+      // 
+      // cbxPenaltySkill1
+      // 
+      cbxPenaltySkill1.DropDownStyle = ComboBoxStyle.DropDownList;
+      cbxPenaltySkill1.Font = new Font("Segoe UI", 9F);
+      cbxPenaltySkill1.FormattingEnabled = true;
+      cbxPenaltySkill1.Location = new Point(91, 80);
+      cbxPenaltySkill1.Name = "cbxPenaltySkill1";
+      cbxPenaltySkill1.Size = new System.Drawing.Size(119, 23);
+      cbxPenaltySkill1.TabIndex = 53;
+      // 
+      // nudPenaltySkill1
+      // 
+      nudPenaltySkill1.Font = new Font("Segoe UI", 9F);
+      nudPenaltySkill1.Location = new Point(216, 80);
+      nudPenaltySkill1.Name = "nudPenaltySkill1";
+      nudPenaltySkill1.Size = new System.Drawing.Size(54, 23);
+      nudPenaltySkill1.TabIndex = 55;
+      nudPenaltySkill1.Value = new decimal(new int[] { 100, 0, 0, 0 });
+      // 
       // cbxAttribute
       // 
       cbxAttribute.DropDownStyle = ComboBoxStyle.DropDownList;
       cbxAttribute.Font = new Font("Segoe UI", 9F);
       cbxAttribute.FormattingEnabled = true;
-      cbxAttribute.Location = new Point(91, 51);
+      cbxAttribute.Location = new Point(91, 22);
       cbxAttribute.Name = "cbxAttribute";
       cbxAttribute.Size = new System.Drawing.Size(119, 23);
       cbxAttribute.TabIndex = 2;
@@ -427,7 +432,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       cbxSkill.DropDownStyle = ComboBoxStyle.DropDownList;
       cbxSkill.Font = new Font("Segoe UI", 9F);
       cbxSkill.FormattingEnabled = true;
-      cbxSkill.Location = new Point(91, 80);
+      cbxSkill.Location = new Point(91, 51);
       cbxSkill.Name = "cbxSkill";
       cbxSkill.Size = new System.Drawing.Size(119, 23);
       cbxSkill.TabIndex = 50;
@@ -436,7 +441,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       label5.AutoSize = true;
       label5.Font = new Font("Segoe UI", 9F);
-      label5.Location = new Point(6, 54);
+      label5.Location = new Point(6, 25);
       label5.Name = "label5";
       label5.Size = new System.Drawing.Size(54, 15);
       label5.TabIndex = 20;
@@ -446,27 +451,17 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       label21.AutoSize = true;
       label21.Font = new Font("Segoe UI", 9F);
-      label21.Location = new Point(6, 112);
+      label21.Location = new Point(6, 83);
       label21.Name = "label21";
       label21.Size = new System.Drawing.Size(79, 15);
       label21.TabIndex = 54;
       label21.Text = "Penalty Skill 1";
       // 
-      // cbxTransportation
-      // 
-      cbxTransportation.DropDownStyle = ComboBoxStyle.DropDownList;
-      cbxTransportation.Font = new Font("Segoe UI", 9F);
-      cbxTransportation.FormattingEnabled = true;
-      cbxTransportation.Location = new Point(372, 80);
-      cbxTransportation.Name = "cbxTransportation";
-      cbxTransportation.Size = new System.Drawing.Size(119, 23);
-      cbxTransportation.TabIndex = 71;
-      // 
       // label27
       // 
       label27.AutoSize = true;
       label27.Font = new Font("Segoe UI", 9F);
-      label27.Location = new Point(6, 83);
+      label27.Location = new Point(6, 54);
       label27.Name = "label27";
       label27.Size = new System.Drawing.Size(28, 15);
       label27.TabIndex = 51;
@@ -475,7 +470,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // nudSkill
       // 
       nudSkill.Font = new Font("Segoe UI", 9F);
-      nudSkill.Location = new Point(216, 81);
+      nudSkill.Location = new Point(216, 51);
       nudSkill.Name = "nudSkill";
       nudSkill.Size = new System.Drawing.Size(54, 23);
       nudSkill.TabIndex = 52;
@@ -484,7 +479,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // nudAttribute
       // 
       nudAttribute.Font = new Font("Segoe UI", 9F);
-      nudAttribute.Location = new Point(216, 52);
+      nudAttribute.Location = new Point(216, 22);
       nudAttribute.Name = "nudAttribute";
       nudAttribute.Size = new System.Drawing.Size(54, 23);
       nudAttribute.TabIndex = 21;
@@ -495,7 +490,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       cbxAmmunitionType.DropDownStyle = ComboBoxStyle.DropDownList;
       cbxAmmunitionType.Font = new Font("Segoe UI", 9F);
       cbxAmmunitionType.FormattingEnabled = true;
-      cbxAmmunitionType.Location = new Point(143, 81);
+      cbxAmmunitionType.Location = new Point(143, 138);
       cbxAmmunitionType.Name = "cbxAmmunitionType";
       cbxAmmunitionType.Size = new System.Drawing.Size(130, 23);
       cbxAmmunitionType.TabIndex = 41;
@@ -504,7 +499,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       label7.AutoSize = true;
       label7.Font = new Font("Segoe UI", 9F);
-      label7.Location = new Point(6, 84);
+      label7.Location = new Point(6, 141);
       label7.Name = "label7";
       label7.Size = new System.Drawing.Size(102, 15);
       label7.TabIndex = 40;
@@ -515,7 +510,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       cbxGender.DropDownStyle = ComboBoxStyle.DropDownList;
       cbxGender.Font = new Font("Segoe UI", 9F);
       cbxGender.FormattingEnabled = true;
-      cbxGender.Location = new Point(143, 23);
+      cbxGender.Location = new Point(143, 51);
       cbxGender.Name = "cbxGender";
       cbxGender.Size = new System.Drawing.Size(130, 23);
       cbxGender.TabIndex = 18;
@@ -524,7 +519,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       label3.AutoSize = true;
       label3.Font = new Font("Segoe UI", 9F);
-      label3.Location = new Point(6, 25);
+      label3.Location = new Point(6, 53);
       label3.Name = "label3";
       label3.Size = new System.Drawing.Size(45, 15);
       label3.TabIndex = 17;
@@ -534,7 +529,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       label2.AutoSize = true;
       label2.Font = new Font("Segoe UI", 9F);
-      label2.Location = new Point(6, 113);
+      label2.Location = new Point(6, 20);
       label2.Name = "label2";
       label2.Size = new System.Drawing.Size(32, 15);
       label2.TabIndex = 16;
@@ -545,18 +540,18 @@ namespace Ambermoon.Editor.Gui.Editors {
       cbxSpell.DropDownStyle = ComboBoxStyle.DropDownList;
       cbxSpell.Font = new Font("Segoe UI", 9F);
       cbxSpell.FormattingEnabled = true;
-      cbxSpell.Location = new Point(143, 110);
+      cbxSpell.Location = new Point(127, 17);
       cbxSpell.Name = "cbxSpell";
-      cbxSpell.Size = new System.Drawing.Size(130, 23);
+      cbxSpell.Size = new System.Drawing.Size(145, 23);
       cbxSpell.TabIndex = 1;
       // 
       // pbxGraphic
       // 
       pbxGraphic.BackColor = Color.Transparent;
       pbxGraphic.BackgroundImageLayout = ImageLayout.Zoom;
-      pbxGraphic.Location = new Point(17, 23);
+      pbxGraphic.Location = new Point(13, 22);
       pbxGraphic.Name = "pbxGraphic";
-      pbxGraphic.Size = new System.Drawing.Size(80, 80);
+      pbxGraphic.Size = new System.Drawing.Size(96, 96);
       pbxGraphic.SizeMode = PictureBoxSizeMode.CenterImage;
       pbxGraphic.TabIndex = 49;
       pbxGraphic.TabStop = false;
@@ -572,9 +567,9 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxFlags.Controls.Add(chbxItemFlagsCloneable);
       grbxFlags.Controls.Add(chbxItemFlagsNotImportant);
       grbxFlags.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-      grbxFlags.Location = new Point(645, 168);
+      grbxFlags.Location = new Point(163, 428);
       grbxFlags.Name = "grbxFlags";
-      grbxFlags.Size = new System.Drawing.Size(167, 220);
+      grbxFlags.Size = new System.Drawing.Size(336, 124);
       grbxFlags.TabIndex = 10;
       grbxFlags.TabStop = false;
       grbxFlags.Text = "Flags";
@@ -583,7 +578,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxItemFlagsStackable.AutoSize = true;
       chbxItemFlagsStackable.Font = new Font("Segoe UI", 9F);
-      chbxItemFlagsStackable.Location = new Point(6, 197);
+      chbxItemFlagsStackable.Location = new Point(175, 72);
       chbxItemFlagsStackable.Name = "chbxItemFlagsStackable";
       chbxItemFlagsStackable.Size = new System.Drawing.Size(76, 19);
       chbxItemFlagsStackable.TabIndex = 7;
@@ -594,7 +589,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxItemFlagsDestroyAfterUsage.AutoSize = true;
       chbxItemFlagsDestroyAfterUsage.Font = new Font("Segoe UI", 9F);
-      chbxItemFlagsDestroyAfterUsage.Location = new Point(6, 97);
+      chbxItemFlagsDestroyAfterUsage.Location = new Point(175, 22);
       chbxItemFlagsDestroyAfterUsage.Name = "chbxItemFlagsDestroyAfterUsage";
       chbxItemFlagsDestroyAfterUsage.Size = new System.Drawing.Size(130, 19);
       chbxItemFlagsDestroyAfterUsage.TabIndex = 6;
@@ -605,7 +600,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxItemFlagsIndestructible.AutoSize = true;
       chbxItemFlagsIndestructible.Font = new Font("Segoe UI", 9F);
-      chbxItemFlagsIndestructible.Location = new Point(6, 122);
+      chbxItemFlagsIndestructible.Location = new Point(67, 72);
       chbxItemFlagsIndestructible.Name = "chbxItemFlagsIndestructible";
       chbxItemFlagsIndestructible.Size = new System.Drawing.Size(98, 19);
       chbxItemFlagsIndestructible.TabIndex = 5;
@@ -616,7 +611,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxItemFlagsAccursed.AutoSize = true;
       chbxItemFlagsAccursed.Font = new Font("Segoe UI", 9F);
-      chbxItemFlagsAccursed.Location = new Point(6, 47);
+      chbxItemFlagsAccursed.Location = new Point(67, 22);
       chbxItemFlagsAccursed.Name = "chbxItemFlagsAccursed";
       chbxItemFlagsAccursed.Size = new System.Drawing.Size(75, 19);
       chbxItemFlagsAccursed.TabIndex = 3;
@@ -638,7 +633,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxItemFlagsRemovableDuringFight.AutoSize = true;
       chbxItemFlagsRemovableDuringFight.Font = new Font("Segoe UI", 9F);
-      chbxItemFlagsRemovableDuringFight.Location = new Point(6, 172);
+      chbxItemFlagsRemovableDuringFight.Location = new Point(175, 47);
       chbxItemFlagsRemovableDuringFight.Name = "chbxItemFlagsRemovableDuringFight";
       chbxItemFlagsRemovableDuringFight.Size = new System.Drawing.Size(160, 19);
       chbxItemFlagsRemovableDuringFight.TabIndex = 4;
@@ -649,7 +644,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxItemFlagsCloneable.AutoSize = true;
       chbxItemFlagsCloneable.Font = new Font("Segoe UI", 9F);
-      chbxItemFlagsCloneable.Location = new Point(6, 72);
+      chbxItemFlagsCloneable.Location = new Point(67, 47);
       chbxItemFlagsCloneable.Name = "chbxItemFlagsCloneable";
       chbxItemFlagsCloneable.Size = new System.Drawing.Size(79, 19);
       chbxItemFlagsCloneable.TabIndex = 2;
@@ -660,7 +655,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxItemFlagsNotImportant.AutoSize = true;
       chbxItemFlagsNotImportant.Font = new Font("Segoe UI", 9F);
-      chbxItemFlagsNotImportant.Location = new Point(6, 147);
+      chbxItemFlagsNotImportant.Location = new Point(67, 97);
       chbxItemFlagsNotImportant.Name = "chbxItemFlagsNotImportant";
       chbxItemFlagsNotImportant.Size = new System.Drawing.Size(102, 19);
       chbxItemFlagsNotImportant.TabIndex = 1;
@@ -675,9 +670,9 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxDefaultSlotFlags.Controls.Add(chbxDefaultSlotFlagBroken);
       grbxDefaultSlotFlags.Controls.Add(chbxDefaultSlotFlagNone);
       grbxDefaultSlotFlags.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-      grbxDefaultSlotFlags.Location = new Point(645, 12);
+      grbxDefaultSlotFlags.Location = new Point(12, 428);
       grbxDefaultSlotFlags.Name = "grbxDefaultSlotFlags";
-      grbxDefaultSlotFlags.Size = new System.Drawing.Size(167, 150);
+      grbxDefaultSlotFlags.Size = new System.Drawing.Size(145, 124);
       grbxDefaultSlotFlags.TabIndex = 42;
       grbxDefaultSlotFlags.TabStop = false;
       grbxDefaultSlotFlags.Text = "Default Slot Flags";
@@ -686,7 +681,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxDefaultSlotFlagCursed.AutoSize = true;
       chbxDefaultSlotFlagCursed.Font = new Font("Segoe UI", 9F);
-      chbxDefaultSlotFlagCursed.Location = new Point(6, 72);
+      chbxDefaultSlotFlagCursed.Location = new Point(67, 47);
       chbxDefaultSlotFlagCursed.Name = "chbxDefaultSlotFlagCursed";
       chbxDefaultSlotFlagCursed.Size = new System.Drawing.Size(63, 19);
       chbxDefaultSlotFlagCursed.TabIndex = 43;
@@ -697,7 +692,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxDefaultSlotFlagIdentified.AutoSize = true;
       chbxDefaultSlotFlagIdentified.Font = new Font("Segoe UI", 9F);
-      chbxDefaultSlotFlagIdentified.Location = new Point(7, 97);
+      chbxDefaultSlotFlagIdentified.Location = new Point(67, 72);
       chbxDefaultSlotFlagIdentified.Name = "chbxDefaultSlotFlagIdentified";
       chbxDefaultSlotFlagIdentified.Size = new System.Drawing.Size(76, 19);
       chbxDefaultSlotFlagIdentified.TabIndex = 4;
@@ -708,7 +703,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxDefaultSlotFlagLocked.AutoSize = true;
       chbxDefaultSlotFlagLocked.Font = new Font("Segoe UI", 9F);
-      chbxDefaultSlotFlagLocked.Location = new Point(7, 122);
+      chbxDefaultSlotFlagLocked.Location = new Point(67, 97);
       chbxDefaultSlotFlagLocked.Name = "chbxDefaultSlotFlagLocked";
       chbxDefaultSlotFlagLocked.Size = new System.Drawing.Size(64, 19);
       chbxDefaultSlotFlagLocked.TabIndex = 3;
@@ -719,7 +714,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxDefaultSlotFlagBroken.AutoSize = true;
       chbxDefaultSlotFlagBroken.Font = new Font("Segoe UI", 9F);
-      chbxDefaultSlotFlagBroken.Location = new Point(6, 47);
+      chbxDefaultSlotFlagBroken.Location = new Point(67, 22);
       chbxDefaultSlotFlagBroken.Name = "chbxDefaultSlotFlagBroken";
       chbxDefaultSlotFlagBroken.Size = new System.Drawing.Size(63, 19);
       chbxDefaultSlotFlagBroken.TabIndex = 1;
@@ -758,9 +753,9 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxClasses.Controls.Add(chbxClassesNone);
       grbxClasses.Controls.Add(chbxClassesPaladin);
       grbxClasses.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-      grbxClasses.Location = new Point(12, 394);
+      grbxClasses.Location = new Point(505, 428);
       grbxClasses.Name = "grbxClasses";
-      grbxClasses.Size = new System.Drawing.Size(418, 124);
+      grbxClasses.Size = new System.Drawing.Size(418, 123);
       grbxClasses.TabIndex = 44;
       grbxClasses.TabStop = false;
       grbxClasses.Text = "Classes";
@@ -791,7 +786,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxClassesUnused2.AutoSize = true;
       chbxClassesUnused2.Font = new Font("Segoe UI", 9F);
-      chbxClassesUnused2.Location = new Point(341, 47);
+      chbxClassesUnused2.Location = new Point(344, 46);
       chbxClassesUnused2.Name = "chbxClassesUnused2";
       chbxClassesUnused2.Size = new System.Drawing.Size(72, 19);
       chbxClassesUnused2.TabIndex = 53;
@@ -813,7 +808,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxClassesUnused3.AutoSize = true;
       chbxClassesUnused3.Font = new Font("Segoe UI", 9F);
-      chbxClassesUnused3.Location = new Point(341, 72);
+      chbxClassesUnused3.Location = new Point(344, 71);
       chbxClassesUnused3.Name = "chbxClassesUnused3";
       chbxClassesUnused3.Size = new System.Drawing.Size(72, 19);
       chbxClassesUnused3.TabIndex = 52;
@@ -835,7 +830,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxClassesUnused4.AutoSize = true;
       chbxClassesUnused4.Font = new Font("Segoe UI", 9F);
-      chbxClassesUnused4.Location = new Point(341, 97);
+      chbxClassesUnused4.Location = new Point(344, 96);
       chbxClassesUnused4.Name = "chbxClassesUnused4";
       chbxClassesUnused4.Size = new System.Drawing.Size(72, 19);
       chbxClassesUnused4.TabIndex = 51;
@@ -934,7 +929,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       chbxClassesUnused1.AutoSize = true;
       chbxClassesUnused1.Font = new Font("Segoe UI", 9F);
-      chbxClassesUnused1.Location = new Point(341, 22);
+      chbxClassesUnused1.Location = new Point(344, 21);
       chbxClassesUnused1.Name = "chbxClassesUnused1";
       chbxClassesUnused1.Size = new System.Drawing.Size(72, 19);
       chbxClassesUnused1.TabIndex = 6;
@@ -963,59 +958,117 @@ namespace Ambermoon.Editor.Gui.Editors {
       chbxClassesPaladin.Text = "Paladin";
       chbxClassesPaladin.UseVisualStyleBackColor = true;
       // 
-      // grbxEquipment
+      // grbxAttributes
       // 
-      grbxEquipment.Controls.Add(label15);
-      grbxEquipment.Controls.Add(label7);
-      grbxEquipment.Controls.Add(nudBreakChance);
-      grbxEquipment.Controls.Add(label16);
-      grbxEquipment.Controls.Add(label26);
-      grbxEquipment.Controls.Add(cbxAmmunitionType);
-      grbxEquipment.Controls.Add(cbxGender);
-      grbxEquipment.Controls.Add(nudHitPoints);
-      grbxEquipment.Controls.Add(cbxUsedAmmunition);
-      grbxEquipment.Controls.Add(label3);
-      grbxEquipment.Controls.Add(label32);
-      grbxEquipment.Controls.Add(nudMagicDefenseLevel);
-      grbxEquipment.Controls.Add(label13);
-      grbxEquipment.Controls.Add(cbxEquipmentSlot);
-      grbxEquipment.Controls.Add(nudFingers);
-      grbxEquipment.Controls.Add(label30);
-      grbxEquipment.Controls.Add(nudMaxRecharges);
-      grbxEquipment.Controls.Add(label23);
-      grbxEquipment.Controls.Add(nudEnchantPrice);
-      grbxEquipment.Controls.Add(nudMagicAttackLevel);
-      grbxEquipment.Controls.Add(label2);
-      grbxEquipment.Controls.Add(nudDamage);
-      grbxEquipment.Controls.Add(nudInitialRecharges);
-      grbxEquipment.Controls.Add(label12);
-      grbxEquipment.Controls.Add(cbxSpell);
-      grbxEquipment.Controls.Add(label19);
-      grbxEquipment.Controls.Add(label28);
-      grbxEquipment.Controls.Add(nudInitialSpellCharges);
-      grbxEquipment.Controls.Add(nudSpellPoints);
-      grbxEquipment.Controls.Add(nudMaxSpellCharges);
-      grbxEquipment.Controls.Add(label24);
-      grbxEquipment.Controls.Add(label17);
-      grbxEquipment.Controls.Add(nudDefense);
-      grbxEquipment.Controls.Add(label18);
-      grbxEquipment.Controls.Add(nudHands);
-      grbxEquipment.Controls.Add(label20);
-      grbxEquipment.Controls.Add(label25);
-      grbxEquipment.Controls.Add(label14);
-      grbxEquipment.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-      grbxEquipment.Location = new Point(12, 189);
-      grbxEquipment.Name = "grbxEquipment";
-      grbxEquipment.Size = new System.Drawing.Size(625, 199);
-      grbxEquipment.TabIndex = 48;
-      grbxEquipment.TabStop = false;
-      grbxEquipment.Text = "Equipment";
+      grbxAttributes.Controls.Add(cbxPenaltySkill2);
+      grbxAttributes.Controls.Add(label16);
+      grbxAttributes.Controls.Add(nudHitPoints);
+      grbxAttributes.Controls.Add(nudPenaltySkill2);
+      grbxAttributes.Controls.Add(label13);
+      grbxAttributes.Controls.Add(label22);
+      grbxAttributes.Controls.Add(nudDamage);
+      grbxAttributes.Controls.Add(label12);
+      grbxAttributes.Controls.Add(cbxPenaltySkill1);
+      grbxAttributes.Controls.Add(label28);
+      grbxAttributes.Controls.Add(nudSpellPoints);
+      grbxAttributes.Controls.Add(nudDefense);
+      grbxAttributes.Controls.Add(cbxAttribute);
+      grbxAttributes.Controls.Add(nudPenaltySkill1);
+      grbxAttributes.Controls.Add(nudAttribute);
+      grbxAttributes.Controls.Add(nudSkill);
+      grbxAttributes.Controls.Add(label5);
+      grbxAttributes.Controls.Add(label27);
+      grbxAttributes.Controls.Add(cbxSkill);
+      grbxAttributes.Controls.Add(label21);
+      grbxAttributes.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+      grbxAttributes.Location = new Point(301, 220);
+      grbxAttributes.Name = "grbxAttributes";
+      grbxAttributes.Size = new System.Drawing.Size(280, 202);
+      grbxAttributes.TabIndex = 48;
+      grbxAttributes.TabStop = false;
+      grbxAttributes.Text = "Attributes";
+      // 
+      // label16
+      // 
+      label16.AutoSize = true;
+      label16.Font = new Font("Segoe UI", 9F);
+      label16.Location = new Point(6, 170);
+      label16.Name = "label16";
+      label16.Size = new System.Drawing.Size(68, 15);
+      label16.TabIndex = 59;
+      label16.Text = "Spell Points";
+      // 
+      // nudHitPoints
+      // 
+      nudHitPoints.Font = new Font("Segoe UI", 9F);
+      nudHitPoints.Location = new Point(91, 138);
+      nudHitPoints.Name = "nudHitPoints";
+      nudHitPoints.Size = new System.Drawing.Size(54, 23);
+      nudHitPoints.TabIndex = 50;
+      nudHitPoints.Value = new decimal(new int[] { 100, 0, 0, 0 });
+      // 
+      // label13
+      // 
+      label13.AutoSize = true;
+      label13.Font = new Font("Segoe UI", 9F);
+      label13.Location = new Point(151, 170);
+      label13.Name = "label13";
+      label13.Size = new System.Drawing.Size(49, 15);
+      label13.TabIndex = 53;
+      label13.Text = "Defense";
+      // 
+      // nudDamage
+      // 
+      nudDamage.Font = new Font("Segoe UI", 9F);
+      nudDamage.Location = new Point(216, 138);
+      nudDamage.Name = "nudDamage";
+      nudDamage.Size = new System.Drawing.Size(54, 23);
+      nudDamage.TabIndex = 44;
+      nudDamage.Value = new decimal(new int[] { 100, 0, 0, 0 });
+      // 
+      // label12
+      // 
+      label12.AutoSize = true;
+      label12.Font = new Font("Segoe UI", 9F);
+      label12.Location = new Point(6, 141);
+      label12.Name = "label12";
+      label12.Size = new System.Drawing.Size(59, 15);
+      label12.TabIndex = 51;
+      label12.Text = "Hit Points";
+      // 
+      // label28
+      // 
+      label28.AutoSize = true;
+      label28.Font = new Font("Segoe UI", 9F);
+      label28.Location = new Point(151, 141);
+      label28.Name = "label28";
+      label28.Size = new System.Drawing.Size(51, 15);
+      label28.TabIndex = 45;
+      label28.Text = "Damage";
+      // 
+      // nudSpellPoints
+      // 
+      nudSpellPoints.Font = new Font("Segoe UI", 9F);
+      nudSpellPoints.Location = new Point(91, 168);
+      nudSpellPoints.Name = "nudSpellPoints";
+      nudSpellPoints.Size = new System.Drawing.Size(54, 23);
+      nudSpellPoints.TabIndex = 58;
+      nudSpellPoints.Value = new decimal(new int[] { 100, 0, 0, 0 });
+      // 
+      // nudDefense
+      // 
+      nudDefense.Font = new Font("Segoe UI", 9F);
+      nudDefense.Location = new Point(216, 167);
+      nudDefense.Name = "nudDefense";
+      nudDefense.Size = new System.Drawing.Size(54, 23);
+      nudDefense.TabIndex = 52;
+      nudDefense.Value = new decimal(new int[] { 100, 0, 0, 0 });
       // 
       // label15
       // 
       label15.AutoSize = true;
       label15.Font = new Font("Segoe UI", 9F);
-      label15.Location = new Point(424, 170);
+      label15.Location = new Point(6, 169);
       label15.Name = "label15";
       label15.Size = new System.Drawing.Size(79, 15);
       label15.TabIndex = 57;
@@ -1024,47 +1077,28 @@ namespace Ambermoon.Editor.Gui.Editors {
       // nudBreakChance
       // 
       nudBreakChance.Font = new Font("Segoe UI", 9F);
-      nudBreakChance.Location = new Point(547, 168);
+      nudBreakChance.Location = new Point(143, 167);
       nudBreakChance.Name = "nudBreakChance";
       nudBreakChance.Size = new System.Drawing.Size(54, 23);
       nudBreakChance.TabIndex = 56;
       nudBreakChance.Value = new decimal(new int[] { 100, 0, 0, 0 });
       // 
-      // label16
-      // 
-      label16.AutoSize = true;
-      label16.Font = new Font("Segoe UI", 9F);
-      label16.Location = new Point(424, 85);
-      label16.Name = "label16";
-      label16.Size = new System.Drawing.Size(68, 15);
-      label16.TabIndex = 59;
-      label16.Text = "Spell Points";
-      // 
       // label26
       // 
       label26.AutoSize = true;
       label26.Font = new Font("Segoe UI", 9F);
-      label26.Location = new Point(424, 143);
+      label26.Location = new Point(6, 165);
       label26.Name = "label26";
       label26.Size = new System.Drawing.Size(115, 15);
       label26.TabIndex = 67;
       label26.Text = "Magic Defense Level";
-      // 
-      // nudHitPoints
-      // 
-      nudHitPoints.Font = new Font("Segoe UI", 9F);
-      nudHitPoints.Location = new Point(364, 83);
-      nudHitPoints.Name = "nudHitPoints";
-      nudHitPoints.Size = new System.Drawing.Size(54, 23);
-      nudHitPoints.TabIndex = 50;
-      nudHitPoints.Value = new decimal(new int[] { 100, 0, 0, 0 });
       // 
       // cbxUsedAmmunition
       // 
       cbxUsedAmmunition.DropDownStyle = ComboBoxStyle.DropDownList;
       cbxUsedAmmunition.Font = new Font("Segoe UI", 9F);
       cbxUsedAmmunition.FormattingEnabled = true;
-      cbxUsedAmmunition.Location = new Point(143, 52);
+      cbxUsedAmmunition.Location = new Point(143, 109);
       cbxUsedAmmunition.Name = "cbxUsedAmmunition";
       cbxUsedAmmunition.Size = new System.Drawing.Size(130, 23);
       cbxUsedAmmunition.TabIndex = 69;
@@ -1073,7 +1107,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       label32.AutoSize = true;
       label32.Font = new Font("Segoe UI", 9F);
-      label32.Location = new Point(6, 55);
+      label32.Location = new Point(6, 112);
       label32.Name = "label32";
       label32.Size = new System.Drawing.Size(131, 15);
       label32.TabIndex = 68;
@@ -1082,28 +1116,18 @@ namespace Ambermoon.Editor.Gui.Editors {
       // nudMagicDefenseLevel
       // 
       nudMagicDefenseLevel.Font = new Font("Segoe UI", 9F);
-      nudMagicDefenseLevel.Location = new Point(547, 140);
+      nudMagicDefenseLevel.Location = new Point(127, 163);
       nudMagicDefenseLevel.Name = "nudMagicDefenseLevel";
       nudMagicDefenseLevel.Size = new System.Drawing.Size(54, 23);
       nudMagicDefenseLevel.TabIndex = 66;
       nudMagicDefenseLevel.Value = new decimal(new int[] { 100, 0, 0, 0 });
-      // 
-      // label13
-      // 
-      label13.AutoSize = true;
-      label13.Font = new Font("Segoe UI", 9F);
-      label13.Location = new Point(279, 142);
-      label13.Name = "label13";
-      label13.Size = new System.Drawing.Size(49, 15);
-      label13.TabIndex = 53;
-      label13.Text = "Defense";
       // 
       // cbxEquipmentSlot
       // 
       cbxEquipmentSlot.DropDownStyle = ComboBoxStyle.DropDownList;
       cbxEquipmentSlot.Font = new Font("Segoe UI", 9F);
       cbxEquipmentSlot.FormattingEnabled = true;
-      cbxEquipmentSlot.Location = new Point(364, 23);
+      cbxEquipmentSlot.Location = new Point(143, 22);
       cbxEquipmentSlot.Name = "cbxEquipmentSlot";
       cbxEquipmentSlot.Size = new System.Drawing.Size(130, 23);
       cbxEquipmentSlot.TabIndex = 63;
@@ -1111,18 +1135,18 @@ namespace Ambermoon.Editor.Gui.Editors {
       // nudFingers
       // 
       nudFingers.Font = new Font("Segoe UI", 9F);
-      nudFingers.Location = new Point(547, 54);
-      nudFingers.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+      nudFingers.Location = new Point(229, 80);
+      nudFingers.Maximum = new decimal(new int[] { 2, 0, 0, 0 });
       nudFingers.Name = "nudFingers";
-      nudFingers.Size = new System.Drawing.Size(36, 23);
+      nudFingers.Size = new System.Drawing.Size(29, 23);
       nudFingers.TabIndex = 60;
-      nudFingers.Value = new decimal(new int[] { 10, 0, 0, 0 });
+      nudFingers.Value = new decimal(new int[] { 2, 0, 0, 0 });
       // 
       // label30
       // 
       label30.AutoSize = true;
       label30.Font = new Font("Segoe UI", 9F);
-      label30.Location = new Point(424, 114);
+      label30.Location = new Point(6, 135);
       label30.Name = "label30";
       label30.Size = new System.Drawing.Size(107, 15);
       label30.TabIndex = 65;
@@ -1131,7 +1155,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // nudMaxRecharges
       // 
       nudMaxRecharges.Font = new Font("Segoe UI", 9F);
-      nudMaxRecharges.Location = new Point(229, 168);
+      nudMaxRecharges.Location = new Point(213, 75);
       nudMaxRecharges.Name = "nudMaxRecharges";
       nudMaxRecharges.Size = new System.Drawing.Size(44, 23);
       nudMaxRecharges.TabIndex = 54;
@@ -1141,7 +1165,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       label23.AutoSize = true;
       label23.Font = new Font("Segoe UI", 9F);
-      label23.Location = new Point(424, 56);
+      label23.Location = new Point(178, 83);
       label23.Name = "label23";
       label23.Size = new System.Drawing.Size(45, 15);
       label23.TabIndex = 61;
@@ -1150,7 +1174,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // nudEnchantPrice
       // 
       nudEnchantPrice.Font = new Font("Segoe UI", 9F);
-      nudEnchantPrice.Location = new Point(364, 168);
+      nudEnchantPrice.Location = new Point(127, 104);
       nudEnchantPrice.Name = "nudEnchantPrice";
       nudEnchantPrice.Size = new System.Drawing.Size(54, 23);
       nudEnchantPrice.TabIndex = 54;
@@ -1159,82 +1183,44 @@ namespace Ambermoon.Editor.Gui.Editors {
       // nudMagicAttackLevel
       // 
       nudMagicAttackLevel.Font = new Font("Segoe UI", 9F);
-      nudMagicAttackLevel.Location = new Point(547, 109);
+      nudMagicAttackLevel.Location = new Point(127, 133);
       nudMagicAttackLevel.Name = "nudMagicAttackLevel";
       nudMagicAttackLevel.Size = new System.Drawing.Size(54, 23);
       nudMagicAttackLevel.TabIndex = 64;
       nudMagicAttackLevel.Value = new decimal(new int[] { 100, 0, 0, 0 });
       // 
-      // nudDamage
-      // 
-      nudDamage.Font = new Font("Segoe UI", 9F);
-      nudDamage.Location = new Point(364, 112);
-      nudDamage.Name = "nudDamage";
-      nudDamage.Size = new System.Drawing.Size(54, 23);
-      nudDamage.TabIndex = 44;
-      nudDamage.Value = new decimal(new int[] { 100, 0, 0, 0 });
-      // 
       // nudInitialRecharges
       // 
       nudInitialRecharges.Font = new Font("Segoe UI", 9F);
-      nudInitialRecharges.Location = new Point(143, 168);
+      nudInitialRecharges.Location = new Point(127, 75);
       nudInitialRecharges.Name = "nudInitialRecharges";
       nudInitialRecharges.Size = new System.Drawing.Size(44, 23);
       nudInitialRecharges.TabIndex = 50;
       nudInitialRecharges.Value = new decimal(new int[] { 100, 0, 0, 0 });
       // 
-      // label12
-      // 
-      label12.AutoSize = true;
-      label12.Font = new Font("Segoe UI", 9F);
-      label12.Location = new Point(279, 84);
-      label12.Name = "label12";
-      label12.Size = new System.Drawing.Size(59, 15);
-      label12.TabIndex = 51;
-      label12.Text = "Hit Points";
-      // 
       // label19
       // 
       label19.AutoSize = true;
       label19.Font = new Font("Segoe UI", 9F);
-      label19.Location = new Point(193, 170);
+      label19.Location = new Point(177, 77);
       label19.Name = "label19";
       label19.Size = new System.Drawing.Size(30, 15);
       label19.TabIndex = 55;
       label19.Text = "Max";
       // 
-      // label28
-      // 
-      label28.AutoSize = true;
-      label28.Font = new Font("Segoe UI", 9F);
-      label28.Location = new Point(279, 113);
-      label28.Name = "label28";
-      label28.Size = new System.Drawing.Size(51, 15);
-      label28.TabIndex = 45;
-      label28.Text = "Damage";
-      // 
       // nudInitialSpellCharges
       // 
       nudInitialSpellCharges.Font = new Font("Segoe UI", 9F);
-      nudInitialSpellCharges.Location = new Point(143, 139);
+      nudInitialSpellCharges.Location = new Point(127, 46);
       nudInitialSpellCharges.Name = "nudInitialSpellCharges";
       nudInitialSpellCharges.Size = new System.Drawing.Size(44, 23);
       nudInitialSpellCharges.TabIndex = 52;
       nudInitialSpellCharges.Value = new decimal(new int[] { 100, 0, 0, 0 });
       // 
-      // nudSpellPoints
-      // 
-      nudSpellPoints.Font = new Font("Segoe UI", 9F);
-      nudSpellPoints.Location = new Point(547, 83);
-      nudSpellPoints.Name = "nudSpellPoints";
-      nudSpellPoints.Size = new System.Drawing.Size(54, 23);
-      nudSpellPoints.TabIndex = 58;
-      nudSpellPoints.Value = new decimal(new int[] { 100, 0, 0, 0 });
-      // 
       // nudMaxSpellCharges
       // 
       nudMaxSpellCharges.Font = new Font("Segoe UI", 9F);
-      nudMaxSpellCharges.Location = new Point(229, 139);
+      nudMaxSpellCharges.Location = new Point(213, 46);
       nudMaxSpellCharges.Name = "nudMaxSpellCharges";
       nudMaxSpellCharges.Size = new System.Drawing.Size(44, 23);
       nudMaxSpellCharges.TabIndex = 56;
@@ -1244,7 +1230,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       label24.AutoSize = true;
       label24.Font = new Font("Segoe UI", 9F);
-      label24.Location = new Point(279, 55);
+      label24.Location = new Point(6, 82);
       label24.Name = "label24";
       label24.Size = new System.Drawing.Size(41, 15);
       label24.TabIndex = 59;
@@ -1254,26 +1240,17 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       label17.AutoSize = true;
       label17.Font = new Font("Segoe UI", 9F);
-      label17.Location = new Point(6, 170);
+      label17.Location = new Point(6, 77);
       label17.Name = "label17";
       label17.Size = new System.Drawing.Size(93, 15);
       label17.TabIndex = 51;
       label17.Text = "Initial Recharges";
       // 
-      // nudDefense
-      // 
-      nudDefense.Font = new Font("Segoe UI", 9F);
-      nudDefense.Location = new Point(364, 140);
-      nudDefense.Name = "nudDefense";
-      nudDefense.Size = new System.Drawing.Size(54, 23);
-      nudDefense.TabIndex = 52;
-      nudDefense.Value = new decimal(new int[] { 100, 0, 0, 0 });
-      // 
       // label18
       // 
       label18.AutoSize = true;
       label18.Font = new Font("Segoe UI", 9F);
-      label18.Location = new Point(6, 141);
+      label18.Location = new Point(6, 48);
       label18.Name = "label18";
       label18.Size = new System.Drawing.Size(110, 15);
       label18.TabIndex = 53;
@@ -1282,7 +1259,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // nudHands
       // 
       nudHands.Font = new Font("Segoe UI", 9F);
-      nudHands.Location = new Point(364, 54);
+      nudHands.Location = new Point(143, 80);
       nudHands.Maximum = new decimal(new int[] { 2, 0, 0, 0 });
       nudHands.Name = "nudHands";
       nudHands.Size = new System.Drawing.Size(29, 23);
@@ -1293,7 +1270,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       label20.AutoSize = true;
       label20.Font = new Font("Segoe UI", 9F);
-      label20.Location = new Point(193, 141);
+      label20.Location = new Point(177, 48);
       label20.Name = "label20";
       label20.Size = new System.Drawing.Size(30, 15);
       label20.TabIndex = 57;
@@ -1303,7 +1280,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       label25.AutoSize = true;
       label25.Font = new Font("Segoe UI", 9F);
-      label25.Location = new Point(279, 26);
+      label25.Location = new Point(6, 25);
       label25.Name = "label25";
       label25.Size = new System.Drawing.Size(27, 15);
       label25.TabIndex = 62;
@@ -1313,7 +1290,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       label14.AutoSize = true;
       label14.Font = new Font("Segoe UI", 9F);
-      label14.Location = new Point(279, 170);
+      label14.Location = new Point(6, 106);
       label14.Name = "label14";
       label14.Size = new System.Drawing.Size(79, 15);
       label14.TabIndex = 55;
@@ -1326,9 +1303,9 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxGraphic.Controls.Add(label9);
       grbxGraphic.Controls.Add(pbxGraphic);
       grbxGraphic.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-      grbxGraphic.Location = new Point(521, 12);
+      grbxGraphic.Location = new Point(301, 12);
       grbxGraphic.Name = "grbxGraphic";
-      grbxGraphic.Size = new System.Drawing.Size(116, 171);
+      grbxGraphic.Size = new System.Drawing.Size(121, 202);
       grbxGraphic.TabIndex = 49;
       grbxGraphic.TabStop = false;
       grbxGraphic.Text = "Graphic";
@@ -1339,7 +1316,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       chbxZoom.Checked = true;
       chbxZoom.CheckState = CheckState.Checked;
       chbxZoom.Font = new Font("Segoe UI", 9F);
-      chbxZoom.Location = new Point(29, 139);
+      chbxZoom.Location = new Point(30, 162);
       chbxZoom.Name = "chbxZoom";
       chbxZoom.Size = new System.Drawing.Size(58, 19);
       chbxZoom.TabIndex = 50;
@@ -1349,11 +1326,11 @@ namespace Ambermoon.Editor.Gui.Editors {
       // nudGraphicIndex
       // 
       nudGraphicIndex.Font = new Font("Segoe UI", 9F);
-      nudGraphicIndex.Location = new Point(60, 110);
+      nudGraphicIndex.Location = new Point(60, 133);
       nudGraphicIndex.Maximum = new decimal(new int[] { 15, 0, 0, 0 });
       nudGraphicIndex.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
       nudGraphicIndex.Name = "nudGraphicIndex";
-      nudGraphicIndex.Size = new System.Drawing.Size(37, 23);
+      nudGraphicIndex.Size = new System.Drawing.Size(40, 23);
       nudGraphicIndex.TabIndex = 51;
       nudGraphicIndex.Value = new decimal(new int[] { 9, 0, 0, 0 });
       // 
@@ -1361,7 +1338,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       label9.AutoSize = true;
       label9.Font = new Font("Segoe UI", 9F);
-      label9.Location = new Point(6, 112);
+      label9.Location = new Point(6, 135);
       label9.Name = "label9";
       label9.Size = new System.Drawing.Size(48, 15);
       label9.TabIndex = 52;
@@ -1369,32 +1346,53 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       // grbxTexts
       // 
-      grbxTexts.Controls.Add(rtbxTexts);
+      grbxTexts.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+      grbxTexts.Controls.Add(chbxFormatText);
+      grbxTexts.Controls.Add(rtbxText);
       grbxTexts.Controls.Add(label6);
       grbxTexts.Controls.Add(nudTextSub);
       grbxTexts.Controls.Add(label10);
       grbxTexts.Controls.Add(nudText);
+      grbxTexts.Controls.Add(pbxTextBorder);
       grbxTexts.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-      grbxTexts.Location = new Point(436, 394);
+      grbxTexts.Location = new Point(428, 12);
       grbxTexts.Name = "grbxTexts";
-      grbxTexts.Size = new System.Drawing.Size(376, 124);
+      grbxTexts.Size = new System.Drawing.Size(495, 202);
       grbxTexts.TabIndex = 72;
       grbxTexts.TabStop = false;
       grbxTexts.Text = "Texts";
       // 
-      // rtbxTexts
+      // chbxFormatText
       // 
-      rtbxTexts.Location = new Point(100, 21);
-      rtbxTexts.Name = "rtbxTexts";
-      rtbxTexts.Size = new System.Drawing.Size(270, 95);
-      rtbxTexts.TabIndex = 75;
-      rtbxTexts.Text = "";
+      chbxFormatText.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+      chbxFormatText.AutoSize = true;
+      chbxFormatText.Checked = true;
+      chbxFormatText.CheckState = CheckState.Checked;
+      chbxFormatText.Font = new Font("Segoe UI", 9F);
+      chbxFormatText.Location = new Point(384, 26);
+      chbxFormatText.Name = "chbxFormatText";
+      chbxFormatText.Size = new System.Drawing.Size(105, 19);
+      chbxFormatText.TabIndex = 76;
+      chbxFormatText.Text = "Format Output";
+      chbxFormatText.UseVisualStyleBackColor = true;
+      // 
+      // rtbxText
+      // 
+      rtbxText.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+      rtbxText.BorderStyle = BorderStyle.None;
+      rtbxText.Font = new Font("Segoe UI", 9F);
+      rtbxText.Location = new Point(29, 69);
+      rtbxText.Name = "rtbxText";
+      rtbxText.ReadOnly = true;
+      rtbxText.Size = new System.Drawing.Size(438, 110);
+      rtbxText.TabIndex = 76;
+      rtbxText.Text = "";
       // 
       // label6
       // 
       label6.AutoSize = true;
       label6.Font = new Font("Segoe UI", 9F);
-      label6.Location = new Point(6, 53);
+      label6.Location = new Point(100, 24);
       label6.Name = "label6";
       label6.Size = new System.Drawing.Size(27, 15);
       label6.TabIndex = 74;
@@ -1403,11 +1401,13 @@ namespace Ambermoon.Editor.Gui.Editors {
       // nudTextSub
       // 
       nudTextSub.Font = new Font("Segoe UI", 9F);
-      nudTextSub.Location = new Point(40, 51);
+      nudTextSub.Location = new Point(133, 22);
+      nudTextSub.Maximum = new decimal(new int[] { 1, 0, 0, int.MinValue });
+      nudTextSub.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
       nudTextSub.Name = "nudTextSub";
       nudTextSub.Size = new System.Drawing.Size(54, 23);
       nudTextSub.TabIndex = 74;
-      nudTextSub.Value = new decimal(new int[] { 100, 0, 0, 0 });
+      nudTextSub.Value = new decimal(new int[] { 1, 0, 0, int.MinValue });
       // 
       // label10
       // 
@@ -1423,10 +1423,74 @@ namespace Ambermoon.Editor.Gui.Editors {
       // 
       nudText.Font = new Font("Segoe UI", 9F);
       nudText.Location = new Point(40, 22);
+      nudText.Maximum = new decimal(new int[] { 1, 0, 0, int.MinValue });
+      nudText.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
       nudText.Name = "nudText";
       nudText.Size = new System.Drawing.Size(54, 23);
       nudText.TabIndex = 73;
-      nudText.Value = new decimal(new int[] { 100, 0, 0, 0 });
+      nudText.Value = new decimal(new int[] { 1, 0, 0, int.MinValue });
+      // 
+      // pbxTextBorder
+      // 
+      pbxTextBorder.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+      pbxTextBorder.BackColor = Color.Transparent;
+      pbxTextBorder.BackgroundImageLayout = ImageLayout.Zoom;
+      pbxTextBorder.Location = new Point(6, 51);
+      pbxTextBorder.Name = "pbxTextBorder";
+      pbxTextBorder.Size = new System.Drawing.Size(483, 145);
+      pbxTextBorder.SizeMode = PictureBoxSizeMode.StretchImage;
+      pbxTextBorder.TabIndex = 53;
+      pbxTextBorder.TabStop = false;
+      // 
+      // grbxEquipment
+      // 
+      grbxEquipment.Controls.Add(label7);
+      grbxEquipment.Controls.Add(label15);
+      grbxEquipment.Controls.Add(nudBreakChance);
+      grbxEquipment.Controls.Add(cbxEquipmentSlot);
+      grbxEquipment.Controls.Add(label25);
+      grbxEquipment.Controls.Add(nudHands);
+      grbxEquipment.Controls.Add(label24);
+      grbxEquipment.Controls.Add(label23);
+      grbxEquipment.Controls.Add(nudFingers);
+      grbxEquipment.Controls.Add(cbxGender);
+      grbxEquipment.Controls.Add(cbxAmmunitionType);
+      grbxEquipment.Controls.Add(label3);
+      grbxEquipment.Controls.Add(cbxUsedAmmunition);
+      grbxEquipment.Controls.Add(label32);
+      grbxEquipment.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+      grbxEquipment.Location = new Point(12, 220);
+      grbxEquipment.Name = "grbxEquipment";
+      grbxEquipment.Size = new System.Drawing.Size(283, 202);
+      grbxEquipment.TabIndex = 73;
+      grbxEquipment.TabStop = false;
+      grbxEquipment.Text = "Equipment";
+      // 
+      // grbxMagic
+      // 
+      grbxMagic.Controls.Add(cbxSpell);
+      grbxMagic.Controls.Add(label14);
+      grbxMagic.Controls.Add(label26);
+      grbxMagic.Controls.Add(label2);
+      grbxMagic.Controls.Add(nudInitialRecharges);
+      grbxMagic.Controls.Add(label19);
+      grbxMagic.Controls.Add(nudMagicDefenseLevel);
+      grbxMagic.Controls.Add(nudMaxRecharges);
+      grbxMagic.Controls.Add(label20);
+      grbxMagic.Controls.Add(label30);
+      grbxMagic.Controls.Add(label18);
+      grbxMagic.Controls.Add(nudInitialSpellCharges);
+      grbxMagic.Controls.Add(nudMagicAttackLevel);
+      grbxMagic.Controls.Add(nudEnchantPrice);
+      grbxMagic.Controls.Add(label17);
+      grbxMagic.Controls.Add(nudMaxSpellCharges);
+      grbxMagic.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+      grbxMagic.Location = new Point(587, 220);
+      grbxMagic.Name = "grbxMagic";
+      grbxMagic.Size = new System.Drawing.Size(336, 202);
+      grbxMagic.TabIndex = 75;
+      grbxMagic.TabStop = false;
+      grbxMagic.Text = "Magic";
       // 
       // EditItemForm
       // 
@@ -1434,10 +1498,12 @@ namespace Ambermoon.Editor.Gui.Editors {
       AutoScaleDimensions = new SizeF(7F, 15F);
       AutoScaleMode = AutoScaleMode.Font;
       CancelButton = btnCancel;
-      ClientSize = new System.Drawing.Size(823, 560);
+      ClientSize = new System.Drawing.Size(935, 593);
+      Controls.Add(grbxMagic);
+      Controls.Add(grbxEquipment);
       Controls.Add(grbxTexts);
       Controls.Add(grbxGraphic);
-      Controls.Add(grbxEquipment);
+      Controls.Add(grbxAttributes);
       Controls.Add(lblIndex);
       Controls.Add(tbxIndex);
       Controls.Add(grbxClasses);
@@ -1454,10 +1520,10 @@ namespace Ambermoon.Editor.Gui.Editors {
       Text = "Item";
       grbxGeneral.ResumeLayout(false);
       grbxGeneral.PerformLayout();
-      ((System.ComponentModel.ISupportInitialize)nudPenaltySkill2).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudWeight).EndInit();
-      ((System.ComponentModel.ISupportInitialize)nudPenaltySkill1).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudPrice).EndInit();
+      ((System.ComponentModel.ISupportInitialize)nudPenaltySkill2).EndInit();
+      ((System.ComponentModel.ISupportInitialize)nudPenaltySkill1).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudSkill).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudAttribute).EndInit();
       ((System.ComponentModel.ISupportInitialize)pbxGraphic).EndInit();
@@ -1467,21 +1533,21 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxDefaultSlotFlags.PerformLayout();
       grbxClasses.ResumeLayout(false);
       grbxClasses.PerformLayout();
-      grbxEquipment.ResumeLayout(false);
-      grbxEquipment.PerformLayout();
-      ((System.ComponentModel.ISupportInitialize)nudBreakChance).EndInit();
+      grbxAttributes.ResumeLayout(false);
+      grbxAttributes.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)nudHitPoints).EndInit();
+      ((System.ComponentModel.ISupportInitialize)nudDamage).EndInit();
+      ((System.ComponentModel.ISupportInitialize)nudSpellPoints).EndInit();
+      ((System.ComponentModel.ISupportInitialize)nudDefense).EndInit();
+      ((System.ComponentModel.ISupportInitialize)nudBreakChance).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudMagicDefenseLevel).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudFingers).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudMaxRecharges).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudEnchantPrice).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudMagicAttackLevel).EndInit();
-      ((System.ComponentModel.ISupportInitialize)nudDamage).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudInitialRecharges).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudInitialSpellCharges).EndInit();
-      ((System.ComponentModel.ISupportInitialize)nudSpellPoints).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudMaxSpellCharges).EndInit();
-      ((System.ComponentModel.ISupportInitialize)nudDefense).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudHands).EndInit();
       grbxGraphic.ResumeLayout(false);
       grbxGraphic.PerformLayout();
@@ -1490,6 +1556,11 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxTexts.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)nudTextSub).EndInit();
       ((System.ComponentModel.ISupportInitialize)nudText).EndInit();
+      ((System.ComponentModel.ISupportInitialize)pbxTextBorder).EndInit();
+      grbxEquipment.ResumeLayout(false);
+      grbxEquipment.PerformLayout();
+      grbxMagic.ResumeLayout(false);
+      grbxMagic.PerformLayout();
       ResumeLayout(false);
       PerformLayout();
     }
@@ -1530,16 +1601,6 @@ namespace Ambermoon.Editor.Gui.Editors {
     private CheckBox chbxDefaultSlotFlagBroken;
     private CheckBox chbxDefaultSlotFlagNone;
     private CheckBox chbxDefaultSlotFlagCursed;
-    private GroupBox grbxSpellImmunity;
-    private CheckBox chbxSpellImmunityUnused;
-    private CheckBox chbxSpellImmunityFunction;
-    private CheckBox chbxSpellImmunityMystic;
-    private CheckBox chbxSpellImmunityUnused1;
-    private CheckBox chbxSpellImmunityUnused2;
-    private CheckBox chbxSpellImmunityDestruction;
-    private CheckBox chbxSpellImmunityHealing;
-    private CheckBox chbxSpellImmunityAlchemistic;
-    private CheckBox chbxSpellImmunityNone;
     private GroupBox grbxClasses;
     private CheckBox chbxClassesWarrior;
     private CheckBox chbxClassesUnused1;
@@ -1554,7 +1615,7 @@ namespace Ambermoon.Editor.Gui.Editors {
     private CheckBox chbxClassesAdventurer;
     private CheckBox chbxClassesAnimal;
     private CheckBox chbxClassesMystic;
-    private GroupBox grbxEquipment;
+    private GroupBox grbxAttributes;
     private ExtendedPictureBox pbxGraphic;
     private GroupBox grbxGraphic;
     private Label label9;
@@ -1618,6 +1679,10 @@ namespace Ambermoon.Editor.Gui.Editors {
     private CheckBox chbxClassesUnused3;
     private CheckBox chbxClassesUnused4;
     private CheckBox chbxClassesAllWithUnused;
-    private RichTextBox rtbxTexts;
+    private GroupBox grbxEquipment;
+    private GroupBox grbxMagic;
+    private CustomRichTextBox rtbxText;
+    private CheckBox chbxFormatText;
+    private ExtendedPictureBox pbxTextBorder;
   }
 }

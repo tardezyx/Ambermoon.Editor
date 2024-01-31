@@ -716,7 +716,7 @@ namespace Ambermoon.Editor.Gui.Editors {
               if (showEvents && tile.MapEventId != 0) {
                 int diff = (tileSize - 16) / 2;
                 graphics.FillRectangle(textBackground, new Rectangle(drawX + 1 + diff, drawY + 1 + diff, 13, 13));
-                graphics.DrawString(tile.MapEventId.ToString("x2"), font, textBrush, drawX, drawY);
+                //graphics.DrawString(tile.MapEventId.ToString("x2"), font, textBrush, drawX, drawY);
               }
             }
           }
