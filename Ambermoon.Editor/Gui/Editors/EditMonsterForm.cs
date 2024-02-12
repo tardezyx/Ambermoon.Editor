@@ -480,7 +480,7 @@ namespace Ambermoon.Editor.Gui.Editors {
 
       if (
         backgroundImage.PaletteIndices[(int)daytime] is uint paletteIndex
-        && _monster.GetPalette(paletteIndex) is Palette palette
+        && _monster.GetPalette((int)paletteIndex) is Palette palette
       ) {
         if (_monster.GetImage(combatGraphicIndex) is Image monsterImage) { 
           foreach (ImageData frame in monsterImage.Frames) {

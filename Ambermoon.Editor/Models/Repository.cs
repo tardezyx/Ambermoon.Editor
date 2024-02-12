@@ -10,10 +10,11 @@ namespace Ambermoon.Editor.Models {
     private static readonly Repository _instance;
     #endregion
     #region --- property --------------------------------------------------------------------------
-    public static Repository          Current  { get { return _instance; } }
-    public        string              Folder   { get; private set; } = string.Empty;
-    public        GameDataRepository? GameData { get; private set; }
-    public        bool                IsDirty  { get; private set; } = false;
+    public static Repository                Current                     { get { return _instance; } }
+    public        string                    Folder                      { get; private set; } = string.Empty;
+    public        GameDataRepository?       GameData                    { get; private set; }
+    public        bool                      IsDirty                     { get; private set; } = false;
+    public        Dictionary<uint, Palette> DefaultMonsterImagePalettes { get; private set; } = [];
     #endregion
 
     #region --- constructor: singleton ------------------------------------------------------------
@@ -99,6 +100,8 @@ namespace Ambermoon.Editor.Models {
       if (GameData is null) {
         return;
       }
+
+      DefaultMonsterImagePalettes = GameData.GetDefaultMonsterImagePalettes();
 
       int tempvarforspontaneuousdebugging = 0;
     }

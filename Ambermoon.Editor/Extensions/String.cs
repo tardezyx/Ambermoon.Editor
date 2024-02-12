@@ -15,6 +15,25 @@ namespace Ambermoon.Editor.Extensions {
     #endregion
 
     #region --- get byte array --------------------------------------------------------------------
+    public static IEnumerable<int> GetAllIndexesOf(this string? source, string stringToFind) {
+      if (source.IsNullOrEmpty()) {
+        throw new ArgumentException("string is empty");
+      }
+
+      if (stringToFind.IsNullOrEmpty()) {
+        throw new ArgumentException("string to find is empty");
+      }
+
+      for (int index = 0; ; index++) {
+        index = source.IndexOf(stringToFind, index);
+        if (index == -1) {
+          break;
+        }
+        yield return index;
+      }
+    }
+    #endregion
+    #region --- get byte array --------------------------------------------------------------------
     internal static byte[] GetByteArray(this string? source) {
       if (source.IsNullOrEmpty()) {
         return [];

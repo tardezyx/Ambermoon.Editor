@@ -8,31 +8,35 @@ namespace Ambermoon.Editor.Extensions {
   internal static partial class Extensions {
     #region --- item data: get graphic ------------------------------------------------------------
     internal static Bitmap? GetGraphic(this ItemData source, int graphicIndex = -1) {
-      uint imageIndex = graphicIndex == -1
+      Bitmap? result = null;
+
+      uint imageIndex = graphicIndex < 0
         ? source.GraphicIndex
         : (uint)graphicIndex;
 
       if (
-        Repository.Current.GameData is not GameDataRepository repository
-        || !repository.ItemImages.ContainsKey(imageIndex)
+        Repository.Current.GameData is GameDataRepository repository
+        && repository.ItemImages.TryGetValue(imageIndex, out Image? image)
       ) {
-        return null;
+        result =  WindowsExtensions.ToBitmap(
+          image.Frames[0],
+          repository.ItemPalette,
+          true
+        );
       }
 
-      return WindowsExtensions.ToBitmap(
-        repository.ItemImages[imageIndex].Frames[0],
-        repository.ItemPalette,
-        true
-      );
+      return result;
     }
     #endregion
     #region --- item data: get text ---------------------------------------------------------------
     internal static string GetText(this ItemData source, int textIndex = -1, int textSubIndex = -1) {
-      uint? index = textIndex == -1
+      string result = string.Empty;
+
+      uint? index = textIndex < 0
         ? source.TextIndex
         : (uint)textIndex;
 
-      uint? subIndex = textSubIndex == -1
+      uint? subIndex = textSubIndex < 0
         ? source.TextSubIndex
         : (uint)textSubIndex;
 
@@ -40,82 +44,91 @@ namespace Ambermoon.Editor.Extensions {
         index.HasValue
         && subIndex.HasValue
         && Repository.Current.GameData is GameDataRepository repository
-        && repository.ItemTexts.ContainsKey((uint)index)
-        && repository.ItemTexts[(uint)index] is TextList textList
+        && repository.ItemTexts.TryGetValue((uint)index, out TextList? textList)
         && subIndex < textList.Count) {
-        return textList[(int)subIndex];
+        result = textList[(int)subIndex];
       }
       
-      return string.Empty;
+      return result;
     }
     #endregion
 
     #region --- monster data: get combat graphic --------------------------------------------------
-    internal static Bitmap? GetCombatGraphic(this MonsterData source, int combatGraphicIndex = -1, uint paletteIndex = 21) {
-      if (combatGraphicIndex == -1) {
+    internal static Bitmap? GetCombatGraphic(this MonsterData source, int combatGraphicIndex = -1, int paletteIndex = -1) {
+      Bitmap? result = null;
+
+      if (combatGraphicIndex < 0) {
         combatGraphicIndex = (int)source.CombatGraphicIndex;
       }
 
       if (
-        source.GetImage(combatGraphicIndex) is not Image image
-        || source.GetPalette(paletteIndex) is not Palette palette
+        source.GetImage(combatGraphicIndex) is Image image
+        && source.GetPalette(paletteIndex) is Palette palette
       ) {
-        return null;
+        result = WindowsExtensions.ToBitmap(
+          image.Frames[0],
+          palette,
+          true
+        );
       }
 
-      return WindowsExtensions.ToBitmap(
-        image.Frames[0],
-        palette,
-        true
-      );
+      return result;
     }
     #endregion
     #region --- monster data: get combat icon graphic ---------------------------------------------
     internal static Bitmap? GetCombatIconGraphic(this MonsterData source, int combatGraphicIndex = -1) {
-      uint imageIndex = combatGraphicIndex == -1
+      Bitmap? result = null;
+
+      uint imageIndex = combatGraphicIndex < 0
         ? source.CombatGraphicIndex
         : (uint)combatGraphicIndex;
 
       if (
-        Repository.Current.GameData is not GameDataRepository repository
-        || !repository.MonsterCombatIcons.ContainsKey(imageIndex)
+        Repository.Current.GameData is GameDataRepository repository
+        && repository.MonsterCombatIcons.TryGetValue(imageIndex, out Image? image)
       ) {
-        return null;
+        result =  WindowsExtensions.ToBitmap(
+          image.Frames[0],
+          repository.UserInterfacePalette,
+          true
+        );
       }
 
-      return WindowsExtensions.ToBitmap(
-        repository.MonsterCombatIcons[imageIndex].Frames[0],
-        repository.UserInterfacePalette,
-        true
-      );
+      return result;
     }
     #endregion
     #region --- monster data: get image -----------------------------------------------------------
     internal static Image? GetImage(this MonsterData source, int imageIndex = -1) {
-      uint index = imageIndex == -1
+      Image? result = null;
+
+      uint index = imageIndex < 0
         ? source.CombatGraphicIndex
         : (uint)imageIndex;
 
-      if (
-        Repository.Current.GameData is not GameDataRepository repository
-        || !repository.MonsterImages.ContainsKey(index)
-      ) {
-        return null;
+      if (Repository.Current.GameData is GameDataRepository repository) {
+        repository.MonsterImages.TryGetValue(index, out result);
       }
 
-      return repository.MonsterImages[index];
+      return result;
     }
     #endregion
     #region --- monster data: get palette ---------------------------------------------------------
-    internal static Palette? GetPalette(this MonsterData source, uint paletteIndex) {
-      if (
-        Repository.Current.GameData is not GameDataRepository repository
-        || !repository.Palettes.ContainsKey(paletteIndex)
-      ) {
-        return null;
+    internal static Palette? GetPalette(this MonsterData source, int paletteIndex = -1) {
+      Palette? result = null;
+
+      if (paletteIndex < 0) {
+        if (Repository.Current.DefaultMonsterImagePalettes.TryGetValue(source.Index, out result)) {
+          return result;
+        }
+
+        paletteIndex = 21;
       }
 
-      return repository.Palettes[paletteIndex];
+      if (Repository.Current.GameData is GameDataRepository repository) {
+        repository.Palettes.TryGetValue((uint)paletteIndex, out result);
+      }
+
+      return result;
     }
     #endregion
   }

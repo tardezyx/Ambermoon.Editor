@@ -255,7 +255,24 @@ namespace Ambermoon.Editor.Gui.Editors {
     #region --- wire events -----------------------------------------------------------------------
     private void WireEvents() {
       btnCancel.Click += (s, e) => Close();
-      btnOK.Click += (s, e) => { MapControlsToItem(); DialogResult = DialogResult.OK; Close(); };
+
+      btnEditText.Click += (s, e) => {
+        EditText form = new(
+          Repository.Current.GameData!.ItemTexts,
+          (int)nudText.Value,
+          (int)nudTextSub.Value
+        );
+
+        if (form.ShowDialog() == DialogResult.OK) {
+          rtbxText.Text = _item.GetText((int)nudText.Value, (int)nudTextSub.Value);
+        }
+      };
+
+      btnOK.Click += (s, e) => {
+        MapControlsToItem();
+        DialogResult = DialogResult.OK;
+        Close();
+      };
 
       chbxDefaultSlotFlagBroken.CheckStateChanged += (s, e) => UpdateCheckBoxesDefaultSlot(s, ItemSlotFlags.Broken);
       chbxDefaultSlotFlagCursed.CheckStateChanged += (s, e) => UpdateCheckBoxesDefaultSlot(s, ItemSlotFlags.Cursed);

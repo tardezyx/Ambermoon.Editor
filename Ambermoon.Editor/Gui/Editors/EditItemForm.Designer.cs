@@ -143,6 +143,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       pbxTextBorder = new ExtendedPictureBox();
       grbxEquipment = new GroupBox();
       grbxMagic = new GroupBox();
+      btnEditText = new Button();
       grbxGeneral.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)nudWeight).BeginInit();
       ((System.ComponentModel.ISupportInitialize)nudPrice).BeginInit();
@@ -1347,6 +1348,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       // grbxTexts
       // 
       grbxTexts.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+      grbxTexts.Controls.Add(btnEditText);
       grbxTexts.Controls.Add(chbxFormatText);
       grbxTexts.Controls.Add(rtbxText);
       grbxTexts.Controls.Add(label6);
@@ -1491,6 +1493,16 @@ namespace Ambermoon.Editor.Gui.Editors {
       grbxMagic.TabIndex = 75;
       grbxMagic.TabStop = false;
       grbxMagic.Text = "Magic";
+      // 
+      // btnEditText
+      // 
+      btnEditText.Font = new Font("Segoe UI", 9F);
+      btnEditText.Location = new Point(193, 22);
+      btnEditText.Name = "btnEditText";
+      btnEditText.Size = new System.Drawing.Size(75, 23);
+      btnEditText.TabIndex = 77;
+      btnEditText.Text = "Edit Text";
+      btnEditText.UseVisualStyleBackColor = true;
       // 
       // EditItemForm
       // 
@@ -1684,5 +1696,6 @@ namespace Ambermoon.Editor.Gui.Editors {
     private CustomRichTextBox rtbxText;
     private CheckBox chbxFormatText;
     private ExtendedPictureBox pbxTextBorder;
+    private Button btnEditText;
   }
 }
