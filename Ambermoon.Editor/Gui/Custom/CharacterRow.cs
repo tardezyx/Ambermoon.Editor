@@ -22,7 +22,7 @@ namespace Ambermoon.Editor.Gui.Custom {
     public bool TextPopup { get; set; }
 
     public uint CharacterIndex {
-      get => comboBoxCharacter.Items.Count == 0 ? 0u : (uint)((IndexedItem)comboBoxCharacter.SelectedItem).Index;
+      get => comboBoxCharacter.Items.Count == 0 ? 0u : comboBoxCharacter.SelectedItem is IndexedItem item ? (uint)item.Index : 0u;
       set {
         if (comboBoxCharacter.Items.Count != 0) // map texts might be empty
           comboBoxCharacter.SelectedIndex = comboBoxCharacter.Items.IndexOf(comboBoxCharacter.Items.OfType<IndexedItem>().FirstOrDefault(i => i.Index == value));
@@ -125,15 +125,15 @@ namespace Ambermoon.Editor.Gui.Custom {
       if (e.Index < 0)
         return;
 
-      string text = comboBoxCharacter.GetItemText(comboBoxCharacter.Items[e.Index]);
+      string text = comboBoxCharacter.GetItemText(comboBoxCharacter.Items[e.Index]) ?? string.Empty;
       e.DrawBackground();
       using var brush = new SolidBrush(e.ForeColor);
       e.Graphics.DrawString(text, e.Font!, brush, e.Bounds);
       if (comboBoxCharacter.DroppedDown && (e.State & DrawItemState.Selected) == DrawItemState.Selected) {
-        var item = (IndexedItem)comboBoxCharacter.Items[e.Index];
+        var item = (IndexedItem?)comboBoxCharacter.Items[e.Index];
 
 #pragma warning disable CS0252
-        if (!string.IsNullOrWhiteSpace(item.Name) && toolTipCharacter.Tag != item) {
+        if (!string.IsNullOrWhiteSpace(item?.Name) && toolTipCharacter.Tag != item) {
           //var bounds = comboBoxCharacter.GetItemBounds(e.Index);
           //toolTipCharacter.Show(item.Name, comboBoxCharacter, bounds.Right, bounds.Bottom);
           toolTipCharacter.Tag = item;

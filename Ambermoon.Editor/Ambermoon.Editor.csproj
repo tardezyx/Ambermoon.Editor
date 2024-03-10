@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Ambermoon.net\Ambermoon.Common\Ambermoon.Common.csproj" />
     <ProjectReference Include="..\..\Ambermoon.net\Ambermoon.Data.GameDataRepository\Ambermoon.Data.GameDataRepository.csproj" />
   </ItemGroup>
 
@@ -31,8 +32,6 @@
     <Compile Update="Gui\Editors\EditSpellForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Gui\Editors\Map2DForm.cs" />
-    <Compile Update="Gui\Editors\Map2DForm.cs" />
     <Compile Update="Gui\Editors\EditNPCForm.cs" />
     <Compile Update="Gui\Overviews\MonsterGroupsForm.cs" />
     <Compile Update="Gui\Overviews\MapsForm.cs" />
