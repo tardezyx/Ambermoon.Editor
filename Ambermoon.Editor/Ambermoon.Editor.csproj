@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ambermoon.net\Ambermoon.Data.Common\Ambermoon.Data.Common.csproj" />
+    <ProjectReference Include="..\..\Ambermoon.net\Ambermoon.Common\Ambermoon.Common.csproj" />
     <ProjectReference Include="..\..\Ambermoon.net\Ambermoon.Data.GameDataRepository\Ambermoon.Data.GameDataRepository.csproj" />
   </ItemGroup>
 

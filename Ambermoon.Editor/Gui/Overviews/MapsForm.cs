@@ -96,7 +96,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
     //#endregion
     #region --- change map --------------------------------------------------------------------
     private void ChangeMap(MapData map, int rowIndex) {
-      EditMap2DForm form = new(map);
+      EditMap2DForm form = new(map, Repository.Current.GameData);
 
       if (form.ShowDialog() == DialogResult.OK) {
         _maps.HasBeenChanged();

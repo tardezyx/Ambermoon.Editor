@@ -34,7 +34,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       labelFrames = new Label();
       timerAnimation = new System.Windows.Forms.Timer(components);
       checkBoxBlockSight = new CheckBox();
-      checkBoxFloor = new CheckBox();
       checkBoxBackgroundFlags = new CheckBox();
       checkBoxHidePlayer = new CheckBox();
       groupBoxAllowMovement = new GroupBox();
@@ -60,8 +59,8 @@ namespace Ambermoon.Editor.Gui.Editors {
       numericUpDownCombatBackground = new NumericUpDown();
       buttonShowCombatBackground = new Button();
       radioButtonNormal = new RadioButton();
-      radioButtonBackground = new RadioButton();
-      radioButtonForeground = new RadioButton();
+      radioButtonAlwaysBelow = new RadioButton();
+      radioButtonAlwaysAbove = new RadioButton();
       labelDraw = new Label();
       label1 = new Label();
       buttonFreeIn = new Button();
@@ -69,7 +68,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       buttonBlockIndoor = new Button();
       buttonBlockOutdoor = new Button();
       buttonFreeOut = new Button();
-      checkBoxRandomAnimationStart = new CheckBox();
+      checkBoxRandomAnimation = new CheckBox();
       checkBoxAutoPoison = new CheckBox();
       panelCombatBackground = new DrawPanel();
       labelCombatBackground = new Label();
@@ -126,7 +125,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       checkBoxAlternate.TabIndex = 3;
       checkBoxAlternate.Text = "Alternate";
       checkBoxAlternate.UseVisualStyleBackColor = true;
-      checkBoxAlternate.CheckedChanged += checkBoxAlternate_CheckedChanged;
+      checkBoxAlternate.CheckedChanged += CheckBoxAlternate_CheckedChanged;
       // 
       // labelFrames
       // 
@@ -151,16 +150,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       checkBoxBlockSight.TabIndex = 5;
       checkBoxBlockSight.Text = "Block Sight";
       checkBoxBlockSight.UseVisualStyleBackColor = true;
-      // 
-      // checkBoxFloor
-      // 
-      checkBoxFloor.AutoSize = true;
-      checkBoxFloor.Location = new Point(330, 84);
-      checkBoxFloor.Name = "checkBoxFloor";
-      checkBoxFloor.Size = new System.Drawing.Size(69, 19);
-      checkBoxFloor.TabIndex = 7;
-      checkBoxFloor.Text = "Is Floor?";
-      checkBoxFloor.UseVisualStyleBackColor = true;
       // 
       // checkBoxBackgroundFlags
       // 
@@ -386,7 +375,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       checkBoxBlockAllMovement.TabIndex = 12;
       checkBoxBlockAllMovement.Text = "Block All Movement";
       checkBoxBlockAllMovement.UseVisualStyleBackColor = true;
-      checkBoxBlockAllMovement.CheckedChanged += checkBoxBlockAllMovement_CheckedChanged;
+      checkBoxBlockAllMovement.CheckedChanged += CheckBoxBlockAllMovement_CheckedChanged;
       // 
       // buttonApply
       // 
@@ -397,7 +386,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       buttonApply.TabIndex = 13;
       buttonApply.Text = "Apply";
       buttonApply.UseVisualStyleBackColor = true;
-      buttonApply.Click += buttonApply_Click;
+      buttonApply.Click += ButtonApply_Click;
       // 
       // buttonCancel
       // 
@@ -452,25 +441,25 @@ namespace Ambermoon.Editor.Gui.Editors {
       radioButtonNormal.Text = "Normal";
       radioButtonNormal.UseVisualStyleBackColor = true;
       // 
-      // radioButtonBackground
+      // radioButtonAlwaysBelow
       // 
-      radioButtonBackground.AutoSize = true;
-      radioButtonBackground.Location = new Point(160, 32);
-      radioButtonBackground.Name = "radioButtonBackground";
-      radioButtonBackground.Size = new System.Drawing.Size(89, 19);
-      radioButtonBackground.TabIndex = 20;
-      radioButtonBackground.Text = "Background";
-      radioButtonBackground.UseVisualStyleBackColor = true;
+      radioButtonAlwaysBelow.AutoSize = true;
+      radioButtonAlwaysBelow.Location = new Point(160, 32);
+      radioButtonAlwaysBelow.Name = "radioButtonAlwaysBelow";
+      radioButtonAlwaysBelow.Size = new System.Drawing.Size(89, 19);
+      radioButtonAlwaysBelow.TabIndex = 20;
+      radioButtonAlwaysBelow.Text = "Always Below";
+      radioButtonAlwaysBelow.UseVisualStyleBackColor = true;
       // 
-      // radioButtonForeground
+      // radioButtonAlwaysAbove
       // 
-      radioButtonForeground.AutoSize = true;
-      radioButtonForeground.Location = new Point(160, 58);
-      radioButtonForeground.Name = "radioButtonForeground";
-      radioButtonForeground.Size = new System.Drawing.Size(87, 19);
-      radioButtonForeground.TabIndex = 21;
-      radioButtonForeground.Text = "Foreground";
-      radioButtonForeground.UseVisualStyleBackColor = true;
+      radioButtonAlwaysAbove.AutoSize = true;
+      radioButtonAlwaysAbove.Location = new Point(160, 58);
+      radioButtonAlwaysAbove.Name = "radioButtonAlwaysAbove";
+      radioButtonAlwaysAbove.Size = new System.Drawing.Size(87, 19);
+      radioButtonAlwaysAbove.TabIndex = 21;
+      radioButtonAlwaysAbove.Text = "Always Above";
+      radioButtonAlwaysAbove.UseVisualStyleBackColor = true;
       // 
       // labelDraw
       // 
@@ -500,7 +489,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       buttonFreeIn.Text = "Free In";
       buttonFreeIn.TextAlign = ContentAlignment.MiddleLeft;
       buttonFreeIn.UseVisualStyleBackColor = true;
-      buttonFreeIn.Click += buttonFreeIn_Click;
+      buttonFreeIn.Click += ButtonFreeIn_Click;
       // 
       // buttonSwim
       // 
@@ -512,7 +501,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       buttonSwim.Text = "Swim";
       buttonSwim.TextAlign = ContentAlignment.MiddleLeft;
       buttonSwim.UseVisualStyleBackColor = true;
-      buttonSwim.Click += buttonSwim_Click;
+      buttonSwim.Click += ButtonSwim_Click;
       // 
       // buttonBlockIndoor
       // 
@@ -524,7 +513,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       buttonBlockIndoor.Text = "Block In";
       buttonBlockIndoor.TextAlign = ContentAlignment.MiddleLeft;
       buttonBlockIndoor.UseVisualStyleBackColor = true;
-      buttonBlockIndoor.Click += buttonBlockIndoor_Click;
+      buttonBlockIndoor.Click += ButtonBlockIndoor_Click;
       // 
       // buttonBlockOutdoor
       // 
@@ -536,7 +525,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       buttonBlockOutdoor.Text = "Block Out";
       buttonBlockOutdoor.TextAlign = ContentAlignment.MiddleLeft;
       buttonBlockOutdoor.UseVisualStyleBackColor = true;
-      buttonBlockOutdoor.Click += buttonBlockOutdoor_Click;
+      buttonBlockOutdoor.Click += ButtonBlockOutdoor_Click;
       // 
       // buttonFreeOut
       // 
@@ -548,18 +537,18 @@ namespace Ambermoon.Editor.Gui.Editors {
       buttonFreeOut.Text = "Free Out";
       buttonFreeOut.TextAlign = ContentAlignment.MiddleLeft;
       buttonFreeOut.UseVisualStyleBackColor = true;
-      buttonFreeOut.Click += buttonFreeOut_Click;
+      buttonFreeOut.Click += ButtonFreeOut_Click;
       // 
       // checkBoxRandomAnimationStart
       // 
-      checkBoxRandomAnimationStart.AutoSize = true;
-      checkBoxRandomAnimationStart.Location = new Point(12, 99);
-      checkBoxRandomAnimationStart.Name = "checkBoxRandomAnimationStart";
-      checkBoxRandomAnimationStart.Size = new System.Drawing.Size(98, 19);
-      checkBoxRandomAnimationStart.TabIndex = 31;
-      checkBoxRandomAnimationStart.Text = "Random Start";
-      checkBoxRandomAnimationStart.UseVisualStyleBackColor = true;
-      checkBoxRandomAnimationStart.CheckedChanged += checkBoxRandomAnimationStart_CheckedChanged;
+      checkBoxRandomAnimation.AutoSize = true;
+      checkBoxRandomAnimation.Location = new Point(12, 99);
+      checkBoxRandomAnimation.Name = "checkBoxRandomAnimationStart";
+      checkBoxRandomAnimation.Size = new System.Drawing.Size(98, 19);
+      checkBoxRandomAnimation.TabIndex = 31;
+      checkBoxRandomAnimation.Text = "Random Anim";
+      checkBoxRandomAnimation.UseVisualStyleBackColor = true;
+      checkBoxRandomAnimation.CheckedChanged += CheckBoxRandomAnimationStart_CheckedChanged;
       // 
       // checkBoxAutoPoison
       // 
@@ -597,11 +586,11 @@ namespace Ambermoon.Editor.Gui.Editors {
       Controls.Add(labelCombatBackground);
       Controls.Add(panelCombatBackground);
       Controls.Add(checkBoxAutoPoison);
-      Controls.Add(checkBoxRandomAnimationStart);
+      Controls.Add(checkBoxRandomAnimation);
       Controls.Add(label1);
       Controls.Add(labelDraw);
-      Controls.Add(radioButtonForeground);
-      Controls.Add(radioButtonBackground);
+      Controls.Add(radioButtonAlwaysAbove);
+      Controls.Add(radioButtonAlwaysBelow);
       Controls.Add(radioButtonNormal);
       Controls.Add(buttonShowCombatBackground);
       Controls.Add(numericUpDownCombatBackground);
@@ -612,7 +601,6 @@ namespace Ambermoon.Editor.Gui.Editors {
       Controls.Add(groupBoxAllowMovement);
       Controls.Add(checkBoxHidePlayer);
       Controls.Add(checkBoxBackgroundFlags);
-      Controls.Add(checkBoxFloor);
       Controls.Add(checkBoxBlockSight);
       Controls.Add(labelFrames);
       Controls.Add(checkBoxAlternate);
@@ -641,7 +629,6 @@ namespace Ambermoon.Editor.Gui.Editors {
     private System.Windows.Forms.Label labelFrames;
     private System.Windows.Forms.Timer timerAnimation;
     private System.Windows.Forms.CheckBox checkBoxBlockSight;
-    private System.Windows.Forms.CheckBox checkBoxFloor;
     private System.Windows.Forms.CheckBox checkBoxBackgroundFlags;
     private System.Windows.Forms.CheckBox checkBoxHidePlayer;
     private System.Windows.Forms.GroupBox groupBoxAllowMovement;
@@ -667,8 +654,8 @@ namespace Ambermoon.Editor.Gui.Editors {
     private System.Windows.Forms.NumericUpDown numericUpDownCombatBackground;
     private System.Windows.Forms.Button buttonShowCombatBackground;
     private System.Windows.Forms.RadioButton radioButtonNormal;
-    private System.Windows.Forms.RadioButton radioButtonBackground;
-    private System.Windows.Forms.RadioButton radioButtonForeground;
+    private System.Windows.Forms.RadioButton radioButtonAlwaysBelow;
+    private System.Windows.Forms.RadioButton radioButtonAlwaysAbove;
     private System.Windows.Forms.Label labelDraw;
     private System.Windows.Forms.DrawPanel drawPanelColor;
     private System.Windows.Forms.Label label1;
@@ -679,7 +666,7 @@ namespace Ambermoon.Editor.Gui.Editors {
     private System.Windows.Forms.Button buttonBlockIndoor;
     private System.Windows.Forms.Button buttonBlockOutdoor;
     private System.Windows.Forms.Button buttonFreeOut;
-    private System.Windows.Forms.CheckBox checkBoxRandomAnimationStart;
+    private System.Windows.Forms.CheckBox checkBoxRandomAnimation;
     private System.Windows.Forms.CheckBox checkBoxAutoPoison;
     private DrawPanel panelCombatBackground;
     private Label labelCombatBackground;
