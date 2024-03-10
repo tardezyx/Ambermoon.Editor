@@ -46,7 +46,7 @@ namespace Ambermoon.Editor.Gui {
     private void MapControlsToSettings() {
       Settings.AutoLoadRepository = chbxAutoLoadGameData.Checked;
       Settings.DefaultPath = tbxGameDataFolder.Text;
-      Settings.WriteIni();
+      Settings.Save();
     }
     #endregion
     #region --- map settings to controls ----------------------------------------------------------
