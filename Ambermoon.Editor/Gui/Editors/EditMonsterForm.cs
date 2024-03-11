@@ -98,7 +98,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       _animationTimer.Start();
     }
     #endregion
-    #region --- set controls ------------------------------------------------------------------------
+    #region --- set controls ----------------------------------------------------------------------
     private void SetControls() {
       cbxClass.DataSource                   = Class.Adventurer.GetValuesAsOrderedStringList();
       cbxCombatBackgroundDaytime.DataSource = CombatBackgroundDaytime.Day.GetValuesAsOrderedStringList();
@@ -685,7 +685,7 @@ namespace Ambermoon.Editor.Gui.Editors {
       nudBonusSpellDamageMax.Value = _monster.BonusMaxSpellDamage;
       nudBonusSpellDamagePercentage.Value = _monster.BonusSpellDamagePercentage;
       nudBonusSpellDamageReduction.Value = _monster.BonusSpellDamageReduction;
-      nudCombatGraphicIndex.Value = _monster.CombatGraphicIndex;
+      nudCombatGraphicIndex.Value = _monster.GraphicIndex;
       nudDefeatExperience.Value = _monster.DefeatExperience;
       nudDefenseBase.Value = _monster.BaseDefense;
       nudDefenseBonus.Value = _monster.BonusDefense;

@@ -86,7 +86,7 @@ namespace Ambermoon.Editor.Gui.Overviews {
           row.DataBoundItem is ItemData item
           && row.Cells["Graphic"] is DataGridViewImageCell graphicCell
         ) {
-          //graphicCell.ImageLayout = DataGridViewImageCellLayout.Zoom;
+          graphicCell.ImageLayout = DataGridViewImageCellLayout.Zoom;
           graphicCell.Value       = item.GetGraphic();
         }
       }
@@ -123,6 +123,11 @@ namespace Ambermoon.Editor.Gui.Overviews {
 
           foreach (DataGridViewRow row in dgv.Rows) {
             if (((ItemData)row.DataBoundItem).Index == newItem.Index) {
+              if (row.Cells["Graphic"] is DataGridViewImageCell graphicCell) {
+                graphicCell.ImageLayout = DataGridViewImageCellLayout.Zoom;
+                graphicCell.Value       = newItem.GetGraphic();
+              }
+
               dgv.ClearSelection();
               dgv.FirstDisplayedScrollingRowIndex = row.Index;
               row.Selected = true;
@@ -140,6 +145,12 @@ namespace Ambermoon.Editor.Gui.Overviews {
 
       if (form.ShowDialog() == DialogResult.OK) {
         _items.HasBeenChanged();
+
+        if (dgv.Rows[rowIndex].Cells["Graphic"] is DataGridViewImageCell graphicCell) {
+          graphicCell.ImageLayout = DataGridViewImageCellLayout.Zoom;
+          graphicCell.Value       = item.GetGraphic();
+        }
+
         dgv.InvalidateRow(rowIndex);
         dgv.AutoResizeColumns();
       }

@@ -68,14 +68,13 @@ namespace Ambermoon.Editor.Gui.Overviews {
     private void SetGraphics() {
       foreach (DataGridViewRow row in dgv.Rows) {
         if (
-          row.DataBoundItem is MonsterData monster
-          && row.Cells["Graphic"] is DataGridViewImageCell combatGraphicCell
-          && row.Cells["Icon"] is DataGridViewImageCell combatIconCell
+          row.DataBoundItem       is MonsterData monster
+          && row.Cells["Graphic"] is DataGridViewImageCell graphicCell
+          && row.Cells["Icon"]    is DataGridViewImageCell iconCell
         ) {
-          combatGraphicCell.ImageLayout = DataGridViewImageCellLayout.Zoom;
-          combatGraphicCell.Value       = monster.GetCombatGraphic();
-          //combatIconCell.ImageLayout    = DataGridViewImageCellLayout.Zoom;
-          combatIconCell.Value          = monster.GetCombatIconGraphic();
+          graphicCell.ImageLayout = DataGridViewImageCellLayout.Zoom;
+          graphicCell.Value       = monster.GetCombatGraphic();
+          iconCell.Value          = monster.GetCombatIconGraphic();
         }
       }
     }
@@ -111,6 +110,15 @@ namespace Ambermoon.Editor.Gui.Overviews {
 
           foreach (DataGridViewRow row in dgv.Rows) {
             if (((MonsterData)row.DataBoundItem).Index == newMonster.Index) {
+              if (row.Cells["Graphic"] is DataGridViewImageCell graphicCell) {
+                graphicCell.ImageLayout = DataGridViewImageCellLayout.Zoom;
+                graphicCell.Value       = newMonster.GetCombatGraphic();
+              }
+
+              if (row.Cells["Icon"] is DataGridViewImageCell iconCell) {
+                iconCell.Value = newMonster.GetCombatIconGraphic();
+              }
+
               dgv.ClearSelection();
               dgv.FirstDisplayedScrollingRowIndex = row.Index;
               row.Selected = true;
@@ -128,6 +136,16 @@ namespace Ambermoon.Editor.Gui.Overviews {
 
       if (form.ShowDialog() == DialogResult.OK) {
         _monsters.HasBeenChanged();
+
+        if (dgv.Rows[rowIndex].Cells["Graphic"] is DataGridViewImageCell graphicCell) {
+          graphicCell.ImageLayout = DataGridViewImageCellLayout.Zoom;
+          graphicCell.Value       = monster.GetCombatGraphic();
+        }
+
+        if (dgv.Rows[rowIndex].Cells["Icon"] is DataGridViewImageCell iconCell) {
+          iconCell.Value = monster.GetCombatIconGraphic();
+        }
+
         dgv.InvalidateRow(rowIndex);
         dgv.AutoResizeColumns();
       }

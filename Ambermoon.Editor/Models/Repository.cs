@@ -5,7 +5,7 @@ using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 
 namespace Ambermoon.Editor.Models {
-  internal class Repository {
+	internal class Repository {
     #region --- fields ----------------------------------------------------------------------------
     private static readonly Repository _instance;
     #endregion
@@ -100,8 +100,6 @@ namespace Ambermoon.Editor.Models {
       if (GameData is null) {
         return;
       }
-
-      DefaultMonsterImagePalettes = GameData.GetDefaultMonsterImagePalettes();
 
       int tempvarforspontaneuousdebugging = 0;
     }

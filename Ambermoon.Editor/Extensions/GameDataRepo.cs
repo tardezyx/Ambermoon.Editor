@@ -58,7 +58,7 @@ namespace Ambermoon.Editor.Extensions {
       Bitmap? result = null;
 
       if (combatGraphicIndex < 0) {
-        combatGraphicIndex = (int)source.CombatGraphicIndex;
+        combatGraphicIndex = (int)source.GraphicIndex;
       }
 
       if (
@@ -80,14 +80,14 @@ namespace Ambermoon.Editor.Extensions {
       Bitmap? result = null;
 
       uint imageIndex = combatGraphicIndex < 0
-        ? source.CombatGraphicIndex
+        ? source.GraphicIndex
         : (uint)combatGraphicIndex;
 
       if (
         Repository.Current.GameData is GameDataRepository repository
         && repository.MonsterCombatIcons.TryGetValue(imageIndex, out Image? image)
       ) {
-        result =  WindowsExtensions.ToBitmap(
+        result = WindowsExtensions.ToBitmap(
           image.Frames[0],
           repository.UserInterfacePalette,
           true
@@ -102,7 +102,7 @@ namespace Ambermoon.Editor.Extensions {
       Image? result = null;
 
       uint index = imageIndex < 0
-        ? source.CombatGraphicIndex
+        ? source.GraphicIndex
         : (uint)imageIndex;
 
       if (Repository.Current.GameData is GameDataRepository repository) {
