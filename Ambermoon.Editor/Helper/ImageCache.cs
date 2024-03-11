@@ -18,16 +18,6 @@ namespace Ambermoon.Editor.Helper
 			this.repository = repository;
 		}
 		#endregion
-		/*#region --- get bitplane data -----------------------------------------------------------------
-		public byte[] GetBitplaneData(uint tilesetIndex, uint graphicIndex)
-		{
-			IDataReader dataReader = _tilesets[tilesetIndex];
-			dataReader.Position = (int)graphicIndex * _sizePerImage;
-
-			return dataReader
-			  .ReadBytes(_sizePerImage);
-		}
-		#endregion*/
 		#region --- get image -------------------------------------------------------------------------
 		public Bitmap GetImage(uint tilesetIndex, uint graphicIndex, uint paletteIndex)
 		{

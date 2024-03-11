@@ -1,10 +1,7 @@
-﻿using Ambermoon.Data;
-using Ambermoon.Data.Enumerations;
-using Ambermoon.Data.GameDataRepository.Data;
-using Ambermoon.Editor.Extensions;
+﻿using Ambermoon.Data.GameDataRepository.Data;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Helper;
-using static Ambermoon.Data.Tileset;
+using AmbermoonMapEditor2D;
 
 namespace Ambermoon.Editor.Gui.Editors
 {
@@ -13,7 +10,6 @@ namespace Ambermoon.Editor.Gui.Editors
 		#region --- fields ----------------------------------------------------------------------------
 		private bool _animateForward = true;
 		private readonly Dictionary<uint, Bitmap> _combatGraphics;
-		//private readonly Configuration           _configuration;
 		private uint _frame = 0;
 		private readonly ImageCache _imageCache;
 		private bool _initialize = true;
@@ -27,7 +23,6 @@ namespace Ambermoon.Editor.Gui.Editors
 		#endregion
 
 		#region --- constructor -----------------------------------------------------------------------
-		//public EditTileForm(Configuration configuration, Tile tile, Tileset tileset, ImageCache imageCache,
 		public EditTileForm
 		(
 			Tile2DIconData tile,
@@ -37,7 +32,6 @@ namespace Ambermoon.Editor.Gui.Editors
 			Dictionary<uint, Bitmap> combatGraphics
 		)
 		{
-			//_configuration = configuration;
 			_combatGraphics = combatGraphics;
 			_imageCache = imageCache;
 			_paletteIndex = paletteIndex;
@@ -57,10 +51,10 @@ namespace Ambermoon.Editor.Gui.Editors
 			checkBoxAllowSandShip.Checked = tile.AllowedTravelTypes.HasFlag(AllowedTravelTypes.SandShip);
 			checkBoxAllowShip.Checked = tile.AllowedTravelTypes.HasFlag(AllowedTravelTypes.Ship);
 			checkBoxAllowSwim.Checked = tile.AllowedTravelTypes.HasFlag(AllowedTravelTypes.Swim);
-			checkBoxAllowUnused1.Checked = tile.AllowedTravelTypes.HasFlag(AllowedTravelTypes.Wasp);
-			checkBoxAllowUnused2.Checked = tile.AllowedTravelTypes.HasFlag(AllowedTravelTypes.Unused13);
-			checkBoxAllowUnused3.Checked = tile.AllowedTravelTypes.HasFlag(AllowedTravelTypes.Unused14);
-			checkBoxAllowUnused4.Checked = tile.AllowedTravelTypes.HasFlag(AllowedTravelTypes.Unused15);
+			checkBoxAllowWasp.Checked = tile.AllowedTravelTypes.HasFlag(AllowedTravelTypes.Wasp);
+			checkBoxAllowUnused13.Checked = tile.AllowedTravelTypes.HasFlag(AllowedTravelTypes.Unused13);
+			checkBoxAllowUnused14.Checked = tile.AllowedTravelTypes.HasFlag(AllowedTravelTypes.Unused14);
+			checkBoxAllowUnused15.Checked = tile.AllowedTravelTypes.HasFlag(AllowedTravelTypes.Unused15);
 			checkBoxAllowWalk.Checked = tile.AllowedTravelTypes.HasFlag(AllowedTravelTypes.Walk);
 			checkBoxAutoPoison.Checked = tile.AutoPoison;
 			//checkBoxAlternate.Checked            = tile.Flags.HasFlag(TileFlags.AlternateAnimation);
@@ -89,7 +83,6 @@ namespace Ambermoon.Editor.Gui.Editors
 		}
 		#endregion
 
-		// needs rework:
 		#region --- button apply: click ---------------------------------------------------------------
 		private void ButtonApply_Click(object? sender, EventArgs e)
 		{
@@ -115,13 +108,13 @@ namespace Ambermoon.Editor.Gui.Editors
 				tile.AllowedTravelTypes |= AllowedTravelTypes.Ship;
 			if (checkBoxAllowSwim.Checked)
 				tile.AllowedTravelTypes |= AllowedTravelTypes.Swim;
-			if (checkBoxAllowUnused1.Checked)
+			if (checkBoxAllowWasp.Checked)
 				tile.AllowedTravelTypes |= AllowedTravelTypes.Wasp;
-			if (checkBoxAllowUnused2.Checked)
+			if (checkBoxAllowUnused13.Checked)
 				tile.AllowedTravelTypes |= AllowedTravelTypes.Unused13;
-			if (checkBoxAllowUnused3.Checked)
+			if (checkBoxAllowUnused14.Checked)
 				tile.AllowedTravelTypes |= AllowedTravelTypes.Unused14;
-			if (checkBoxAllowUnused4.Checked)
+			if (checkBoxAllowUnused15.Checked)
 				tile.AllowedTravelTypes |= AllowedTravelTypes.Unused15;
 			if (checkBoxAllowWalk.Checked)
 				tile.AllowedTravelTypes |= AllowedTravelTypes.Walk;
@@ -160,10 +153,10 @@ namespace Ambermoon.Editor.Gui.Editors
 			checkBoxAllowBroom.Checked = false;
 			checkBoxAllowSandLizard.Checked = false;
 			checkBoxAllowSandShip.Checked = false;
-			checkBoxAllowUnused1.Checked = false;
-			checkBoxAllowUnused2.Checked = false;
-			checkBoxAllowUnused3.Checked = false;
-			checkBoxAllowUnused4.Checked = false;
+			checkBoxAllowWasp.Checked = false;
+			checkBoxAllowUnused13.Checked = false;
+			checkBoxAllowUnused14.Checked = false;
+			checkBoxAllowUnused15.Checked = false;
 		}
 		#endregion
 		#region --- button block outdoor: click -------------------------------------------------------
@@ -181,10 +174,10 @@ namespace Ambermoon.Editor.Gui.Editors
 			checkBoxAllowBroom.Checked = true;
 			checkBoxAllowSandLizard.Checked = false;
 			checkBoxAllowSandShip.Checked = false;
-			checkBoxAllowUnused1.Checked = false;
-			checkBoxAllowUnused2.Checked = false;
-			checkBoxAllowUnused3.Checked = false;
-			checkBoxAllowUnused4.Checked = false;
+			checkBoxAllowWasp.Checked = false;
+			checkBoxAllowUnused13.Checked = false;
+			checkBoxAllowUnused14.Checked = false;
+			checkBoxAllowUnused15.Checked = false;
 		}
 		#endregion
 		#region --- button free in: click -------------------------------------------------------------
@@ -202,10 +195,10 @@ namespace Ambermoon.Editor.Gui.Editors
 			checkBoxAllowBroom.Checked = false;
 			checkBoxAllowSandLizard.Checked = false;
 			checkBoxAllowSandShip.Checked = false;
-			checkBoxAllowUnused1.Checked = false;
-			checkBoxAllowUnused2.Checked = false;
-			checkBoxAllowUnused3.Checked = false;
-			checkBoxAllowUnused4.Checked = false;
+			checkBoxAllowWasp.Checked = false;
+			checkBoxAllowUnused13.Checked = false;
+			checkBoxAllowUnused14.Checked = false;
+			checkBoxAllowUnused15.Checked = false;
 		}
 		#endregion
 		#region --- button free out: click ------------------------------------------------------------
@@ -223,10 +216,10 @@ namespace Ambermoon.Editor.Gui.Editors
 			checkBoxAllowBroom.Checked = true;
 			checkBoxAllowSandLizard.Checked = false;
 			checkBoxAllowSandShip.Checked = false;
-			checkBoxAllowUnused1.Checked = false;
-			checkBoxAllowUnused2.Checked = false;
-			checkBoxAllowUnused3.Checked = false;
-			checkBoxAllowUnused4.Checked = false;
+			checkBoxAllowWasp.Checked = false;
+			checkBoxAllowUnused13.Checked = false;
+			checkBoxAllowUnused14.Checked = false;
+			checkBoxAllowUnused15.Checked = false;
 		}
 		#endregion
 		#region --- button swim: click ----------------------------------------------------------------
@@ -244,10 +237,10 @@ namespace Ambermoon.Editor.Gui.Editors
 			checkBoxAllowBroom.Checked = true;
 			checkBoxAllowSandLizard.Checked = false;
 			checkBoxAllowSandShip.Checked = false;
-			checkBoxAllowUnused1.Checked = false;
-			checkBoxAllowUnused2.Checked = false;
-			checkBoxAllowUnused3.Checked = false;
-			checkBoxAllowUnused4.Checked = false;
+			checkBoxAllowWasp.Checked = false;
+			checkBoxAllowUnused13.Checked = false;
+			checkBoxAllowUnused14.Checked = false;
+			checkBoxAllowUnused15.Checked = false;
 		}
 		#endregion
 		#region --- checkbox alternate: check changed -------------------------------------------------
@@ -256,7 +249,7 @@ namespace Ambermoon.Editor.Gui.Editors
 			this.timerAnimation.Stop();
 			_frame = 0;
 			_animateForward = true;
-			panelImage.Refresh();
+			panelImage?.Refresh();
 			this.timerAnimation.Start();
 		}
 		#endregion
@@ -273,7 +266,7 @@ namespace Ambermoon.Editor.Gui.Editors
 			// TODO
 			_frame = checkBoxRandomAnimation.Checked && Tile.NumberOfFrames > 1 ? _random.Next() % (uint)Tile.NumberOfFrames : 0u;
 			_animateForward = true;
-			panelImage.Refresh();
+			panelImage?.Refresh();
 			this.timerAnimation.Start();
 		}
 		#endregion
@@ -285,33 +278,33 @@ namespace Ambermoon.Editor.Gui.Editors
 		}
 		#endregion
 		#region --- menu export image: click ----------------------------------------------------------
-		private void toolStripMenuItemExportImage_Click(object sender, EventArgs e)
+		private void ToolStripMenuItemExportImage_Click(object? sender, EventArgs e)
 		{
-			//var dialog = new SaveDialog(configuration, Configuration.ImagePathName, "Export tile graphic", "png");
-			//dialog.Filter = "Portable Network Graphics (*.png)|*.png|Amiga Bit Planes (*.abp)|*.abp|All Files (*.*)|*.*";
-			//dialog.FileName = $"{Tile.GraphicIndex:000}";
+			var dialog = new ImageExportDialog("Export tile graphic")
+			{
+				Filter = "Portable Network Graphics (*.png)|*.png|Windows Bitmaps (*.bmp)|*.bmp|All Files (*.*)|*.*",
+				FileName = $"{Tile.GraphicIndex:000}"
+			};
 
-			//if (dialog.ShowDialog(this) == DialogResult.OK) {
-			//  try {
-			//    if (dialog.FileName.ToLower().EndsWith(".png")) {
-			//      // PNG
-			//      var image = imageCache.GetImage(tileset.Index, Tile.GraphicIndex - 1, paletteIndex);
-			//      image.Save(dialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
-			//    } else {
-			//      // Amiga Bitplanes
-			//      System.IO.File.WriteAllBytes(dialog.FileName, imageCache.GetBitplaneData(tileset.Index, Tile.GraphicIndex - 1));
-			//    }
+			if (dialog.ShowDialog(this) == DialogResult.OK)
+			{
+				try
+				{
+					var image = _imageCache.GetImage(_tileset.Index, Tile.GraphicIndex - 1, _paletteIndex);
+					image.Save(dialog.FileName, dialog.FileName.ToLower().EndsWith(".bmp") ? System.Drawing.Imaging.ImageFormat.Bmp : System.Drawing.Imaging.ImageFormat.Png);
 
-			//    MessageBox.Show(this, "Tile graphic was saved.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			//  } catch (Exception ex) {
-			//    MessageBox.Show(this, "Error saving file." + Environment.NewLine + "Error: " + ex.Message,
-			//        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			//  }
-			//}
+					MessageBox.Show(this, "Tile graphic was saved.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(this, "Error saving file." + Environment.NewLine + "Error: " + ex.Message,
+						"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+			}
 		}
 		#endregion
 		#region --- nud combat background: value changed ----------------------------------------------
-		private void numericUpDownCombatBackground_ValueChanged(object sender, EventArgs e)
+		private void NumericUpDownCombatBackground_ValueChanged(object? sender, EventArgs e)
 		{
 			if (!_initialize)
 				panelCombatBackground.BackgroundImage = _combatGraphics[(uint)numericUpDownCombatBackground.Value];
@@ -319,14 +312,14 @@ namespace Ambermoon.Editor.Gui.Editors
 		}
 		#endregion
 		#region --- nud image index: value changed ----------------------------------------------------
-		private void numericUpDownImageIndex_ValueChanged(object sender, EventArgs e)
+		private void NumericUpDownImageIndex_ValueChanged(object? sender, EventArgs e)
 		{
 			Tile.GraphicIndex = (uint)numericUpDownImageIndex.Value;
-			panelImage.Refresh();
+			panelImage?.Refresh();
 		}
 		#endregion
 		#region --- panel image: paint ----------------------------------------------------------------
-		private void panelImage_Paint(object sender, PaintEventArgs e)
+		private void PanelImage_Paint(object? sender, PaintEventArgs e)
 		{
 			var rect = new Rectangle(0, 0, 32, 32);
 
@@ -346,7 +339,7 @@ namespace Ambermoon.Editor.Gui.Editors
 		}
 		#endregion
 		#region --- timer animation: tick -------------------------------------------------------------
-		private void timerAnimation_Tick(object sender, EventArgs e)
+		private void TimerAnimation_Tick(object? sender, EventArgs e)
 		{
 			if (Tile.NumberOfFrames <= 1)
 				_frame = 0;
@@ -380,17 +373,17 @@ namespace Ambermoon.Editor.Gui.Editors
 				}
 			}
 
-			panelImage.Refresh();
+			panelImage?.Refresh();
 		}
 		#endregion
 		#region --- trackbar frames: value changed ----------------------------------------------------
-		private void trackBarFrames_ValueChanged(object sender, EventArgs e)
+		private void TrackBarFrames_ValueChanged(object? sender, EventArgs e)
 		{
 			Tile.NumberOfFrames = (uint)trackBarFrames.Value;
 			labelFrames.Text = $"Frames: {trackBarFrames.Value}";
 
 			if (!_initialize)
-				panelImage.Refresh();
+				panelImage?.Refresh();
 		}
 		#endregion
 		#region --- update color ----------------------------------------------------------------------

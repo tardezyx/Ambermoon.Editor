@@ -3,8 +3,6 @@ using Ambermoon.Data.Enumerations;
 using Ambermoon.Data.GameDataRepository;
 using Ambermoon.Data.GameDataRepository.Data;
 using Ambermoon.Data.GameDataRepository.Windows;
-using Ambermoon.Data.Legacy;
-using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Helper;
 using System.ComponentModel;
@@ -217,7 +215,6 @@ namespace Ambermoon.Editor.Gui.Editors
 
 			buttonDuplicateTile.Click += ButtonDuplicateTile_Click;
 			buttonEditTile.Click += ButtonEditTile_Click;
-			buttonExportTileset.Click += buttonExportTileset_Click;
 			buttonIndoorDefaults.Click += buttonIndoorDefaults_Click;
 			buttonPlaceCharacterOnMap.EnabledChanged += buttonPlaceCharacterOnMap_EnabledChanged;
 			buttonPositions.Click += buttonPositions_Click;
@@ -247,7 +244,6 @@ namespace Ambermoon.Editor.Gui.Editors
 			toolStripMenuItemBlocks3x2.Click += toolStripMenuItemBlocks3x2_Click;
 			toolStripMenuItemBlocks3x3.Click += toolStripMenuItemBlocks3x3_Click;
 			toolStripMenuItemFrontLayer.Click += toolStripMenuItemFrontLayer_Click;
-			toolStripMenuItemMapNew.Click += toolStripMenuItemMapNew_Click;
 			toolStripMenuItemMapSaveAs.Click += toolStripMenuItemMapSaveAs_Click;
 			toolStripMenuItemMapSaveAsPNG.Click += toolStripMenuItemMapSaveAsPNG_Click;
 		}
@@ -698,8 +694,8 @@ namespace Ambermoon.Editor.Gui.Editors
 								break;
 
 							var tile = map.Tiles2D![x, y];
-							var backgroundTile = tile.BackTileIndex == 0 ? null : tile.BackTileIndex > tileset.Icons.Count ? null : tileset.Icons[tile.BackTileIndex - 1];
-							var foregroundTile = tile.FrontTileIndex == 0 ? null : tile.FrontTileIndex > tileset.Icons.Count ? null : tileset.Icons[tile.FrontTileIndex - 1];
+							var backgroundTile = tile.BackTileIndex == 0 ? null : tile.BackTileIndex > tileset.Icons.Count ? null : tileset.Icons[tile.BackTileIndex];
+							var foregroundTile = tile.FrontTileIndex == 0 ? null : tile.FrontTileIndex > tileset.Icons.Count ? null : tileset.Icons[tile.FrontTileIndex];
 							var rect = new Rectangle(drawX, drawY, tileSize + (tileSize / 16 - 1), tileSize + (tileSize / 16 - 1));
 
 							if (toolStripMenuItemShowBackLayer.Checked && backgroundTile != null)
@@ -1339,39 +1335,6 @@ namespace Ambermoon.Editor.Gui.Editors
 			UpdateTileset();
 		}
 		#endregion
-		#region --- menu: map new ---------------------------------------------------------------------
-		private void toolStripMenuItemMapNew_Click(object sender, EventArgs e)
-		{
-			//if (unsavedChanges) {
-			//  var result = MessageBox.Show(this, "There are unsaved changes. Do you want to save them now?",
-			//      "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-
-			//  if (result == DialogResult.Cancel)
-			//    return;
-
-			//  if (result == DialogResult.Yes) {
-			//    var saveResult = Save();
-
-			//    if (saveResult == SaveResult.Error) {
-			//      if (MessageBox.Show(this, "Error saving the map. Do you want to abort and return to your current map?",
-			//          "Unable to save map", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
-			//        return;
-			//    } else if (saveResult == SaveResult.Cancelled) {
-			//      return;
-			//    }
-			//  }
-			//}
-
-			//if (OpenMap()) {
-			//  saveFileName = null;
-			//  toolStripMenuItemMapSave.Enabled = false;
-			//  graphicProvider.PaletteIndex = map.PaletteIndex;
-			//  mapCharEditorControl.Init(map);
-			//  selectedMapCharacter = mapCharEditorControl.Count == 0 ? -1 : 0;
-			//  UpdateMapCharacterButtons();
-			//}
-		}
-		#endregion
 		#region --- menu: map save as -----------------------------------------------------------------
 		private void toolStripMenuItemMapSaveAs_Click(object sender, EventArgs e)
 		{
@@ -1435,29 +1398,14 @@ namespace Ambermoon.Editor.Gui.Editors
 			{
 				var tileset = repository.Tilesets[tilesetIndex];
 				//var form = new EditTileForm(configuration, tileset.Tiles[selectedTilesetTile], tileset, imageCache, map.PaletteIndex, combatBackgrounds);
-				var form = new EditTileForm(tileset.Icons[(uint)selectedTilesetTile], tileset, imageCache, map.PaletteIndex, combatBackgrounds);
+				var form = new EditTileForm(tileset.Icons.GetAt(selectedTilesetTile), tileset, imageCache, map.PaletteIndex, combatBackgrounds);
 
 				if (form.ShowDialog() == DialogResult.OK)
 				{
-					tileset.Icons[(uint)selectedTilesetTile] = form.Tile;
+					tileset.Icons.SetAt(selectedTilesetTile, form.Tile);
 					panelTileset.Refresh();
 				}
 			}
-		}
-		#endregion
-		#region --- button export tileset: click ------------------------------------------------------
-		private void buttonExportTileset_Click(object? sender, EventArgs e)
-		{
-			//var dialog = new SaveDialog(configuration, Configuration.TilesetPathName, "Save tileset");
-
-			//dialog.Filter = "All files (*.*)|*.*";
-
-			//if (dialog.ShowDialog(this) == DialogResult.OK) {
-			//  var tileset = tilesets[map.TilesetOrLabdataIndex];
-			//  var dataWriter = new DataWriter();
-			//  TilesetWriter.WriteTileset(tileset, dataWriter);
-			//  System.IO.File.WriteAllBytes(dialog.FileName, dataWriter.ToArray());
-			//}
 		}
 		#endregion
 		#region --- button indoor defaults: click -----------------------------------------------------
@@ -1816,9 +1764,9 @@ namespace Ambermoon.Editor.Gui.Editors
 					if (e.Button != MouseButtons.Left || selectedIndex >= repository.Tilesets[tilesetIndex].Icons.Count)
 						return;
 
-					var tile = repository.Tilesets[tilesetIndex].Icons[(uint)selectedTilesetTile];
+					var tile = repository.Tilesets[tilesetIndex].Icons.GetAt(selectedTilesetTile);
 					selectedTilesetTile = selectedIndex;
-					repository.Tilesets[tilesetIndex].Icons[(uint)selectedTilesetTile] = tile.Copy();
+					repository.Tilesets[tilesetIndex].Icons.SetAt(selectedTilesetTile, tile.Copy());
 					panelTileset.Refresh();
 
 					try
@@ -1838,7 +1786,7 @@ namespace Ambermoon.Editor.Gui.Editors
 
 					try
 					{
-						var tile = repository.Tilesets[tilesetIndex].Icons[(uint)selectedIndex];
+						var tile = repository.Tilesets[tilesetIndex].Icons.GetAt(selectedIndex);
 						toolStripStatusLabelCurrentTile.Image = imageCache.GetImage(tilesetIndex, tile.GraphicIndex - 1, map.PaletteIndex);
 					}
 					catch

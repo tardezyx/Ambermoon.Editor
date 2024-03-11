@@ -131,7 +131,7 @@ namespace Ambermoon.Editor.Models
 				if (Settings.DefaultPath.IsNullOrEmpty())
 				{
 					Settings.DefaultPath = Folder;
-					Settings.WriteIni();
+					Settings.Save();
 				}
 
 				return true;

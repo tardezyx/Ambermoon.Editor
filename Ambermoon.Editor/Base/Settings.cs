@@ -1,106 +1,138 @@
 ﻿using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using System.Reflection;
+using System.Text.Json;
 
-namespace Ambermoon.Editor.Base {
-  internal static partial class Settings {
-    #region --- properties ------------------------------------------------------------------------
-    public static bool   AutoLoadRepository { get; set; }
-    public static string DefaultPath        { get; set; } = string.Empty;
-    #endregion
-    
-    #region --- get app namespace -----------------------------------------------------------------
-    public static string GetAppNamespace() {
-      string? result = Assembly
-          .GetCallingAssembly()
-          .EntryPoint?
-          .DeclaringType?
-          .Namespace;
+namespace Ambermoon.Editor.Base
+{
+	internal static partial class Settings
+	{
+		private class StoredSettings
+		{
+			public bool AutoLoadRepository { get; set; } = false;
+			public string DefaultPath { get; set; } = string.Empty;
+			public string DefaultImageExportPath { get; set; } = string.Empty;
+		}
 
-      result ??= Assembly
-        .GetExecutingAssembly()
-        .GetName()
-        .Name;
+		#region Fields
+		private static StoredSettings storedSettings = new();
+		#endregion
+		#region --- properties ------------------------------------------------------------------------
+		private static string SettingsPath => @$"{GetAppPath()}\editor.config";
+		public static bool AutoLoadRepository
+		{
+			get => storedSettings.AutoLoadRepository;
+			set => storedSettings.AutoLoadRepository = value;
+		}
+		public static string DefaultPath
+		{
+			get => storedSettings.DefaultPath;
+			set => storedSettings.DefaultPath = value;
+		}
+		/// <summary>
+		/// Path where images are exported. Like map or tile PNGs, etc.
+		/// </summary>
+		public static string DefaultImageExportPath
+		{
+			get => storedSettings.DefaultImageExportPath;
+			set => storedSettings.DefaultImageExportPath = value;
+		}
+		#endregion
 
-      result ??= string.Empty;
+		#region --- get app namespace -----------------------------------------------------------------
+		public static string GetAppNamespace()
+		{
+			string? result = Assembly
+				.GetCallingAssembly()
+				.EntryPoint?
+				.DeclaringType?
+				.Namespace;
 
-      return result;
-    }
-    #endregion
-    #region --- get app path ----------------------------------------------------------------------
-    public static string GetAppPath() {
-      string? result = Assembly
-        .GetEntryAssembly()?
-        .Location
-        .GetSubstringBeforeLastOccurrence('\\');
+			result ??= Assembly
+			  .GetExecutingAssembly()
+			  .GetName()
+			  .Name;
 
-      result ??= string.Empty;
+			result ??= string.Empty;
 
-      return result;
-    }
-    #endregion
-    #region --- read ini --------------------------------------------------------------------------
-    public static void ReadIni() {
-      List<string> result = [];
+			return result;
+		}
+		#endregion
+		#region --- get app path ----------------------------------------------------------------------
+		public static string GetAppPath()
+		{
+			string? result = Assembly
+			  .GetEntryAssembly()?
+			  .Location
+			  .GetSubstringBeforeLastOccurrence('\\');
 
-      string iniPath = @$"{GetAppPath()}\editor.ini";
+			result ??= string.Empty;
 
-      if (!File.Exists(iniPath)) {
-        SetDefaults();
-        return;
-      }
+			return result;
+		}
+		#endregion
+		#region --- read ini --------------------------------------------------------------------------
+		public static void Load()
+		{
+			string settingsPath = SettingsPath;
 
-      foreach (string line in File.ReadLines(iniPath)) {
-        string parameter = line.GetSubstringBeforeOccurrence(':', 1);
-        string value     = line.GetSubstringAfterOccurrence(':', 1).Trim();
+			if (!File.Exists(settingsPath))
+			{
+				SetDefaults();
+				return;
+			}
 
-        switch (parameter) { 
-          case "Auto Load Repository": AutoLoadRepository = bool.Parse(value); break;
-          case "Default Path":         DefaultPath        = value;             break;
-        }
-      }                                                                    
-    }
-    #endregion
-    #region --- set defaults ----------------------------------------------------------------------
-    public static void SetDefaults() {
-      AutoLoadRepository = false;
-      DefaultPath        = string.Empty;
+			try
+			{
+				string json = File.ReadAllText(settingsPath);
+				storedSettings = JsonSerializer.Deserialize<StoredSettings>(json)!;
+			}
+			catch
+			{
+				SetDefaults();
+			}
+		}
+		#endregion
+		#region --- set defaults ----------------------------------------------------------------------
+		public static void SetDefaults()
+		{
+			AutoLoadRepository = false;
+			DefaultPath = string.Empty;
 
-      WriteIni();
-    }
-    #endregion
-    #region --- update ----------------------------------------------------------------------------
-    public static void Update() {
-      // ...
-    }
-    #endregion
-    #region --- write ini -------------------------------------------------------------------------
-    public static void WriteIni() {
-      string iniPath = @$"{GetAppPath()}\editor.ini";
+			Save();
+		}
+		#endregion
+		#region --- update ----------------------------------------------------------------------------
+		public static void Update()
+		{
+			// ...
+		}
+		#endregion
+		#region --- write ini -------------------------------------------------------------------------
+		public static void Save()
+		{
+			string settingsPath = SettingsPath;
 
-      string nl = Environment.NewLine;
+			try
+			{
+				string json = JsonSerializer.Serialize(storedSettings);				
+				File.WriteAllText(settingsPath, json);
+			}
+			catch
+			{
+				string nl = Environment.NewLine;
 
-      string content = $"# ================================================================================================={nl}"
-                     + $"# Ambermoon.net: Editor Settings{nl}"
-                     + $"# ================================================================================================={nl}"
-                     + $"{nl}"
-                     + $"Default Path:         {DefaultPath}{nl}"
-                     + $"Auto Load Repository: {AutoLoadRepository}{nl}";
+				MsgBox.Show(
+				  "File error",
+				  $"Default settings could not be written into file:{nl}"
+				  + $"{settingsPath}{nl}{nl}"
+				  + "Please restart the editor as administrator!",
+				  MessageBoxButtons.OK
+				);
 
-      try {
-        File.WriteAllText(iniPath, content);
-      } catch {
-        MsgBox.Show(
-          "File error",
-          $"Default settings could not be written into file:{nl}"
-          + $"{iniPath}{nl}{nl}"
-          + "Please restart the editor as administrator!",
-          MessageBoxButtons.OK
-        );
-
-        Environment.Exit(1);
-      }    
-    }
-    #endregion
-  }
+				Environment.Exit(1);
+			}
+		}
+		#endregion
+	}
 }

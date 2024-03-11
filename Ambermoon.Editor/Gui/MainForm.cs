@@ -3,8 +3,6 @@ using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Overviews;
 using Ambermoon.Editor.Models;
-using System.Windows.Forms;
-using static SonicArranger.Instrument;
 
 namespace Ambermoon.Editor.Gui {
 	public partial class MainForm : CustomForm
@@ -39,7 +37,7 @@ namespace Ambermoon.Editor.Gui {
 		{
 			base.OnLoad(e);
 
-			Settings.ReadIni();
+			Settings.Load();
 
 			if (Settings.AutoLoadRepository && Settings.DefaultPath.HasText())
 			{
