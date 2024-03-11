@@ -160,6 +160,14 @@ namespace Ambermoon.Editor.Extensions {
       OnlyActivePaths = 0x00000002
     }
     #endregion
+    #region --- Scroll Bar Type -------------------------------------------------------------------
+    public enum ScrollBarType {
+      Both       = 0x3,
+      Control    = 0x2,
+      Horizontal = 0x0,
+      Vertical   = 0x1
+    }
+    #endregion
     #region --- SW:     show window commands ------------------------------------------------------
     public enum ShowWindowCommands {
       Default             = 10, // Sets the show state based on the SW_ value specified in the STARTUPINFO structure passed to the CreateProcess function by the program that started the application.
@@ -193,15 +201,17 @@ namespace Ambermoon.Editor.Extensions {
     #endregion
     #region --- WM:     window messages ----------------------------------------------------------- // http://pinvoke.net/default.aspx/Constants.WM
     public enum WindowMessages {
-      ChildActivate = 0x0022,
-      InitDialog    = 0x0110,
-      KillFocus     = 0x0008, // is send shortly before mouse leaves a control
-      NchitTest     = 0x0084, // Sent to a window in order to determine what part of the window corresponds to a particular screen coordinate
-      NextDlgCtl    = 0x0028,
-      SetCursor     = 0x0020,
-      SetFont       = 0x0030,
-      SetRedraw     = 11,
-      ShowWindow    = 0x0018
+      ChildActivate    = 0x0022,
+      HorizontalScroll = 0x0114,
+      InitDialog       = 0x0110,
+      KillFocus        = 0x0008, // is send shortly before mouse leaves a control
+      NchitTest        = 0x0084, // Sent to a window in order to determine what part of the window corresponds to a particular screen coordinate
+      NextDlgCtl       = 0x0028,
+      SetCursor        = 0x0020,
+      SetFont          = 0x0030,
+      SetRedraw        = 11,
+      ShowWindow       = 0x0018,
+      VerticalScroll   = 0x0115
     }
     #endregion
     #region --- WM:     window messages mouse -----------------------------------------------------
@@ -315,6 +325,14 @@ namespace Ambermoon.Editor.Extensions {
       WindowEdge          = 0x00000100  // The window has a border with a raised edge.
     }
     #endregion
+    #endregion
+
+    #region --- CONSTANTS -------------------------------------------------------------------------
+    public const int EM_SETPARAFORMAT = 1095;
+    public const int PFM_LINESPACING = 0x00000100;
+    public const int PFM_SPACEAFTER  = 0x00000080;
+    public const int PFM_SPACEBEFORE = 0x00000040;
+    public const int SCF_SELECTION = 1;
     #endregion
 
     #region === STRUCTURES ========================================================================
@@ -485,6 +503,37 @@ namespace Ambermoon.Editor.Extensions {
       public int HighPart;
     }
     #endregion
+    #region --- paraformat ------------------------------------------------------------------------
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PARAFORMAT {
+      public int   cbSize;
+      public uint  dwMask;
+      public short wNumbering;
+      public short wReserved;
+      public int   dxStartIndent;
+      public int   dxRightIndent;
+      public int   dxOffset;
+      public short wAlignment;
+      public short cTabCount;
+      [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
+      public int[] rgxTabs;
+      // PARAFORMAT2 from here onwards
+      public int   dySpaceBefore;
+      public int   dySpaceAfter;
+      public int   dyLineSpacing;
+      public short sStyle;
+      public byte  bLineSpacingRule;
+      public byte  bOutlineLevel;
+      public short wShadingWeight;
+      public short wShadingStyle;
+      public short wNumberingStart;
+      public short wNumberingStyle;
+      public short wNumberingTab;
+      public short wBorderSpace;
+      public short wBorderWidth;
+      public short wBorders;
+    }
+    #endregion
     #region --- pointl ----------------------------------------------------------------------------
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct PointL {
@@ -601,6 +650,10 @@ namespace Ambermoon.Editor.Extensions {
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool GetScrollInfo(IntPtr hwnd, int fnBar, ref SCROLLINFO lpsi);
     #endregion
+    #region --- dll import: get scroll pos --------------------------------------------------------
+    [DllImport("User32.dll")]
+    public static extern int GetScrollPos(IntPtr hWnd, int nBar);
+    #endregion
     #region --- dll import: get shell window ------------------------------------------------------
     [DllImport("user32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
     public static extern IntPtr GetShellWindow();
@@ -665,6 +718,10 @@ namespace Ambermoon.Editor.Extensions {
     [DllImport("user32.dll")]
     public static extern int QueryDisplayConfig(QueryDeviceConfigFlags flags, ref uint numPathArrayElements, [Out] DisplayconfigPathInfo[] PathInfoArray, ref uint numModeInfoArrayElements, [Out] DisplayconfigModeInfo[] ModeInfoArray, IntPtr currentTopologyId);
     #endregion
+    #region --- dll import: post message ----------------------------------------------------------
+    [DllImport("User32.Dll", EntryPoint = "PostMessageA")]
+    public static extern bool PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
+    #endregion
     #region --- dll import: register shell hook ---------------------------------------------------
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
     public static extern bool RegisterShellHook(IntPtr hWnd, int flags);
@@ -681,9 +738,17 @@ namespace Ambermoon.Editor.Extensions {
     [DllImport("user32.dll", ExactSpelling=true)]
     public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
     #endregion
+    #region --- dll import: set scroll pos --------------------------------------------------------
+    [DllImport("user32.dll")]
+    public static extern int SetScrollPos(IntPtr hWnd, int nBar, int nPos, bool bRedraw);
+    #endregion
     #region --- dll import: send message ----------------------------------------------------------
     [DllImport("user32.dll")]
     public static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
+    #endregion
+    #region --- dll import: send message ----------------------------------------------------------
+    [DllImport("user32", CharSet = CharSet.Auto)]
+    public static extern IntPtr SendMessage(HandleRef hWnd, int msg, int wParam, ref PARAFORMAT lParam);
     #endregion
     #region --- dll import: set foreground window -------------------------------------------------
     [DllImport("user32.dll")]

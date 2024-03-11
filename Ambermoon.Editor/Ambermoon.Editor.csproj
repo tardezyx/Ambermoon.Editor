@@ -16,11 +16,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Gui\Custom\CustomRichTextBox.cs" />
     <Compile Update="Gui\Custom\MapDrawPanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="Gui\Custom\ScrollDrawPanel .cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Editors\EditText.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Gui\Editors\EditItemForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Update="Gui\Editors\EditSpellForm.cs">
       <SubType>Form</SubType>
@@ -28,6 +35,9 @@
     <Compile Update="Gui\Editors\EditNPCForm.cs" />
     <Compile Update="Gui\Overviews\MonsterGroupsForm.cs" />
     <Compile Update="Gui\Overviews\MapsForm.cs" />
+    <Compile Update="Gui\Overviews\ItemsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Gui\Overviews\NPCsForm.cs" />
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -49,6 +59,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Fonts\ambermoon-game-license.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\ambermoon-game-readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\ambermoon-game.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\ambermoon-rune-license.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\ambermoon-rune-readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\ambermoon-rune.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

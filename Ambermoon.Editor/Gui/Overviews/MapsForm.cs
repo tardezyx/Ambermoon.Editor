@@ -1,5 +1,4 @@
 ﻿using Ambermoon.Data.GameDataRepository.Data;
-using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Gui.Editors;
 using Ambermoon.Editor.Models;

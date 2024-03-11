@@ -178,7 +178,6 @@
 			ResumeLayout(false);
 			PerformLayout();
 		}
-
 		#endregion
 
 		private MenuStrip menu;

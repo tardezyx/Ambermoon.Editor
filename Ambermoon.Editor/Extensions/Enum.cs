@@ -4,7 +4,7 @@ using System.Reflection;
 namespace Ambermoon.Editor.Extensions {
   internal static partial class Extensions {
     #region --- description -----------------------------------------------------------------------
-    internal static string? Description(this System.Enum source) {
+    internal static string? Description(this Enum source) {
       FieldInfo? fieldInfo = source
         .GetType()
         .GetField(source.ToString());
@@ -20,21 +20,21 @@ namespace Ambermoon.Editor.Extensions {
     }
     #endregion
     #region --- get flags -------------------------------------------------------------------------
-    internal static IEnumerable<System.Enum> GetFlags(this System.Enum source) {
-      return System.Enum
+    internal static IEnumerable<Enum> GetFlags(this Enum source) {
+      return Enum
         .GetValues(source.GetType())
-        .Cast<System.Enum>()
+        .Cast<Enum>()
         .Where(source.HasFlag)
         .Distinct();
     }
     #endregion
     #region --- get values as ordered string list -------------------------------------------------
-    internal static List<string> GetValuesAsOrderedStringList(this System.Enum source) {
+    internal static List<string> GetValuesAsOrderedStringList(this Enum source) {
       return
       [
-        .. System.Enum
+        .. Enum
           .GetValues(source.GetType())
-          .Cast<System.Enum>()
+          .Cast<Enum>()
           .Distinct()
           .Select(x => x.ToString())
           .OrderBy(x => x),

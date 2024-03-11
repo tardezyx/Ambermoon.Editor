@@ -2,16 +2,17 @@
 using Ambermoon.Editor.Extensions;
 using Ambermoon.Editor.Gui.Custom;
 using Ambermoon.Editor.Models;
+using Spell = Ambermoon.Editor.Models.Spell;
 
 namespace Ambermoon.Editor.Gui.Editors {
   public partial class EditSpellForm : CustomForm {
     #region --- fields ----------------------------------------------------------------------------
-    private readonly Models.Spell                      _spell;
-    private readonly SortableBindingList<Models.Spell> _spells = [];
+    private readonly Spell                      _spell;
+    private readonly SortableBindingList<Spell> _spells = [];
     #endregion
 
     #region --- constructor -----------------------------------------------------------------------
-    public EditSpellForm(Models.Spell spell) {
+    public EditSpellForm(Spell spell) {
       InitializeComponent();
 
       _spell = spell;
