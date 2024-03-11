@@ -53,8 +53,7 @@ namespace Ambermoon.Editor.Gui.Editors
 		private int currentTilesetTiles = 0;
 		private Tool currentTool = Tool.Brush;
 		private ulong frame = 0;
-		private GameDataRepository repository;
-		//private GraphicProvider2D graphicProvider;
+		private readonly GameDataRepository repository;
 		private readonly History history = new();
 		private int hoveredMapTile = -1;
 		private int hoveredTilesetTile = -1;
@@ -62,12 +61,10 @@ namespace Ambermoon.Editor.Gui.Editors
 		private readonly Dictionary<uint, Bitmap> combatBackgrounds;
 		private Song? lastSong = null;
 		private static readonly string[] LayerName = ["Back Layer", "Front Layer"];
-		//private                 Map                               map;
-		private MapData map;
+		private readonly MapData map;
 		private int MapHeight => map?.Height ?? (int)numericUpDownHeight.Value;
 		private bool mapLoading = false;
-		private MapManager mapManager;
-		private Panel mapScrollIndicator = new();
+		private readonly Panel mapScrollIndicator = new();
 		private int MapWidth => map?.Width ?? (int)numericUpDownWidth.Value;
 		//private                 Dictionary<Song, WaveStream>      musicCache = new Dictionary<Song, WaveStream>();
 		private Song? playingSong = null;
@@ -81,7 +78,7 @@ namespace Ambermoon.Editor.Gui.Editors
 		private const int _timePerFrame = 166;
 		private int tileMarkerHeight = 0;
 		private int tileMarkerWidth = 0;
-		private Panel tilesetScrollIndicator = new();
+		private readonly Panel tilesetScrollIndicator = new();
 		// Note: Every tileset seems to have exactly 2500 tile slots (but many are unused).
 		private const int TilesetTilesPerRow = 42;
 		private string title;
@@ -290,7 +287,7 @@ namespace Ambermoon.Editor.Gui.Editors
 		{
 			if (remove)
 			{
-				if (map.Tiles2D[x, y].MapEventId != 0)
+				if (map.Tiles2D![x, y].MapEventId != 0)
 				{
 					map.Tiles2D[x, y].MapEventId = 0;
 
@@ -356,7 +353,7 @@ namespace Ambermoon.Editor.Gui.Editors
 		#region --- fill tiles ------------------------------------------------------------------------
 		private void FillTiles(int x, int y, bool areaOnly)
 		{
-			var oldTile = map.Tiles2D[x, y];
+			var oldTile = map.Tiles2D![x, y];
 			uint oldTileIndex = currentLayer == 0 ? oldTile.BackTileIndex : oldTile.FrontTileIndex;
 			uint newTileIndex = 1 + (uint)selectedTilesetTile;
 
@@ -533,7 +530,7 @@ namespace Ambermoon.Editor.Gui.Editors
 			checkBoxWorldSurface.Checked = map.Flags.HasFlag(MapFlags.WorldSurface);
 			comboBoxWorld.SelectedIndex = (int)map.World % 3;
 			comboBoxMusic.SelectedIndex = map.SongIndex == 0 ? (int)Song.PloddingAlong - 1 : (int)map.SongIndex - 1;
-			comboBoxTilesets.SelectedIndex = map.TilesetIndex == 0 ? 0 : (int)map.TilesetIndex - 1;
+			comboBoxTilesets.SelectedIndex = map.TilesetIndex == 0 ? 0 : (int)map.TilesetIndex!.Value - 1;
 			comboBoxPalettes.SelectedIndex = map.PaletteIndex == 0 ? 0 : (int)map.PaletteIndex - 1;
 
 			listViewEvents.Items.Clear();
@@ -845,7 +842,7 @@ namespace Ambermoon.Editor.Gui.Editors
 		#region --- pick tile -------------------------------------------------------------------------
 		private void PickTile(int x, int y, int layer)
 		{
-			var tile = map.Tiles2D[x, y];
+			var tile = map.Tiles2D![x, y];
 			uint tileIndex = layer == 0 ? tile.BackTileIndex : tile.FrontTileIndex;
 
 			if (tileIndex == 0)
@@ -861,7 +858,7 @@ namespace Ambermoon.Editor.Gui.Editors
 		#region --- remove front tile -----------------------------------------------------------------
 		private void RemoveFrontTile(int x, int y)
 		{
-			if (map.Tiles2D[x, y].FrontTileIndex == 0)
+			if (map.Tiles2D![x, y].FrontTileIndex == 0)
 				return;
 
 			uint oldTileIndex = map.Tiles2D[x, y].FrontTileIndex;
@@ -1060,7 +1057,7 @@ namespace Ambermoon.Editor.Gui.Editors
 					if (totalX >= map.Width)
 						continue;
 
-					var mapTile = map.Tiles2D[totalX, totalY];
+					var mapTile = map.Tiles2D![totalX, totalY];
 					uint tileIndex = layer == 0 ? mapTile.BackTileIndex : mapTile.FrontTileIndex;
 					currentTiles.Add(tileIndex);
 
@@ -1104,7 +1101,7 @@ namespace Ambermoon.Editor.Gui.Editors
 							if (totalX >= map.Width)
 								continue;
 
-							var mapTile = map.Tiles2D[totalX, totalY];
+							var mapTile = map.Tiles2D![totalX, totalY];
 
 							if (layer == 0)
 								mapTile.BackTileIndex = (uint)tile;
@@ -1135,7 +1132,7 @@ namespace Ambermoon.Editor.Gui.Editors
 							if (totalX >= map.Width)
 								continue;
 
-							var mapTile = map.Tiles2D[totalX, totalY];
+							var mapTile = map.Tiles2D![totalX, totalY];
 
 							if (layer == 0)
 								mapTile.BackTileIndex = currentTiles[listIndex++];
@@ -1959,7 +1956,7 @@ namespace Ambermoon.Editor.Gui.Editors
 							// ignore, there are many unused tiles without valid graphic indices, just skip them and mark them as unused/invalid
 						}
 
-						if (checkBoxMarkUnusedTiles.Checked && !mapTiles.Contains(tileIndex))
+						if (checkBoxMarkUnusedTiles.Checked && !mapTiles!.Contains(tileIndex))
 						{
 							e.Graphics.FillRectangle(unusedBrush, rect);
 						}
