@@ -223,7 +223,7 @@ namespace Ambermoon.Editor.Models
 					Add(item);
 				}
 
-				OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
+				base.OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
 			}
 			finally
 			{

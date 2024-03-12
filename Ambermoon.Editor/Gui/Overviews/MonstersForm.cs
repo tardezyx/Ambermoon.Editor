@@ -205,6 +205,7 @@ namespace Ambermoon.Editor.Gui.Overviews
 		private void FilterMonsters_FilterChanged(string filter)
 		{
 			_monsters.ForDisplay.Filter = filter;
+			SetGraphics();
 		}
 
 		private void dgv_DataError(object sender, DataGridViewDataErrorEventArgs e)
